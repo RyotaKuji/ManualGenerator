@@ -6,41 +6,54 @@
       xmlns:local="clr-namespace:ManualGenerator"
       mc:Ignorable="d"
       xmlns:sf="http://schemas.syncfusion.com/wpf"
-      xmlns:syncfusionskin="clr-namespace:Syncfusion.SfSkinManager;assembly=Syncfusion.SfSkinManager.WPF"
-      syncfusionskin:SfSkinManager.Theme="{syncfusionskin:SkinManagerExtension ThemeName=Windows11Light}">
+      Margin="12,10">
 
 	<Grid.RowDefinitions>
-		<RowDefinition Height="30"/>
-		<RowDefinition Height="100"/>
+		<RowDefinition Height="Auto"/>
+		<RowDefinition Height="Auto"/>
 	</Grid.RowDefinitions>
 	<Grid.ColumnDefinitions>
+		<ColumnDefinition Width="Auto"/>
 		<ColumnDefinition Width="*"/>
 		<ColumnDefinition Width="*"
 		                  MaxWidth="300"/>
 	</Grid.ColumnDefinitions>
 
-	<sf:SfTextBoxExt Text="{Binding Subtitle}"
-	                 Watermark="タイトル"
+	<local:StyledButton Grid.Row="0"
+	                    Grid.Column="0"
+	                    Grid.RowSpan="2"
+	                    Width="35"
+	                    Height="35"
+	                    Margin="8"
+	                    VerticalAlignment="Center">
+		<Label Content="－"/>
+	</local:StyledButton>
+	<sf:SfTextBoxExt x:Name="Heading"
+	                 Text="{Binding Heading}"
+	                 Watermark="見出し"
 	                 Grid.Row="0"
-	                 Grid.Column="0"
+	                 Grid.Column="1"
+	                 LostFocus="Heading_LostFocus"
+	                 Height="35"
+	                 Margin="8,0"
+	                 FontSize="25"
 	                 BorderThickness="0"/>
 	<sf:SfTextBoxExt Text="{Binding Description}"
 	                 Watermark="説明"
 	                 TextWrapping="Wrap"
 	                 AcceptsReturn="True"
 	                 Grid.Row="1"
-	                 Grid.Column="0"
+	                 Grid.Column="1"
+	                 MinHeight="80"
+	                 Margin="8,0"
 	                 BorderThickness="0"/>
-	<Button Grid.Row="0"
-	        Grid.Column="1"
-	        Grid.RowSpan="2"
-	        HorizontalAlignment="Stretch"
-	        VerticalAlignment="Stretch"
-	        HorizontalContentAlignment="Center"
-	        VerticalContentAlignment="Center"
-	        FontSize="50">
+	<local:StyledButton Grid.Row="0"
+	                    Grid.Column="2"
+	                    Grid.RowSpan="2"
+	                    FontSize="50">
 		<Label Content="＋"
 		       FontSize="70"
-		       Foreground="DarkGray"/>
-	</Button>
+		       Foreground="DarkGray"
+		       Padding="0"/>
+	</local:StyledButton>
 </Grid>

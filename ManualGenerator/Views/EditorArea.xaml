@@ -4,13 +4,11 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:ManualGenerator"
-      mc:Ignorable="d"
-      xmlns:syncfusionskin="clr-namespace:Syncfusion.SfSkinManager;assembly=Syncfusion.SfSkinManager.WPF"
-      syncfusionskin:SfSkinManager.Theme="{syncfusionskin:SkinManagerExtension ThemeName=Windows11Light}">
+      mc:Ignorable="d">
 
 	<Grid.RowDefinitions>
 		<RowDefinition Height="Auto"/>
-		<RowDefinition Height="Auto"/>
+		<RowDefinition Height="30"/>
 	</Grid.RowDefinitions>
 
 	<ListBox ItemsSource="{Binding Processes}"
@@ -32,9 +30,9 @@
 				<Setter Property="Template">
 					<Setter.Value>
 						<ControlTemplate TargetType="ListBoxItem">
-							<Border Name="_border"
-							        Padding="2"
-							        SnapsToDevicePixels="true">
+							<Border SnapsToDevicePixels="true"
+							        BorderThickness="0,0,0,1"
+							        BorderBrush="Gainsboro">
 								<ContentPresenter/>
 							</Border>
 						</ControlTemplate>
@@ -44,7 +42,8 @@
 		</ListBox.ItemContainerStyle>
 	</ListBox>
 
-	<Button Content="送信"
-	        Command="{Binding SubmitCommand}"
-	        Grid.Row="1"/>
+	<local:StyledButton Content="送信"
+	                    Command="{Binding SubmitCommand}"
+	                    Grid.Row="1"
+	                    VerticalAlignment="Stretch"/>
 </Grid>

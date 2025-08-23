@@ -5,8 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:ManualGenerator"
       mc:Ignorable="d"
-      d:DesignHeight="450"
-      d:DesignWidth="800"
-      Title="EditorPage">
+      xmlns:syncfusionskin="clr-namespace:Syncfusion.SfSkinManager;assembly=Syncfusion.SfSkinManager.WPF"
+      syncfusionskin:SfSkinManager.Theme="{syncfusionskin:SkinManagerExtension ThemeName=Windows11Light}">
 	<local:EditorArea/>
 </Page>

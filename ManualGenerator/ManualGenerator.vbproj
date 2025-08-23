@@ -57,6 +57,9 @@
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=9.0.0.8, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.9.0.8\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="Syncfusion.Licensing, Version=30.2462.6.0, Culture=neutral, PublicKeyToken=632609b4d040f6b4, processorArchitecture=MSIL">
       <HintPath>..\packages\Syncfusion.Licensing.30.2.6\lib\net462\Syncfusion.Licensing.dll</HintPath>
     </Reference>
@@ -68,12 +71,6 @@
     </Reference>
     <Reference Include="Syncfusion.Shared.WPF, Version=30.2462.6.0, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
       <HintPath>..\packages\Syncfusion.Shared.WPF.30.2.6\lib\net462\Syncfusion.Shared.WPF.dll</HintPath>
-    </Reference>
-    <Reference Include="Syncfusion.Themes.FluentLight.WPF, Version=30.2462.6.0, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
-      <HintPath>..\packages\Syncfusion.Themes.FluentLight.WPF.30.2.6\lib\net462\Syncfusion.Themes.FluentLight.WPF.dll</HintPath>
-    </Reference>
-    <Reference Include="Syncfusion.Themes.Material3Light.WPF, Version=30.2462.6.0, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
-      <HintPath>..\packages\Syncfusion.Themes.Material3Light.WPF.30.2.6\lib\net462\Syncfusion.Themes.Material3Light.WPF.dll</HintPath>
     </Reference>
     <Reference Include="Syncfusion.Themes.Windows11Light.WPF, Version=30.2462.6.0, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
       <HintPath>..\packages\Syncfusion.Themes.Windows11Light.WPF.30.2.6\lib\net462\Syncfusion.Themes.Windows11Light.WPF.dll</HintPath>
@@ -122,6 +119,13 @@
     <Compile Include="Views\ProcessGroup.xaml.vb">
       <DependentUpon>ProcessGroup.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\StyledButton.xaml.vb">
+      <DependentUpon>StyledButton.xaml</DependentUpon>
+    </Compile>
+    <Page Include="Themes\Styles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\EditorArea.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -149,6 +153,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\ProcessGroup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\StyledButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
