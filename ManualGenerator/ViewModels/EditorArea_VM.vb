@@ -28,11 +28,20 @@ Public Class EditorArea_VM
 		End If
 	End Sub
 
+	Public Sub AddItem(item As ProcessGroup_VM)
+		Dim index As Integer = Processes.IndexOf(item)
+		AddItem(index)
+	End Sub
+
 	Private Sub AddItem(Optional index As Integer = -1)
 		Dim newProcess As New ProcessGroup_VM()
 		newProcess.BeginInputCommand = New RelayCommand(
 			Sub()
 				AdjustItemsLength(newProcess)
+			End Sub)
+		newProcess.RemoveCommand = New RelayCommand(
+			Sub()
+				RemoveItem(newProcess)
 			End Sub)
 
 		If index >= 0 And index < Processes.Count Then

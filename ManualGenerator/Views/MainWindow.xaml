@@ -8,7 +8,10 @@
         Title="MainWindow"
         Height="450"
         Width="800"
-        IsTabStop="False">
+        IsTabStop="False"
+        FontFamily="Yu Gothic"
+        FontWeight="Medium"
+        Background="LightBlue">
 	<Grid>
 		<Frame x:Name="Frame"
 		       NavigationUIVisibility="Hidden"

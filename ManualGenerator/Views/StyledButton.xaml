@@ -6,8 +6,8 @@
         xmlns:local="clr-namespace:ManualGenerator"
         mc:Ignorable="d"
         Background="White"
-        BorderBrush="WhiteSmoke"
-        BorderThickness="2">
+        BorderBrush="LightGray"
+        BorderThickness="1.5">
 	<Button.Style>
 		<Style TargetType="{x:Type Button}">
 			<Setter Property="Template">
