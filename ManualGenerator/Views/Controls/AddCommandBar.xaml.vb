@@ -1,6 +1,6 @@
 ﻿Public Class AddCommandBar
 
-	Public Shared ReadOnly CommandProperty As DependencyProperty =
+	Public Shared ReadOnly _command As DependencyProperty =
 		DependencyProperty.Register(
 			"Command",
 			GetType(ICommand),
@@ -8,19 +8,17 @@
 			New PropertyMetadata(Nothing)
 		)
 
-
 	Public Property Command As ICommand
 		Get
-			Return CType(GetValue(CommandProperty), ICommand)
+			Return CType(GetValue(_command), ICommand)
 		End Get
 		Set(value As ICommand)
-			SetValue(CommandProperty, value)
+			SetValue(_command, value)
 		End Set
 	End Property
 
-
 	' CommandParameter の依存関係プロパティ
-	Public Shared ReadOnly CommandParameterProperty As DependencyProperty =
+	Public Shared ReadOnly _commandParameter As DependencyProperty =
 		DependencyProperty.Register(
 			"CommandParameter",
 			GetType(Object),
@@ -30,10 +28,10 @@
 
 	Public Property CommandParameter As Object
 		Get
-			Return GetValue(CommandParameterProperty)
+			Return GetValue(_commandParameter)
 		End Get
 		Set(value As Object)
-			SetValue(CommandParameterProperty, value)
+			SetValue(_commandParameter, value)
 		End Set
 	End Property
 
