@@ -14,7 +14,7 @@
 		         SelectedItem="{Binding SelectedItem}">
 			<i:Interaction.Triggers>
 				<i:EventTrigger EventName="SelectionChanged">
-					<i:InvokeCommandAction Command="{Binding SelectedCommand}" />
+					<i:InvokeCommandAction Command="{Binding SelectedCommand}"/>
 				</i:EventTrigger>
 			</i:Interaction.Triggers>
 		</ListBox>

@@ -9,11 +9,15 @@
       syncfusionskin:SfSkinManager.Theme="{syncfusionskin:SkinManagerExtension ThemeName=Windows11Light}"
       Title="EditorPage">
 
+	<Page.Resources>
+		<BooleanToVisibilityConverter x:Key="BoolToVis"/>
+	</Page.Resources>
+
 	<Grid>
 
 		<Grid.RowDefinitions>
-			<RowDefinition Height="*" />
-			<RowDefinition Height="Auto" />
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="Auto"/>
 		</Grid.RowDefinitions>
 
 		<ListBox ItemsSource="{Binding Processes}"
@@ -24,7 +28,7 @@
 
 			<ListBox.ItemsPanel>
 				<ItemsPanelTemplate>
-					<StackPanel Orientation="Vertical" />
+					<StackPanel Orientation="Vertical"/>
 				</ItemsPanelTemplate>
 			</ListBox.ItemsPanel>
 
@@ -32,10 +36,13 @@
 				<DataTemplate>
 					<StackPanel>
 						<local:AddCommandBar Command="{Binding DataContext.AddCommand, RelativeSource={RelativeSource AncestorType=Page}}"
-						                     CommandParameter="{Binding}" />
+						                     CommandParameter="{Binding}"/>
 
 						<local:Process DataContext="{Binding}"
-						               Margin="15,0" />
+						               Margin="15,0"/>
+
+						<local:AddCommandBar Visibility="{Binding IsLastItem, Converter={StaticResource BoolToVis}}"
+						                     Command="{Binding DataContext.AddCommand, RelativeSource={RelativeSource AncestorType=Page}}"/>
 					</StackPanel>
 				</DataTemplate>
 			</ListBox.ItemTemplate>
@@ -46,7 +53,7 @@
 					<Setter Property="Template">
 						<Setter.Value>
 							<ControlTemplate TargetType="ListBoxItem">
-								<ContentPresenter />
+								<ContentPresenter/>
 							</ControlTemplate>
 						</Setter.Value>
 					</Setter>
@@ -58,7 +65,7 @@
 		                    Command="{Binding SubmitCommand}"
 		                    Grid.Row="1"
 		                    Height="50"
-		                    FontSize="20" />
+		                    FontSize="20"/>
 	</Grid>
 </Page>
 

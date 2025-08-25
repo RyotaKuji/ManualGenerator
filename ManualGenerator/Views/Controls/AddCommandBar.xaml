@@ -6,7 +6,7 @@
       xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
       xmlns:local="clr-namespace:ManualGenerator"
       mc:Ignorable="d"
-	  MouseUp="OnClick"
+      MouseUp="OnClick"
       Height="20"
       Background="Transparent">
 	<Border x:Name="AddSeparator_Line"
@@ -18,11 +18,11 @@
 				<Style.Triggers>
 					<DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Grid}}"
 					             Value="False">
-						<Setter Property="Visibility" Value="Hidden" />
+						<Setter Property="Visibility" Value="Hidden"/>
 					</DataTrigger>
 					<DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Grid}}"
 					             Value="True">
-						<Setter Property="Visibility" Value="Visible" />
+						<Setter Property="Visibility" Value="Visible"/>
 					</DataTrigger>
 				</Style.Triggers>
 			</Style>
@@ -40,11 +40,11 @@
 				<Style.Triggers>
 					<DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Grid}}"
 					             Value="False">
-						<Setter Property="Visibility" Value="Hidden" />
+						<Setter Property="Visibility" Value="Hidden"/>
 					</DataTrigger>
 					<DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Grid}}"
 					             Value="True">
-						<Setter Property="Visibility" Value="Visible" />
+						<Setter Property="Visibility" Value="Visible"/>
 					</DataTrigger>
 				</Style.Triggers>
 			</Style>
@@ -53,6 +53,6 @@
 		           FontSize="12"
 		           Foreground="White"
 		           VerticalAlignment="Center"
-		           HorizontalAlignment="Center" />
+		           HorizontalAlignment="Center"/>
 	</Border>
 </Grid>

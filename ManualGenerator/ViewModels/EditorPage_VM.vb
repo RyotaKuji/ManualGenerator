@@ -1,5 +1,4 @@
 ﻿Imports System.Collections.ObjectModel
-Imports System.IO
 Imports CommunityToolkit.Mvvm.ComponentModel
 Imports CommunityToolkit.Mvvm.Input
 Imports Newtonsoft.Json
@@ -8,7 +7,7 @@ Public Class EditorPage_VM
 	Inherits ObservableObject
 
 	Public ReadOnly Property SubmitCommand As RelayCommand
-	Public ReadOnly Property AddCommand As RelayCommand
+	Public ReadOnly Property AddCommand As RelayCommand(Of Process_VM)
 
 	Public ReadOnly Property Id As String
 
@@ -16,9 +15,7 @@ Public Class EditorPage_VM
 
 	Public Sub New()
 		SubmitCommand = New RelayCommand(AddressOf Submit)
-		AddCommand = New RelayCommand(Sub(e As Process_VM)
-										  AddItem(e)
-									  End Sub)
+		AddCommand = New RelayCommand(Of Process_VM)(AddressOf AddItem)
 	End Sub
 
 	Public Sub New(id As String)
@@ -50,6 +47,9 @@ Public Class EditorPage_VM
 				Dim formedItem As Process_VM = GetProcessObject(item)
 				Processes.Add(item)
 			Next
+
+			MarkLastItem()
+
 			Return True
 		Catch ex As Exception
 			Dim s As String = ex.Message
@@ -77,12 +77,21 @@ Public Class EditorPage_VM
 		Else
 			Processes.Add(newProcess)
 		End If
+		MarkLastItem()
 	End Sub
 
 	Private Sub RemoveItem(item As Process_VM)
 		If Processes.Count > 1 Then
 			Processes.Remove(item)
 		End If
+		MarkLastItem()
+	End Sub
+
+	Private Sub MarkLastItem()
+		For Each item In Processes
+			item.IsLastItem = False
+		Next
+		Processes.Last().IsLastItem = True
 	End Sub
 
 	Private Function GetProcessObject(Optional item As Process_VM = Nothing) As Process_VM
