@@ -12,7 +12,7 @@ Public Class EditorPage_VM
 
 	Public ReadOnly Property Id As String
 
-	Public ReadOnly Property Processes As New ObservableCollection(Of ProcessGroup_VM)
+	Public ReadOnly Property Processes As New ObservableCollection(Of Process_VM)
 
 	Public Sub New()
 		SubmitCommand = New RelayCommand(AddressOf Submit)
@@ -39,9 +39,10 @@ Public Class EditorPage_VM
 
 		Try
 			Dim json As String = FileManager.ReadContent(filePath)
-			Dim deserialized = JsonConvert.DeserializeObject(Of IEnumerable(Of ProcessGroup_VM))(json)
+			Dim deserialized = JsonConvert.DeserializeObject(Of IEnumerable(Of Process_VM))(json)
 			Processes.Clear()
 			For Each item In deserialized
+				Dim formedItem As Process_VM = GetProcessObject(item)
 				Processes.Add(item)
 			Next
 			Return True
@@ -62,7 +63,7 @@ Public Class EditorPage_VM
 		Save()
 	End Sub
 
-	Public Sub AddItem(item As ProcessGroup_VM)
+	Public Sub AddItem(item As Process_VM)
 		Dim index As Integer = Processes.IndexOf(item)
 		AddItem(index)
 	End Sub
@@ -77,13 +78,13 @@ Public Class EditorPage_VM
 		End If
 	End Sub
 
-	Private Sub RemoveItem(item As ProcessGroup_VM)
+	Private Sub RemoveItem(item As Process_VM)
 		Processes.Remove(item)
 	End Sub
 
-	Private Function GetProcessObject(Optional item As ProcessGroup_VM = Nothing) As ProcessGroup_VM
+	Private Function GetProcessObject(Optional item As Process_VM = Nothing) As Process_VM
 		If item Is Nothing Then
-			item = New ProcessGroup_VM
+			item = New Process_VM
 		End If
 
 		item.RemoveCommand = New RelayCommand(

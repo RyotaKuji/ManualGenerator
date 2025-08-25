@@ -84,7 +84,7 @@
 							</Border>
 						</Grid>
 
-						<local:ProcessGroup DataContext="{Binding}"
+						<local:Process DataContext="{Binding}"
 						                    Margin="15,0" />
 					</StackPanel>
 				</DataTemplate>
