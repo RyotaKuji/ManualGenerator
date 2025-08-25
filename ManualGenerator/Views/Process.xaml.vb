@@ -1,5 +1,4 @@
 ﻿Imports System.IO
-Imports System.Text
 Imports System.Windows.Markup
 
 Public Class Process

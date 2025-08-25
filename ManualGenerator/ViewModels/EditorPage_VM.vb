@@ -16,7 +16,9 @@ Public Class EditorPage_VM
 
 	Public Sub New()
 		SubmitCommand = New RelayCommand(AddressOf Submit)
-		AddCommand = New RelayCommand(AddressOf AddItem)
+		AddCommand = New RelayCommand(Sub(e As Process_VM)
+										  AddItem(e)
+									  End Sub)
 	End Sub
 
 	Public Sub New(id As String)
@@ -26,6 +28,9 @@ Public Class EditorPage_VM
 			Me.Id = id
 		Else
 			Me.Id = Guid.NewGuid().ToString()
+		End If
+
+		If Processes.Count = 0 Then
 			AddItem()
 		End If
 	End Sub
@@ -63,12 +68,8 @@ Public Class EditorPage_VM
 		Save()
 	End Sub
 
-	Public Sub AddItem(item As Process_VM)
+	Public Sub AddItem(Optional item As Process_VM = Nothing)
 		Dim index As Integer = Processes.IndexOf(item)
-		AddItem(index)
-	End Sub
-
-	Private Sub AddItem(Optional index As Integer = -1)
 		Dim newProcess = GetProcessObject()
 
 		If index >= 0 And index < Processes.Count Then
@@ -79,7 +80,9 @@ Public Class EditorPage_VM
 	End Sub
 
 	Private Sub RemoveItem(item As Process_VM)
-		Processes.Remove(item)
+		If Processes.Count > 1 Then
+			Processes.Remove(item)
+		End If
 	End Sub
 
 	Private Function GetProcessObject(Optional item As Process_VM = Nothing) As Process_VM

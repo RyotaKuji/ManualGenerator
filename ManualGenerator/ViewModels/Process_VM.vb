@@ -6,8 +6,6 @@ Public Class Process_VM
 	Inherits ObservableObject
 
 	<JsonIgnore>
-	Public Property ConfirmCommand As RelayCommand
-	<JsonIgnore>
 	Public Property RemoveCommand As RelayCommand
 
 	Public Property Heading As String

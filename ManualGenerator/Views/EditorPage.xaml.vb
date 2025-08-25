@@ -10,10 +10,6 @@
 		DataContext = vm
 	End Sub
 
-	Private Sub AddSeparator_Click(sender As Object, e As MouseButtonEventArgs)
-		VM?.AddItem(sender.DataContext)
-	End Sub
-
 	Protected Overrides Sub OnPreviewMouseWheel(e As MouseWheelEventArgs)
 		MyBase.OnPreviewMouseWheel(e)
 
