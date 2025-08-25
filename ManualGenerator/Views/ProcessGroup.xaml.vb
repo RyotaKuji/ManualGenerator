@@ -10,20 +10,35 @@ Public Class ProcessGroup
 		End Get
 	End Property
 
-	Private Sub Heading_LostFocus(sender As Object, e As RoutedEventArgs)
-		VM?.ChangedHeading(Heading.Text)
+	Private Sub SetDescription(sender As Object, e As RoutedEventArgs)
+		Dim xaml As String = VM?.DescriptionXaml
+		If String.IsNullOrEmpty(xaml) Then
+			Return
+		End If
 
+		Dim doc = XamlReader.Parse(xaml)
+		FlowDocument.Blocks.Clear()
+		For Each a In doc.Blocks
+			Dim clone = XamlReader.Parse(XamlWriter.Save(a))
+			FlowDocument.Blocks.Add(clone)
+		Next
+	End Sub
+
+	Private Sub Description_TextChanged(sender As Object, e As TextChangedEventArgs)
+		If FlowDocument Is Nothing Then
+			Return
+		End If
 		' FlowDocument を XAML 文字列に変換
-		Dim xamlText As String
+		Dim xaml As String
 		Using ms As New MemoryStream()
 			XamlWriter.Save(FlowDocument, ms)
 			ms.Position = 0
 			Using sr As New StreamReader(ms)
-				xamlText = sr.ReadToEnd()
+				xaml = sr.ReadToEnd()
 			End Using
 		End Using
 
-		Dim doc As XDocument = XDocument.Parse(xamlText)
+		Dim doc As XDocument = XDocument.Parse(xaml)
 		Dim ns As XNamespace = "http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 
 		Dim sb As New StringBuilder()
@@ -57,5 +72,10 @@ Public Class ProcessGroup
 
 		' 出力
 		Dim html As String = sb.ToString()
+
+		If VM IsNot Nothing Then
+			VM.DescriptionXaml = xaml
+			VM.DescriptionHtml = html
+		End If
 	End Sub
 End Class

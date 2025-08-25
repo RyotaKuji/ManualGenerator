@@ -63,6 +63,9 @@
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=9.0.0.8, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.9.0.8\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Xaml.Behaviors, Version=1.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Xaml.Behaviors.Wpf.1.1.135\lib\net462\Microsoft.Xaml.Behaviors.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -120,19 +123,28 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="ViewModels\EditorArea_VM.vb" />
+    <Compile Include="Shareds\Definitions.vb" />
+    <Compile Include="Shareds\FileManager.vb" />
+    <Compile Include="ViewModels\EditorPage_VM.vb" />
+    <Compile Include="ViewModels\ListPage_VM.vb" />
     <Compile Include="ViewModels\ProcessGroup_VM.vb" />
+    <Compile Include="Views\EditorPage.xaml.vb">
+      <DependentUpon>EditorPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ListPage.xaml.vb">
+      <DependentUpon>ListPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ProcessGroup.xaml.vb">
       <DependentUpon>ProcessGroup.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\StyledButton.xaml.vb">
       <DependentUpon>StyledButton.xaml</DependentUpon>
     </Compile>
-    <Page Include="Views\EditorArea.xaml">
+    <Page Include="Views\EditorPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\EditorPage.xaml">
+    <Page Include="Views\ListPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -143,12 +155,6 @@
     <Compile Include="Application.xaml.vb">
       <DependentUpon>Application.xaml</DependentUpon>
       <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Views\EditorArea.xaml.vb">
-      <DependentUpon>EditorArea.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\EditorPage.xaml.vb">
-      <DependentUpon>EditorPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainWindow.xaml.vb">
       <DependentUpon>MainWindow.xaml</DependentUpon>

@@ -10,51 +10,52 @@
         Background="White"
         CornerRadius="5">
 	<Border.Resources>
-		<BooleanToVisibilityConverter x:Key="BoolToVis"/>
+		<BooleanToVisibilityConverter x:Key="BoolToVis" />
 	</Border.Resources>
 	<Grid Margin="16">
 		<Grid.RowDefinitions>
-			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="1.2"/>
-			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="1.2" />
+			<RowDefinition Height="Auto" />
 		</Grid.RowDefinitions>
 
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="Auto"/>
-			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="Auto" />
+			<ColumnDefinition Width="*" />
 			<ColumnDefinition Width="*"
-			                  MaxWidth="300"/>
+			                  MaxWidth="300" />
 		</Grid.ColumnDefinitions>
 
 		<TextBox x:Name="Heading"
 		         Text="{Binding Heading}"
 		         Grid.Row="0"
 		         Grid.Column="1"
-		         LostFocus="Heading_LostFocus"
 		         Height="35"
 		         FontSize="25"
 		         BorderThickness="0"
 		         FontFamily="Yu Gothic"
-		         FontWeight="Medium"/>
+		         FontWeight="Medium" />
 
 		<Separator Grid.Row="1"
 		           Grid.Column="1"
 		           HorizontalAlignment="Stretch"
 		           VerticalAlignment="Stretch"
 		           Background="Gray"
-		           Margin="0"/>
+		           Margin="0" />
 
 		<RichTextBox Name="rte"
 		             Grid.Row="2"
 		             Grid.Column="1"
 		             MinHeight="80"
-		             BorderThickness="0">
+		             BorderThickness="0"
+		             TextChanged="Description_TextChanged">
 			<FlowDocument x:Name="FlowDocument"
+			              Loaded="SetDescription"
 			              PageWidth="{Binding ElementName=rte, Path=ActualWidth}"
 			              LineHeight="1"
 			              FontSize="15"
 			              FontFamily="Yu Gothic"
-			              FontWeight="Medium"/>
+			              FontWeight="Medium" />
 		</RichTextBox>
 
 		<local:StyledButton Grid.Row="0"
@@ -65,7 +66,7 @@
 			           FontFamily="Segoe MDL2 Assets"
 			           FontSize="50"
 			           Foreground="DarkGray"
-			           Padding="0"/>
+			           Padding="0" />
 		</local:StyledButton>
 
 		<!--  Remove  -->
@@ -84,8 +85,7 @@
 		        Padding="0,4,4,0"
 		        FontWeight="ExtraBold"
 		        Background="red"
-		        Foreground="White"
-		        Visibility="{Binding IsRemovable, Converter={StaticResource BoolToVis}}">
+		        Foreground="White">
 			<Button.Template>
 				<ControlTemplate TargetType="Button">
 					<Border x:Name="RemoveButton_Visual"
@@ -93,17 +93,17 @@
 					        CornerRadius="0,5,0,0"
 					        Padding="{TemplateBinding Padding}">
 						<ContentPresenter HorizontalAlignment="Right"
-						                  VerticalAlignment="Top"/>
+						                  VerticalAlignment="Top" />
 						<Border.Style>
 							<Style TargetType="Border">
 								<Style.Triggers>
 									<DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Border}}"
 									             Value="False">
-										<Setter Property="Visibility" Value="Hidden"/>
+										<Setter Property="Visibility" Value="Hidden" />
 									</DataTrigger>
 									<DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Border}}"
 									             Value="True">
-										<Setter Property="Visibility" Value="Visible"/>
+										<Setter Property="Visibility" Value="Visible" />
 									</DataTrigger>
 								</Style.Triggers>
 							</Style>
@@ -111,10 +111,10 @@
 					</Border>
 					<ControlTemplate.Triggers>
 						<Trigger Property="IsMouseOver" Value="True">
-							<Setter TargetName="RemoveButton_Visual" Property="Opacity" Value="0.8"/>
+							<Setter TargetName="RemoveButton_Visual" Property="Opacity" Value="0.8" />
 						</Trigger>
 						<Trigger Property="IsMouseOver" Value="False">
-							<Setter TargetName="RemoveButton_Visual" Property="Opacity" Value="0.2"/>
+							<Setter TargetName="RemoveButton_Visual" Property="Opacity" Value="0.2" />
 						</Trigger>
 					</ControlTemplate.Triggers>
 				</ControlTemplate>
@@ -123,13 +123,13 @@
 				<PathGeometry>
 					<PathFigure StartPoint="0,0"
 					            IsClosed="True">
-						<LineSegment Point="100,0"/>
-						<LineSegment Point="100,100"/>
+						<LineSegment Point="100,0" />
+						<LineSegment Point="100,100" />
 					</PathFigure>
 				</PathGeometry>
 			</Button.Clip>
 			<Button.RenderTransform>
-				<TranslateTransform X="16" Y="-16"/>
+				<TranslateTransform X="16" Y="-16" />
 			</Button.RenderTransform>
 		</Button>
 	</Grid>

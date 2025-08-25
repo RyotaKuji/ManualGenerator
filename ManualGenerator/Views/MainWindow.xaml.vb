@@ -2,7 +2,16 @@
 
 	Public Sub New()
 		InitializeComponent()
-		Frame.Navigate(New Uri("Views/EditorPage.xaml", UriKind.Relative))
+		NavigateToListPage()
+	End Sub
+
+	Public Sub NavigateToListPage()
+		Frame.Navigate(New Uri("Views/ListPage.xaml", UriKind.Relative))
+	End Sub
+
+	Public Sub NavigateToEditorPage(id As String)
+		Dim vm As New EditorPage_VM(id)
+		Frame.Navigate(New EditorPage(vm))
 	End Sub
 
 End Class
