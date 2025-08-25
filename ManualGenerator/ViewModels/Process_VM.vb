@@ -26,13 +26,13 @@ Public Class Process_VM
 		End Set
 	End Property
 
-	Private _isLastItem As String
+	Private _isLastItem As Boolean
 	<JsonIgnore>
-	Public Property IsLastItem As String
+	Public Property IsLastItem As Boolean
 		Get
 			Return _isLastItem
 		End Get
-		Set(value As String)
+		Set(value As Boolean)
 			SetProperty(_isLastItem, value)
 		End Set
 	End Property
