@@ -22,38 +22,27 @@
 		</Grid.RowDefinitions>
 
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="Auto"/>
 			<ColumnDefinition Width="*"/>
 			<ColumnDefinition Width="*"
 			                  MaxWidth="300"/>
 		</Grid.ColumnDefinitions>
 
-		<local:SegmentedButton Item1="Heading"
-		                       Item1Text="H"
-		                       Item1Annotation="見出"
-		                       Item2="Process"
-		                       Item2Text="P"
-		                       Item2Annotation="手順"
-		                       DefaultSelectedIndex="2"
-		                       SelectionChanged="{Binding SelectionChangedCommand}"
-		                       Grid.Row="0"
-		                       Grid.RowSpan="3"
-		                       VerticalAlignment="Center"
-		                       HorizontalAlignment="Center"
-		                       Margin="{StaticResource HorizontalMargin}"/>
 		<TextBox x:Name="Heading"
 		         Text="{Binding Heading}"
 		         Grid.Row="0"
-		         Grid.Column="1"
+		         Grid.Column="0"
 		         Height="35"
 		         FontSize="25"
 		         BorderThickness="0"
 		         FontFamily="Yu Gothic"
 		         Margin="{StaticResource HorizontalMargin}">
-			<TextBox.Style>
+
+			<!--<TextBox.Style>
 				<Style TargetType="TextBox">
 					<Style.Triggers>
-						<!--  Process  -->
+						-->
+			<!--  Process  -->
+			<!--
 						<MultiDataTrigger>
 							<MultiDataTrigger.Conditions>
 								<Condition Binding="{Binding IsHeading}" Value="False"/>
@@ -63,7 +52,9 @@
 							<Setter Property="Background" Value="Transparent"/>
 							<Setter Property="Foreground" Value="Black"/>
 						</MultiDataTrigger>
-						<!--  Heading  -->
+						-->
+			<!--  Heading  -->
+			<!--
 						<MultiDataTrigger>
 							<MultiDataTrigger.Conditions>
 								<Condition Binding="{Binding IsHeading}" Value="True"/>
@@ -73,7 +64,9 @@
 							<Setter Property="Background" Value="RoyalBlue"/>
 							<Setter Property="Foreground" Value="White"/>
 						</MultiDataTrigger>
-						<!--  Process / MouseOver  -->
+						-->
+			<!--  Process / MouseOver  -->
+			<!--
 						<MultiDataTrigger>
 							<MultiDataTrigger.Conditions>
 								<Condition Binding="{Binding IsHeading}" Value="False"/>
@@ -83,7 +76,9 @@
 							<Setter Property="Background" Value="WhiteSmoke"/>
 							<Setter Property="Foreground" Value="Black"/>
 						</MultiDataTrigger>
-						<!--  Heading / MouseOver  -->
+						-->
+			<!--  Heading / MouseOver  -->
+			<!--
 						<MultiDataTrigger>
 							<MultiDataTrigger.Conditions>
 								<Condition Binding="{Binding IsHeading}" Value="True"/>
@@ -95,10 +90,11 @@
 						</MultiDataTrigger>
 					</Style.Triggers>
 				</Style>
-			</TextBox.Style>
+			</TextBox.Style>-->
 		</TextBox>
+
 		<Separator Grid.Row="1"
-		           Grid.Column="1"
+		           Grid.Column="0"
 		           Height="2"
 		           HorizontalAlignment="Stretch"
 		           VerticalAlignment="Center"
@@ -107,7 +103,7 @@
 
 		<RichTextBox Name="rte"
 		             Grid.Row="2"
-		             Grid.Column="1"
+		             Grid.Column="0"
 		             MinHeight="80"
 		             BorderThickness="0"
 		             LostFocus="Description_Confirmed"
@@ -122,7 +118,7 @@
 		</RichTextBox>
 
 		<local:StyledButton Grid.Row="0"
-		                    Grid.Column="2"
+		                    Grid.Column="1"
 		                    Grid.RowSpan="3"
 		                    FontSize="50">
 			<TextBlock Text="&#xE722;"
@@ -138,7 +134,7 @@
 		        Command="{Binding RemoveCommand}"
 		        CommandParameter="{Binding}"
 		        Grid.Row="0"
-		        Grid.Column="2"
+		        Grid.Column="1"
 		        Width="35"
 		        Height="35"
 		        VerticalAlignment="Top"

@@ -132,9 +132,6 @@
     <Compile Include="Views\Controls\AddCommandBar.xaml.vb">
       <DependentUpon>AddCommandBar.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Controls\SegmentButton.xaml.vb">
-      <DependentUpon>SegmentButton.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\EditorPage.xaml.vb">
       <DependentUpon>EditorPage.xaml</DependentUpon>
     </Compile>
@@ -148,10 +145,6 @@
       <DependentUpon>StyledButton.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\Controls\AddCommandBar.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Controls\SegmentButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
