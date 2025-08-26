@@ -13,6 +13,16 @@ Public Class Process_VM
 	<JsonIgnore>
 	Public Property RemoveCommand As RelayCommand
 
+	Private _isHeading As Boolean
+	Public Property IsHeading As Boolean
+		Get
+			Return _isHeading
+		End Get
+		Set(value As Boolean)
+			SetProperty(_isHeading, value)
+		End Set
+	End Property
+
 	Private _isLastItem As Boolean
 	<JsonIgnore>
 	Public Property IsLastItem As Boolean

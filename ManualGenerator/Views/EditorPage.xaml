@@ -21,6 +21,7 @@
 		</Grid.RowDefinitions>
 
 		<ListBox ItemsSource="{Binding Processes}"
+		         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
 		         HorizontalContentAlignment="Stretch"
 		         ScrollViewer.CanContentScroll="False"
 		         VirtualizingPanel.ScrollUnit="Pixel"
@@ -47,7 +48,7 @@
 				</DataTemplate>
 			</ListBox.ItemTemplate>
 
-			<!--  選択を不可視化（IsHitTestVisible が効かない）  -->
+			<!-- 選択を不可視化（IsHitTestVisible が効かない） -->
 			<ListBox.ItemContainerStyle>
 				<Style TargetType="ListBoxItem">
 					<Setter Property="Template">

@@ -17,32 +17,102 @@
 	<Grid Margin="16">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
 			<RowDefinition Height="18"/>
 			<RowDefinition Height="Auto"/>
 		</Grid.RowDefinitions>
 
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="*"
+			                  MinWidth="200"/>
 			<ColumnDefinition Width="*"
 			                  MaxWidth="300"/>
 		</Grid.ColumnDefinitions>
 
+		<ToggleButton Content="見出し"
+		              IsChecked="{Binding IsHeading}"
+		              HorizontalAlignment="Left">
+			<ToggleButton.Style>
+				<Style TargetType="ToggleButton">
+					<Setter Property="BorderThickness" Value="0"/>
+					<Setter Property="Padding" Value="0,20"/>
+					<Setter Property="Height" Value="25"/>
+					<Setter Property="BorderThickness" Value="0"/>
+					<Setter Property="Template">
+						<Setter.Value>
+							<ControlTemplate TargetType="ToggleButton">
+								<Border Background="{TemplateBinding Background}"
+								        Padding="10,0"
+								        CornerRadius="3">
+									<ContentPresenter HorizontalAlignment="Center"
+									                  VerticalAlignment="Center"/>
+								</Border>
+							</ControlTemplate>
+						</Setter.Value>
+					</Setter>
+					<Style.Triggers>
+						<MultiTrigger>
+							<MultiTrigger.Conditions>
+								<Condition Property="IsChecked" Value="False"/>
+								<Condition Property="IsMouseOver" Value="False"/>
+							</MultiTrigger.Conditions>
+							<Setter Property="Background" Value="WhiteSmoke"/>
+							<Setter Property="Foreground" Value="Gray"/>
+						</MultiTrigger>
+						<MultiTrigger>
+							<MultiTrigger.Conditions>
+								<Condition Property="IsChecked" Value="True"/>
+								<Condition Property="IsMouseOver" Value="False"/>
+							</MultiTrigger.Conditions>
+							<Setter Property="Background" Value="RoyalBlue"/>
+							<Setter Property="Foreground" Value="White"/>
+						</MultiTrigger>
+						<MultiTrigger>
+							<MultiTrigger.Conditions>
+								<Condition Property="IsChecked" Value="False"/>
+								<Condition Property="IsMouseOver" Value="True"/>
+							</MultiTrigger.Conditions>
+							<Setter Property="Background" Value="Gainsboro"/>
+							<Setter Property="Foreground" Value="DimGray"/>
+						</MultiTrigger>
+						<MultiTrigger>
+							<MultiTrigger.Conditions>
+								<Condition Property="IsChecked" Value="True"/>
+								<Condition Property="IsMouseOver" Value="True"/>
+							</MultiTrigger.Conditions>
+							<Setter Property="Background" Value="#5d80e8"/>
+							<Setter Property="Foreground" Value="White"/>
+						</MultiTrigger>
+					</Style.Triggers>
+				</Style>
+			</ToggleButton.Style>
+		</ToggleButton>
 		<TextBox x:Name="Heading"
 		         Text="{Binding Heading}"
-		         Grid.Row="0"
+		         Grid.Row="1"
 		         Grid.Column="0"
-		         Height="35"
 		         FontSize="25"
+		         Padding="8,4,8,0"
+		         VerticalContentAlignment="Center"
 		         BorderThickness="0"
 		         FontFamily="Yu Gothic"
 		         Margin="{StaticResource HorizontalMargin}">
-
-			<!--<TextBox.Style>
+			<TextBox.Style>
 				<Style TargetType="TextBox">
+					<Setter Property="Template">
+						<Setter.Value>
+							<ControlTemplate TargetType="TextBox">
+								<Border Background="{TemplateBinding Background}"
+								        BorderBrush="{TemplateBinding BorderBrush}"
+								        BorderThickness="{TemplateBinding BorderThickness}"
+								        CornerRadius="5">
+									<ScrollViewer x:Name="PART_ContentHost"/>
+								</Border>
+							</ControlTemplate>
+						</Setter.Value>
+					</Setter>
 					<Style.Triggers>
-						-->
-			<!--  Process  -->
-			<!--
+						<!-- Process -->
 						<MultiDataTrigger>
 							<MultiDataTrigger.Conditions>
 								<Condition Binding="{Binding IsHeading}" Value="False"/>
@@ -52,9 +122,7 @@
 							<Setter Property="Background" Value="Transparent"/>
 							<Setter Property="Foreground" Value="Black"/>
 						</MultiDataTrigger>
-						-->
-			<!--  Heading  -->
-			<!--
+						<!-- Heading -->
 						<MultiDataTrigger>
 							<MultiDataTrigger.Conditions>
 								<Condition Binding="{Binding IsHeading}" Value="True"/>
@@ -63,10 +131,9 @@
 							<Setter Property="FontWeight" Value="Bold"/>
 							<Setter Property="Background" Value="RoyalBlue"/>
 							<Setter Property="Foreground" Value="White"/>
+							<Setter Property="CaretBrush" Value="White"/>
 						</MultiDataTrigger>
-						-->
-			<!--  Process / MouseOver  -->
-			<!--
+						<!-- Process / MouseOver -->
 						<MultiDataTrigger>
 							<MultiDataTrigger.Conditions>
 								<Condition Binding="{Binding IsHeading}" Value="False"/>
@@ -76,9 +143,7 @@
 							<Setter Property="Background" Value="WhiteSmoke"/>
 							<Setter Property="Foreground" Value="Black"/>
 						</MultiDataTrigger>
-						-->
-			<!--  Heading / MouseOver  -->
-			<!--
+						<!-- Heading / MouseOver -->
 						<MultiDataTrigger>
 							<MultiDataTrigger.Conditions>
 								<Condition Binding="{Binding IsHeading}" Value="True"/>
@@ -87,13 +152,14 @@
 							<Setter Property="FontWeight" Value="Bold"/>
 							<Setter Property="Background" Value="RoyalBlue"/>
 							<Setter Property="Foreground" Value="White"/>
+							<Setter Property="CaretBrush" Value="White"/>
 						</MultiDataTrigger>
 					</Style.Triggers>
 				</Style>
-			</TextBox.Style>-->
+			</TextBox.Style>
 		</TextBox>
 
-		<Separator Grid.Row="1"
+		<Separator Grid.Row="2"
 		           Grid.Column="0"
 		           Height="2"
 		           HorizontalAlignment="Stretch"
@@ -102,7 +168,7 @@
 		           Margin="{StaticResource HorizontalMargin}"/>
 
 		<RichTextBox Name="rte"
-		             Grid.Row="2"
+		             Grid.Row="3"
 		             Grid.Column="0"
 		             MinHeight="80"
 		             BorderThickness="0"
@@ -119,7 +185,7 @@
 
 		<local:StyledButton Grid.Row="0"
 		                    Grid.Column="1"
-		                    Grid.RowSpan="3"
+		                    Grid.RowSpan="4"
 		                    FontSize="50">
 			<TextBlock Text="&#xE722;"
 			           FontFamily="Segoe MDL2 Assets"
@@ -128,7 +194,7 @@
 			           Padding="0"/>
 		</local:StyledButton>
 
-		<!--  Remove  -->
+		<!-- Remove -->
 		<Button x:Name="RemoveButton"
 		        Content="✕"
 		        Command="{Binding RemoveCommand}"
