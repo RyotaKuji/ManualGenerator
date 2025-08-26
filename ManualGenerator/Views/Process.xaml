@@ -10,6 +10,10 @@
         Background="White"
         CornerRadius="5">
 
+	<Border.Resources>
+		<Thickness x:Key="HorizontalMargin">0,0,12,0</Thickness>
+	</Border.Resources>
+
 	<Grid Margin="16">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto"/>
@@ -23,23 +27,20 @@
 			<ColumnDefinition Width="*"
 			                  MaxWidth="300"/>
 		</Grid.ColumnDefinitions>
-		<StackPanel Grid.Row="0"
-		            Grid.RowSpan="3"
-		            VerticalAlignment="Center">
-			<local:SegmentedButton Item1="Heading"
-			                       Item1Text="H"
-			                       Item1Tooltip="見出し"
-			                       Item2="Process"
-			                       Item2Text="P"
-			                       Item2Tooltip="手順"
-			                       DefaultSelectedIndex="2"
-			                       SelectionChanged="{Binding SelectionChangedCommand}"
-			                       HorizontalAlignment="Center"/>
-			<Label Content="{Binding ContentType}"
-			       Width="50"
-			       HorizontalAlignment="Center"
-			       HorizontalContentAlignment="Center"/>
-		</StackPanel>
+
+		<local:SegmentedButton Item1="Heading"
+		                       Item1Text="H"
+		                       Item1Annotation="見出"
+		                       Item2="Process"
+		                       Item2Text="P"
+		                       Item2Annotation="手順"
+		                       DefaultSelectedIndex="2"
+		                       SelectionChanged="{Binding SelectionChangedCommand}"
+		                       Grid.Row="0"
+		                       Grid.RowSpan="3"
+		                       VerticalAlignment="Center"
+		                       HorizontalAlignment="Center"
+		                       Margin="{StaticResource HorizontalMargin}"/>
 		<TextBox x:Name="Heading"
 		         Text="{Binding Heading}"
 		         Grid.Row="0"
@@ -48,22 +49,69 @@
 		         FontSize="25"
 		         BorderThickness="0"
 		         FontFamily="Yu Gothic"
-		         FontWeight="Medium"/>
-
+		         Margin="{StaticResource HorizontalMargin}">
+			<TextBox.Style>
+				<Style TargetType="TextBox">
+					<Style.Triggers>
+						<!--  Process  -->
+						<MultiDataTrigger>
+							<MultiDataTrigger.Conditions>
+								<Condition Binding="{Binding IsHeading}" Value="False"/>
+								<Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="False"/>
+							</MultiDataTrigger.Conditions>
+							<Setter Property="FontWeight" Value="Medium"/>
+							<Setter Property="Background" Value="Transparent"/>
+							<Setter Property="Foreground" Value="Black"/>
+						</MultiDataTrigger>
+						<!--  Heading  -->
+						<MultiDataTrigger>
+							<MultiDataTrigger.Conditions>
+								<Condition Binding="{Binding IsHeading}" Value="True"/>
+								<Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="False"/>
+							</MultiDataTrigger.Conditions>
+							<Setter Property="FontWeight" Value="Bold"/>
+							<Setter Property="Background" Value="RoyalBlue"/>
+							<Setter Property="Foreground" Value="White"/>
+						</MultiDataTrigger>
+						<!--  Process / MouseOver  -->
+						<MultiDataTrigger>
+							<MultiDataTrigger.Conditions>
+								<Condition Binding="{Binding IsHeading}" Value="False"/>
+								<Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="True"/>
+							</MultiDataTrigger.Conditions>
+							<Setter Property="FontWeight" Value="Medium"/>
+							<Setter Property="Background" Value="WhiteSmoke"/>
+							<Setter Property="Foreground" Value="Black"/>
+						</MultiDataTrigger>
+						<!--  Heading / MouseOver  -->
+						<MultiDataTrigger>
+							<MultiDataTrigger.Conditions>
+								<Condition Binding="{Binding IsHeading}" Value="True"/>
+								<Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="True"/>
+							</MultiDataTrigger.Conditions>
+							<Setter Property="FontWeight" Value="Bold"/>
+							<Setter Property="Background" Value="RoyalBlue"/>
+							<Setter Property="Foreground" Value="White"/>
+						</MultiDataTrigger>
+					</Style.Triggers>
+				</Style>
+			</TextBox.Style>
+		</TextBox>
 		<Separator Grid.Row="1"
 		           Grid.Column="1"
 		           Height="2"
 		           HorizontalAlignment="Stretch"
 		           VerticalAlignment="Center"
 		           Background="LightGray"
-		           Margin="0"/>
+		           Margin="{StaticResource HorizontalMargin}"/>
 
 		<RichTextBox Name="rte"
 		             Grid.Row="2"
 		             Grid.Column="1"
 		             MinHeight="80"
 		             BorderThickness="0"
-		             LostFocus="Description_Confirmed">
+		             LostFocus="Description_Confirmed"
+		             Margin="{StaticResource HorizontalMargin}">
 			<FlowDocument x:Name="FlowDocument"
 			              Loaded="SetDescription"
 			              PageWidth="{Binding ElementName=rte, Path=ActualWidth}"

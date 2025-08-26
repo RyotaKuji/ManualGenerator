@@ -1,9 +1,9 @@
 ﻿Public Class SegmentedButton
 
 	Public Property Item1Text As String
-	Public Property Item1Tooltip As String
 	Public Property Item2Text As String
-	Public Property Item2Tooltip As String
+	Public Property Item1Annotation As String
+	Public Property Item2Annotation As String
 	Public Property DefaultSelectedIndex As Integer
 
 	Public Shared ReadOnly _Item1 As DependencyProperty =

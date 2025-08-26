@@ -16,8 +16,7 @@
 		<Style x:Key="SegmentStyle"
 		       TargetType="{x:Type Border}">
 			<Setter Property="BorderBrush" Value="DodgerBlue"/>
-			<Setter Property="BorderThickness" Value="1.5"/>
-			<Setter Property="Padding" Value="6"/>
+			<Setter Property="Padding" Value="3,6"/>
 			<Style.Triggers>
 				<!--  選択  -->
 				<Trigger Property="IsEnabled" Value="False">
@@ -30,6 +29,7 @@
 						<Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="False"/>
 					</MultiDataTrigger.Conditions>
 					<Setter Property="Background" Value="White"/>
+					<Setter Property="BorderThickness" Value="1.5"/>
 				</MultiDataTrigger>
 				<!--  非選択・マウスオーバー  -->
 				<MultiDataTrigger>
@@ -38,6 +38,7 @@
 						<Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="True"/>
 					</MultiDataTrigger.Conditions>
 					<Setter Property="Background" Value="WhiteSmoke"/>
+					<Setter Property="BorderThickness" Value="1.5"/>
 				</MultiDataTrigger>
 			</Style.Triggers>
 		</Style>
@@ -52,7 +53,7 @@
 				<!--  非選択  -->
 				<DataTrigger Binding="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType=Border}}"
 				             Value="True">
-					<Setter Property="Foreground" Value="DimGray"/>
+					<Setter Property="Foreground" Value="Silver"/>
 				</DataTrigger>
 			</Style.Triggers>
 		</Style>
@@ -62,23 +63,37 @@
 	        Grid.Row="0"
 	        MouseDown="Clicked"
 	        Style="{StaticResource SegmentStyle}"
-	        CornerRadius="5,5,0,0"
-	        ToolTip="{Binding Item1Tooltip, RelativeSource={RelativeSource AncestorType=Grid}}">
-		<TextBlock Text="{Binding Item1Text, RelativeSource={RelativeSource AncestorType=Grid}}"
-		           FontSize="20"
-		           TextAlignment="Center"
-		           Style="{StaticResource LabelStyle}"/>
+	        CornerRadius="5,5,0,0">
+		<DockPanel>
+			<TextBlock Text="{Binding Item1Text, RelativeSource={RelativeSource AncestorType=Grid}}"
+			           FontSize="20"
+			           TextAlignment="Center"
+			           Style="{StaticResource LabelStyle}"
+			           DockPanel.Dock="Top"/>
+			<TextBlock Text="{Binding Item1Annotation, RelativeSource={RelativeSource AncestorType=Grid}}"
+			           FontSize="10"
+			           TextAlignment="Center"
+			           Style="{StaticResource LabelStyle}"
+			           DockPanel.Dock="Bottom"/>
+		</DockPanel>
 	</Border>
 
 	<Border x:Name="Segment2"
 	        Grid.Row="1"
 	        MouseDown="Clicked"
 	        Style="{StaticResource SegmentStyle}"
-	        CornerRadius="0,0,5,5"
-	        ToolTip="{Binding Item2Tooltip, RelativeSource={RelativeSource AncestorType=Grid}}">
-		<TextBlock Text="{Binding Item2Text, RelativeSource={RelativeSource AncestorType=Grid}}"
-		           FontSize="20"
-		           TextAlignment="Center"
-		           Style="{StaticResource LabelStyle}"/>
+	        CornerRadius="0,0,5,5">
+		<DockPanel>
+			<TextBlock Text="{Binding Item2Text, RelativeSource={RelativeSource AncestorType=Grid}}"
+			           FontSize="20"
+			           TextAlignment="Center"
+			           Style="{StaticResource LabelStyle}"
+			           DockPanel.Dock="Top"/>
+			<TextBlock Text="{Binding Item2Annotation, RelativeSource={RelativeSource AncestorType=Grid}}"
+			           FontSize="10"
+			           TextAlignment="Center"
+			           Style="{StaticResource LabelStyle}"
+			           DockPanel.Dock="Bottom"/>
+		</DockPanel>
 	</Border>
 </Grid>

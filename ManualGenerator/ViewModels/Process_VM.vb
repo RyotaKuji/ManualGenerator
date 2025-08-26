@@ -9,22 +9,25 @@ Public Class Process_VM
 	Public Property DescriptionXaml As String
 	Public Property DescriptionHtml As String
 	Public Property ImagePath As String
+	Private _isHeadingVar As Boolean
+	Public Property IsHeading As Boolean
+		Get
+			Return _isHeadingVar
+		End Get
+		Set(value As Boolean)
+			SetProperty(_isHeadingVar, value)
+		End Set
+	End Property
+
+	<JsonIgnore>
+	Public Const HeadingFlag = "Heading"
+	<JsonIgnore>
+	Public Const ProcessFlag = "Process"
 
 	<JsonIgnore>
 	Public Property RemoveCommand As RelayCommand
 	<JsonIgnore>
 	Public Property SelectionChangedCommand As RelayCommand(Of String)
-
-	Private _contentTypeParameter As String
-	<JsonIgnore>
-	Public Property ContentType As String
-		Get
-			Return _contentTypeParameter
-		End Get
-		Set(value As String)
-			SetProperty(_contentTypeParameter, value)
-		End Set
-	End Property
 
 	Private _isLastItem As Boolean
 	<JsonIgnore>
@@ -39,11 +42,11 @@ Public Class Process_VM
 
 	Public Sub New()
 		SelectionChangedCommand = New RelayCommand(Of String)(AddressOf SelectionChanged)
-		SelectionChanged("Process")
+		SelectionChanged(ProcessFlag)
 	End Sub
 
 	Private Sub SelectionChanged(contentType As String)
-		Me.ContentType = If(contentType = "Heading", "見出し", "手順")
+		IsHeading = contentType = HeadingFlag
 	End Sub
 
 End Class
