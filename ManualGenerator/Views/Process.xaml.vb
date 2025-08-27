@@ -38,7 +38,7 @@ Public Class Process
 		End Using
 
 		' 出力
-		Dim html As String = HTMLConverter.ConvertToHTML(xaml)
+		Dim html As String = XamlToHtmlConverter.XamlToHtmlConverter.ConvertXamlToHtml(xaml)
 
 		If VM IsNot Nothing Then
 			VM.DescriptionXaml = xaml

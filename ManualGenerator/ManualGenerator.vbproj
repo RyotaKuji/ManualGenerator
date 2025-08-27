@@ -117,9 +117,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Shareds\Definitions.vb" />
     <Compile Include="Shareds\FileManager.vb" />
-    <Compile Include="Shareds\HTMLConverter.vb" />
     <Compile Include="ViewModels\EditorPage_VM.vb" />
     <Compile Include="ViewModels\ListPage_VM.vb" />
     <Compile Include="ViewModels\Process_VM.vb" />
@@ -221,6 +219,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\XamlToHtmlConverter\XamlToHtmlConverter.csproj">
+      <Project>{4708a955-7902-41e9-bf16-58d73d68deef}</Project>
+      <Name>XamlToHtmlConverter</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <Import Project="..\packages\CommunityToolkit.Mvvm.8.4.0\build\CommunityToolkit.Mvvm.targets" Condition="Exists('..\packages\CommunityToolkit.Mvvm.8.4.0\build\CommunityToolkit.Mvvm.targets')" />

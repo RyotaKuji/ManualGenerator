@@ -1,7 +1,11 @@
 ﻿Imports System.IO
 Public Class FileManager
+
+	Public Const DataFileBasePath As String = "C:\WorkSpace\Prog\tmp"
+	Public Const DataFileExtension As String = "json"
+
 	Public Shared Function GetFilePathById(id As String) As String
-		Return Path.Combine(Definitions.DataFileBasePath, $"{id}.{Definitions.DataFileExtension}")
+		Return Path.Combine(DataFileBasePath, $"{id}.{DataFileExtension}")
 	End Function
 
 	Public Shared Function GetId(path As String) As String

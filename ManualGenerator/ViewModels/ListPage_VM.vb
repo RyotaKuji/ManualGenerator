@@ -1,5 +1,4 @@
-﻿Imports System.Collections.ObjectModel
-Imports CommunityToolkit.Mvvm.ComponentModel
+﻿Imports CommunityToolkit.Mvvm.ComponentModel
 Imports CommunityToolkit.Mvvm.Input
 
 Public Class ListPage_VM
@@ -13,7 +12,7 @@ Public Class ListPage_VM
 
 	Public Sub New()
 		SelectedCommand = New RelayCommand(AddressOf Selected)
-		ItemNames = IO.Directory.GetFiles(Definitions.DataFileBasePath, "*", IO.SearchOption.AllDirectories).ToList()
+		ItemNames = IO.Directory.GetFiles(FileManager.DataFileBasePath, "*", IO.SearchOption.AllDirectories).ToList()
 	End Sub
 
 	Private Sub Selected()
