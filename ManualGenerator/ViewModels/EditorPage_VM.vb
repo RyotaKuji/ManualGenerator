@@ -28,7 +28,7 @@ Public Class EditorPage_VM
 		End If
 
 		If Processes.Count = 0 Then
-			AddItem()
+			SetDefaultItems()
 		End If
 	End Sub
 
@@ -66,6 +66,17 @@ Public Class EditorPage_VM
 	' 送信
 	Private Sub Submit()
 		Save()
+	End Sub
+
+	Private Sub SetDefaultItems()
+		Dim heading As New Process_VM With {
+			.IsHeading = True
+		}
+		Dim process As New Process_VM With {
+			.IsHeading = False
+		}
+		AddItem(heading)
+		AddItem(process)
 	End Sub
 
 	Public Sub AddItem(Optional item As Process_VM = Nothing)

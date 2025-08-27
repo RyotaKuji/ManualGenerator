@@ -6,7 +6,6 @@
         xmlns:local="clr-namespace:ManualGenerator"
         mc:Ignorable="d"
         xmlns:sf="http://schemas.syncfusion.com/wpf"
-        xmlns:md="clr-namespace:Markdig.Wpf;assembly=Markdig.Wpf"
         Background="White"
         CornerRadius="5">
 
@@ -29,13 +28,12 @@
 			                  MaxWidth="300"/>
 		</Grid.ColumnDefinitions>
 
-		<ToggleButton Content="見出し"
-		              IsChecked="{Binding IsHeading}"
+		<ToggleButton IsChecked="{Binding IsHeading}"
 		              HorizontalAlignment="Left">
 			<ToggleButton.Style>
 				<Style TargetType="ToggleButton">
 					<Setter Property="BorderThickness" Value="0"/>
-					<Setter Property="Padding" Value="0,20"/>
+					<Setter Property="Width" Value="55"/>
 					<Setter Property="Height" Value="25"/>
 					<Setter Property="BorderThickness" Value="0"/>
 					<Setter Property="Template">
@@ -56,6 +54,7 @@
 								<Condition Property="IsChecked" Value="False"/>
 								<Condition Property="IsMouseOver" Value="False"/>
 							</MultiTrigger.Conditions>
+							<Setter Property="Content" Value="手順"/>
 							<Setter Property="Background" Value="WhiteSmoke"/>
 							<Setter Property="Foreground" Value="Gray"/>
 						</MultiTrigger>
@@ -64,6 +63,7 @@
 								<Condition Property="IsChecked" Value="True"/>
 								<Condition Property="IsMouseOver" Value="False"/>
 							</MultiTrigger.Conditions>
+							<Setter Property="Content" Value="見出し"/>
 							<Setter Property="Background" Value="RoyalBlue"/>
 							<Setter Property="Foreground" Value="White"/>
 						</MultiTrigger>
@@ -72,6 +72,7 @@
 								<Condition Property="IsChecked" Value="False"/>
 								<Condition Property="IsMouseOver" Value="True"/>
 							</MultiTrigger.Conditions>
+							<Setter Property="Content" Value="手順"/>
 							<Setter Property="Background" Value="Gainsboro"/>
 							<Setter Property="Foreground" Value="DimGray"/>
 						</MultiTrigger>
@@ -80,6 +81,7 @@
 								<Condition Property="IsChecked" Value="True"/>
 								<Condition Property="IsMouseOver" Value="True"/>
 							</MultiTrigger.Conditions>
+							<Setter Property="Content" Value="見出し"/>
 							<Setter Property="Background" Value="#5d80e8"/>
 							<Setter Property="Foreground" Value="White"/>
 						</MultiTrigger>
@@ -91,7 +93,7 @@
 		         Text="{Binding Heading}"
 		         Grid.Row="1"
 		         Grid.Column="0"
-		         FontSize="25"
+		         FontSize="21"
 		         Padding="8,4,8,0"
 		         VerticalContentAlignment="Center"
 		         BorderThickness="0"
@@ -178,7 +180,7 @@
 			              Loaded="SetDescription"
 			              PageWidth="{Binding ElementName=rte, Path=ActualWidth}"
 			              LineHeight="1"
-			              FontSize="15"
+			              FontSize="16"
 			              FontFamily="Yu Gothic"
 			              FontWeight="Medium"/>
 		</RichTextBox>
