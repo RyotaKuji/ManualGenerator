@@ -2,7 +2,7 @@
 Imports CommunityToolkit.Mvvm.Input
 Imports Newtonsoft.Json
 
-Public Class Process_VM
+Public Class Section_VM
 	Inherits ObservableObject
 
 	Public Property Heading As String

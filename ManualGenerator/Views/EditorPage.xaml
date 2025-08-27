@@ -20,7 +20,7 @@
 			<RowDefinition Height="Auto"/>
 		</Grid.RowDefinitions>
 
-		<ListBox ItemsSource="{Binding Processes}"
+		<ListBox ItemsSource="{Binding Sections}"
 		         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
 		         HorizontalContentAlignment="Stretch"
 		         ScrollViewer.CanContentScroll="False"
@@ -39,7 +39,7 @@
 						<local:AddCommandBar Command="{Binding DataContext.AddCommand, RelativeSource={RelativeSource AncestorType=Page}}"
 						                     CommandParameter="{Binding}"/>
 
-						<local:Process DataContext="{Binding}"
+						<local:Section DataContext="{Binding}"
 						               Margin="15,0"/>
 
 						<local:AddCommandBar Visibility="{Binding IsLastItem, Converter={StaticResource BoolToVis}}"

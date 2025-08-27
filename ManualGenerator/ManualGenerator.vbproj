@@ -120,7 +120,7 @@
     <Compile Include="Shareds\FileManager.vb" />
     <Compile Include="ViewModels\EditorPage_VM.vb" />
     <Compile Include="ViewModels\ListPage_VM.vb" />
-    <Compile Include="ViewModels\Process_VM.vb" />
+    <Compile Include="ViewModels\Section_VM.vb" />
     <Compile Include="Views\Controls\AddCommandBar.xaml.vb">
       <DependentUpon>AddCommandBar.xaml</DependentUpon>
     </Compile>
@@ -130,8 +130,8 @@
     <Compile Include="Views\ListPage.xaml.vb">
       <DependentUpon>ListPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Process.xaml.vb">
-      <DependentUpon>Process.xaml</DependentUpon>
+    <Compile Include="Views\Section.xaml.vb">
+      <DependentUpon>Section.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Controls\StyledButton.xaml.vb">
       <DependentUpon>StyledButton.xaml</DependentUpon>
@@ -160,7 +160,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\Process.xaml">
+    <Page Include="Views\Section.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

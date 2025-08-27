@@ -1,11 +1,11 @@
 ﻿Imports System.IO
 Imports System.Windows.Markup
 
-Public Class Process
+Public Class Section
 
-	Private ReadOnly Property VM As Process_VM
+	Private ReadOnly Property VM As Section_VM
 		Get
-			Return TryCast(DataContext, Process_VM)
+			Return TryCast(DataContext, Section_VM)
 		End Get
 	End Property
 
@@ -23,7 +23,7 @@ Public Class Process
 		Next
 	End Sub
 
-	Private Sub Description_Confirmed(sender As Object, e As RoutedEventArgs)
+	Private Sub ConfirmedDescription(sender As Object, e As RoutedEventArgs)
 		If FlowDocument Is Nothing Then
 			Return
 		End If
