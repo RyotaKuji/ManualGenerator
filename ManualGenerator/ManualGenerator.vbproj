@@ -117,6 +117,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Services\HTMLService.vb" />
     <Compile Include="Shareds\FileManager.vb" />
     <Compile Include="ViewModels\EditorPage_VM.vb" />
     <Compile Include="ViewModels\ListPage_VM.vb" />

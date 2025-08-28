@@ -1,4 +1,5 @@
 ﻿Imports System.IO
+Imports System.Text
 Public Class FileManager
 
 	Public Const DataFileBasePath As String = "C:\WorkSpace\Prog\tmp"
@@ -18,7 +19,7 @@ Public Class FileManager
 
 	Public Shared Function WriteContent(content As String, filePath As String) As Boolean
 		Try
-			Using writer As New StreamWriter(filePath)
+			Using writer As New StreamWriter(filePath, False, Encoding.UTF8)
 				writer.WriteLine(content)
 			End Using
 			Return True
@@ -35,7 +36,7 @@ Public Class FileManager
 
 		Dim content As String
 		Try
-			Using reader As New StreamReader(filePath)
+			Using reader As New StreamReader(filePath, Encoding.UTF8)
 				content = reader.ReadToEnd()
 			End Using
 		Catch

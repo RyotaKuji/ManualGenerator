@@ -78,6 +78,7 @@ Public Class EditorPage_VM
 	''' </summary>
 	Private Sub Submit()
 		Save()
+		Dim result As String = HTMLService.GetFullHTML(FileManager.GetFilePathById(Id))
 	End Sub
 
 	''' <summary>
