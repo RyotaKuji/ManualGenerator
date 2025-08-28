@@ -8,10 +8,15 @@ Public Class Section_VM
 	Public Property Heading As String
 	Public Property DescriptionXaml As String
 	Public Property DescriptionHtml As String
+	Private _imagePath As String
 	Public Property ImagePath As String
-
-	<JsonIgnore>
-	Public Property RemoveCommand As RelayCommand
+		Get
+			Return _imagePath
+		End Get
+		Set(value As String)
+			SetProperty(_imagePath, value)
+		End Set
+	End Property
 
 	Private _isHeading As Boolean
 	Public Property IsHeading As Boolean
@@ -23,6 +28,15 @@ Public Class Section_VM
 		End Set
 	End Property
 
+	<JsonIgnore>
+	Public Property RemoveCommand As RelayCommand
+	<JsonIgnore>
+	Public Property SelectImageCommand As RelayCommand
+
+	Public Sub New()
+		SelectImageCommand = New RelayCommand(AddressOf SelectImage)
+	End Sub
+
 	Private _isLastItem As Boolean
 	<JsonIgnore>
 	Public Property IsLastItem As Boolean
@@ -33,5 +47,20 @@ Public Class Section_VM
 			SetProperty(_isLastItem, value)
 		End Set
 	End Property
+
+	Private Sub SelectImage()
+		Dim dialog = New Microsoft.Win32.OpenFileDialog With {
+			.Filter = "画像ファイル|*.png;*.jpeg;*.jpg"
+		}
+
+		Dim selected = dialog.ShowDialog()
+
+		If (selected = False) Then
+			Return
+		End If
+
+		Dim filename = dialog.FileName
+		ImagePath = filename
+	End Sub
 
 End Class
