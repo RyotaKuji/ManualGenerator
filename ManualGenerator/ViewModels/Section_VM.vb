@@ -6,8 +6,11 @@ Public Class Section_VM
 	Inherits ObservableObject
 
 	Public Property Heading As String
+
 	Public Property DescriptionXaml As String
+
 	Public Property DescriptionHtml As String
+
 	Private _imagePath As String
 	Public Property ImagePath As String
 		Get
@@ -15,7 +18,15 @@ Public Class Section_VM
 		End Get
 		Set(value As String)
 			SetProperty(_imagePath, value)
+			OnPropertyChanged(NameOf(HasImage))
 		End Set
+	End Property
+
+	<JsonIgnore>
+	Public ReadOnly Property HasImage As Boolean
+		Get
+			Return Not String.IsNullOrEmpty(ImagePath)
+		End Get
 	End Property
 
 	Private _isHeading As Boolean
@@ -30,8 +41,9 @@ Public Class Section_VM
 
 	<JsonIgnore>
 	Public Property RemoveCommand As RelayCommand
+
 	<JsonIgnore>
-	Public Property SelectImageCommand As RelayCommand
+	Public ReadOnly Property SelectImageCommand As RelayCommand
 
 	Public Sub New()
 		SelectImageCommand = New RelayCommand(AddressOf SelectImage)
@@ -55,12 +67,12 @@ Public Class Section_VM
 
 		Dim selected = dialog.ShowDialog()
 
-		If (selected = False) Then
-			Return
-		End If
+		If selected Then
 
-		Dim filename = dialog.FileName
-		ImagePath = filename
+			Dim filename = dialog.FileName
+			ImagePath = filename
+
+		End If
 	End Sub
 
 End Class

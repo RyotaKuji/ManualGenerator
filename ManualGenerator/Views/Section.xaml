@@ -184,15 +184,25 @@
 		                    Height="{Binding ElementName=LeftColumnPanel, Path=ActualHeight}"
 		                    Grid.Column="1">
 			<Grid>
+				<Grid.Resources>
+					<BooleanToVisibilityConverter x:Key="BoolToVis"/>
+					<local:BooleanToVisibilityWithInvertConverter x:Key="BoolToVisInvert"/>
+				</Grid.Resources>
 				<TextBlock Text="&#xE722;"
 				           FontFamily="Segoe MDL2 Assets"
 				           FontSize="50"
 				           Foreground="DarkGray"
 				           Padding="0"
 				           VerticalAlignment="Center"
-				           HorizontalAlignment="Center"/>
-				<Image Source="{Binding ImagePath}"
-				       Stretch="Uniform"/>
+				           HorizontalAlignment="Center"
+				           Visibility="{Binding HasImage, Converter={StaticResource BoolToVisInvert}}"/>
+				<Border BorderThickness="1"
+				        BorderBrush="LightGray"
+				        Margin="5"
+				        Visibility="{Binding HasImage, Converter={StaticResource BoolToVis}}">
+					<Image Source="{Binding ImagePath}"
+					       Stretch="Uniform"/>
+				</Border>
 			</Grid>
 		</local:StyledButton>
 

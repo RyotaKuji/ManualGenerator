@@ -45,4 +45,5 @@ Public Class Section
 			VM.DescriptionHtml = html
 		End If
 	End Sub
+
 End Class
