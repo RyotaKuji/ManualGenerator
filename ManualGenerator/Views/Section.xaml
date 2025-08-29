@@ -171,11 +171,92 @@
 			             LostFocus="ConfirmedDescription">
 				<FlowDocument x:Name="FlowDocument"
 				              Loaded="SetDescription"
-				              PageWidth="{Binding ElementName=DescriptionEditor, Path=ActualWidth}"
+				              PageWidth="{Binding ElementName=DescriptionEditor, Path=Width}"
 				              LineHeight="1"
 				              FontSize="16"
 				              FontFamily="Yu Gothic"
-				              FontWeight="Medium"/>
+				              FontWeight="Medium"
+				              PagePadding="10"/>
+				<RichTextBox.ContextMenu>
+					<ContextMenu>
+						<ContextMenu.Style>
+							<Style TargetType="{x:Type ContextMenu}">
+								<Setter Property="Template">
+									<Setter.Value>
+										<ControlTemplate TargetType="{x:Type ContextMenu}">
+											<Border x:Name="Border"
+											        Background="#fcfcfc"
+											        BorderBrush="Gainsboro"
+											        BorderThickness="1.5"
+											        CornerRadius="4"
+											        Padding="4,2">
+												<StackPanel IsItemsHost="True"
+												            Orientation="Horizontal"
+												            KeyboardNavigation.DirectionalNavigation="Cycle"/>
+											</Border>
+										</ControlTemplate>
+									</Setter.Value>
+								</Setter>
+							</Style>
+						</ContextMenu.Style>
+						<ContextMenu.Resources>
+							<Style x:Key="IconStyle"
+							       TargetType="{x:Type TextBlock}">
+								<Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
+								<Setter Property="HorizontalAlignment" Value="Center"/>
+								<Setter Property="VerticalAlignment" Value="Stretch"/>
+								<Setter Property="TextAlignment" Value="Left"/>
+								<Setter Property="Width" Value="30"/>
+								<Setter Property="Height" Value="28"/>
+								<Setter Property="FontSize" Value="20"/>
+							</Style>
+						</ContextMenu.Resources>
+						<MenuItem x:Name="RTB_Bold"
+						          Command="EditingCommands.ToggleBold"
+						          Width="33"
+						          Height="28">
+							<MenuItem.Icon>
+								<TextBlock Text="&#xE8DD;"
+								           Style="{StaticResource IconStyle}"/>
+							</MenuItem.Icon>
+						</MenuItem>
+						<MenuItem x:Name="RTB_Underline"
+						          Command="EditingCommands.ToggleUnderline"
+						          Width="33"
+						          Height="28">
+							<MenuItem.Icon>
+								<TextBlock Text="&#xE8DC;"
+								           Style="{StaticResource IconStyle}"/>
+							</MenuItem.Icon>
+						</MenuItem>
+						<MenuItem x:Name="RTB_GrowFont"
+						          Command="EditingCommands.IncreaseFontSize"
+						          Width="33"
+						          Height="28">
+							<MenuItem.Icon>
+								<TextBlock Text="&#xE8E8;"
+								           Style="{StaticResource IconStyle}"/>
+							</MenuItem.Icon>
+						</MenuItem>
+						<MenuItem x:Name="RTB_ShrinkFont"
+						          Command="EditingCommands.DecreaseFontSize"
+						          Width="33"
+						          Height="28">
+							<MenuItem.Icon>
+								<TextBlock Text="&#xE8E7;"
+								           Style="{StaticResource IconStyle}"/>
+							</MenuItem.Icon>
+						</MenuItem>
+						<MenuItem x:Name="RTB_Link"
+						          Width="33"
+						          Height="28">
+							<MenuItem.Icon>
+								<TextBlock Text="&#xE71B;"
+								           Style="{StaticResource IconStyle}"/>
+							</MenuItem.Icon>
+						</MenuItem>
+					</ContextMenu>
+				</RichTextBox.ContextMenu>
 			</RichTextBox>
 		</StackPanel>
 
