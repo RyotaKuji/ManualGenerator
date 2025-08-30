@@ -46,4 +46,21 @@ Public Class Section
 		End If
 	End Sub
 
+	Private Sub InsertLink(sender As Object, e As RoutedEventArgs)
+		Dim dialog As New LinkDialog With {
+			.Owner = Window.GetWindow(Me),
+			.WindowStartupLocation = WindowStartupLocation.CenterOwner
+		}
+
+		Dim dialogResult As Boolean? = dialog.ShowDialog()
+
+		If dialogResult <> True Then
+			Return
+		End If
+
+		Dim link As String = dialog.Link
+		Dim displayText As String = dialog.DisplayText
+
+	End Sub
+
 End Class
