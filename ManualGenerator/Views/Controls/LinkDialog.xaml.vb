@@ -1,5 +1,4 @@
 ﻿Public Class LinkDialog
-	Inherits Window
 
 	Public Property Link As String
 	Public Property DisplayText As String
@@ -7,16 +6,31 @@
 	' 多重クローズ防止
 	Private IsClosed As Boolean = False
 
-	Public Sub New()
+	Public Sub New(defaultText As String)
+
 		InitializeComponent()
+
 		Application.Current.MainWindow.Opacity = 0.7
+
+		If IsValidLink(defaultText) Then
+			TextBox_Link.Text = defaultText
+		Else
+			TextBox_DisplayText.Text = defaultText
+		End If
+
 	End Sub
 
 	Protected Overrides Sub OnClosed(e As EventArgs)
 		MyBase.OnClosed(e)
+
 		Application.Current.MainWindow.Opacity = 1.0
 	End Sub
 
+	Private Shared Function IsValidLink(link As String) As Boolean
+		Return Uri.IsWellFormedUriString(link, UriKind.Absolute)
+	End Function
+
+	' 画面表示後にサイズを調整
 	Private Sub Window_ContentRendered(sender As Object, e As EventArgs) Handles Me.ContentRendered
 		InvalidateMeasure()
 	End Sub
@@ -27,6 +41,9 @@
 			Return
 		End If
 
+		Link = TextBox_Link.Text
+		DisplayText = TextBox_DisplayText.Text
+
 		TrySetResult(True)
 	End Sub
 
@@ -35,7 +52,7 @@
 	End Sub
 
 	Private Function Validate() As Boolean
-
+		Return True
 		Dim isValid As Boolean = True
 
 		If String.IsNullOrWhiteSpace(TextBox_DisplayText.Text) Then
@@ -45,7 +62,7 @@
 		If String.IsNullOrWhiteSpace(TextBox_Link.Text) Then
 			ErrorMessage_Link.Text = "入力されていません。"
 			isValid = False
-		ElseIf Uri.IsWellFormedUriString(TextBox_Link.Text, UriKind.Absolute) = False Then
+		ElseIf IsValidLink(TextBox_Link.Text) = False Then
 			ErrorMessage_Link.Text = "URLの形式が正しくありません。"
 			isValid = False
 		End If

@@ -168,7 +168,8 @@
 			<RichTextBox Name="DescriptionEditor"
 			             MinHeight="80"
 			             BorderThickness="0"
-			             LostFocus="ConfirmedDescription">
+			             LostFocus="ConfirmedDescription"
+			             IsDocumentEnabled="True">
 				<FlowDocument x:Name="FlowDocument"
 				              Loaded="SetDescription"
 				              PageWidth="{Binding ElementName=DescriptionEditor, Path=Width}"
