@@ -127,8 +127,8 @@
     <Compile Include="Views\Controls\AddCommandBar.xaml.vb">
       <DependentUpon>AddCommandBar.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Controls\LinkDialog.xaml.vb">
-      <DependentUpon>LinkDialog.xaml</DependentUpon>
+    <Compile Include="Views\Controls\HyperlinkDialog.xaml.vb">
+      <DependentUpon>HyperlinkDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Converters\BooleanToVisibilityWithInvertConverter.vb" />
     <Compile Include="Views\EditorPage.xaml.vb">
@@ -147,7 +147,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Controls\LinkDialog.xaml">
+    <Page Include="Views\Controls\HyperlinkDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

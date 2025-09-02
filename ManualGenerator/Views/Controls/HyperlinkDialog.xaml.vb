@@ -1,6 +1,6 @@
-﻿Public Class LinkDialog
+﻿Public Class HyperlinkDialog
 
-	Public Property Link As String
+	Public Property Uri As String
 	Public Property DisplayText As String
 
 	' 多重クローズ防止
@@ -12,12 +12,24 @@
 
 		Application.Current.MainWindow.Opacity = 0.7
 
-		If IsValidLink(defaultText) Then
-			TextBox_Link.Text = defaultText
+		If IsValidUri(defaultText) Then
+			TextBox_Uri.Text = defaultText
 		Else
 			TextBox_DisplayText.Text = defaultText
 		End If
 
+	End Sub
+
+	Public Sub New(defaultUri As String, defaultText As String)
+		InitializeComponent()
+
+		Application.Current.MainWindow.Opacity = 0.7
+
+		If IsValidUri(defaultUri) Then
+			TextBox_Uri.Text = defaultUri
+		End If
+
+		TextBox_DisplayText.Text = defaultText
 	End Sub
 
 	Protected Overrides Sub OnClosed(e As EventArgs)
@@ -26,8 +38,8 @@
 		Application.Current.MainWindow.Opacity = 1.0
 	End Sub
 
-	Private Shared Function IsValidLink(link As String) As Boolean
-		Return Uri.IsWellFormedUriString(link, UriKind.Absolute)
+	Private Shared Function IsValidUri(link As String) As Boolean
+		Return System.Uri.IsWellFormedUriString(link, UriKind.Absolute)
 	End Function
 
 	' 画面表示後にサイズを調整
@@ -41,7 +53,7 @@
 			Return
 		End If
 
-		Link = TextBox_Link.Text
+		Uri = TextBox_Uri.Text
 		DisplayText = TextBox_DisplayText.Text
 
 		TrySetResult(True)
@@ -59,11 +71,11 @@
 			ErrorMessage_DisplayText.Text = "入力されていません。"
 			isValid = False
 		End If
-		If String.IsNullOrWhiteSpace(TextBox_Link.Text) Then
-			ErrorMessage_Link.Text = "入力されていません。"
+		If String.IsNullOrWhiteSpace(TextBox_Uri.Text) Then
+			ErrorMessage_Uri.Text = "入力されていません。"
 			isValid = False
-		ElseIf IsValidLink(TextBox_Link.Text) = False Then
-			ErrorMessage_Link.Text = "URLの形式が正しくありません。"
+		ElseIf IsValidUri(TextBox_Uri.Text) = False Then
+			ErrorMessage_Uri.Text = "URLの形式が正しくありません。"
 			isValid = False
 		End If
 

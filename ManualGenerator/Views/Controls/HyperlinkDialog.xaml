@@ -1,15 +1,15 @@
-﻿<Window x:Class="LinkDialog"
+﻿<Window x:Class="HyperlinkDialog"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ManualGenerator"
         mc:Ignorable="d"
-        Title="LinkDialog"
+        Title="HyperLinkDialog"
         SizeToContent="WidthAndHeight"
         WindowStyle="None"
         ResizeMode="NoResize"
-		Deactivated="Window_Deactivated"
+        Deactivated="Window_Deactivated"
         Style="{DynamicResource DefaultWindowStyle}">
 	<Window.Resources>
 		<Style TargetType="{x:Type Window}"
@@ -97,11 +97,11 @@
 		           Grid.Row="4"
 		           Grid.Column="0"
 		           Style="{StaticResource TextStyle}"/>
-		<TextBlock x:Name="ErrorMessage_Link"
+		<TextBlock x:Name="ErrorMessage_Uri"
 		           Grid.Row="3"
 		           Grid.Column="1"
 		           Style="{StaticResource ErrorTextStyle}"/>
-		<TextBox x:Name="TextBox_Link"
+		<TextBox x:Name="TextBox_Uri"
 		         Grid.Row="4"
 		         Grid.Column="1"
 		         Style="{StaticResource TextBoxStyle}"/>

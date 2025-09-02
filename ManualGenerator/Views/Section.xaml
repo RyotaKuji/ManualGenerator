@@ -249,7 +249,7 @@
 							</MenuItem.Icon>
 						</MenuItem>
 						<MenuItem x:Name="RTB_Link"
-						          Click="InsertLink"
+						          Click="Command_Hyperlink"
 						          Width="33"
 						          Height="28">
 							<MenuItem.Icon>
