@@ -119,7 +119,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Services\HTMLService.vb" />
+    <Compile Include="Services\FlowDocumentToHtmlConverter.vb" />
     <Compile Include="Shareds\FileManager.vb" />
     <Compile Include="ViewModels\EditorPage_VM.vb" />
     <Compile Include="ViewModels\ListPage_VM.vb" />
@@ -230,12 +230,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\FlowDocumentToHtmlConverter\FlowDocumentToHtmlConverter.vbproj">
-      <Project>{0ef453fe-0159-4c22-868e-168fb5b9bea6}</Project>
-      <Name>FlowDocumentToHtmlConverter</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <Import Project="..\packages\CommunityToolkit.Mvvm.8.4.0\build\CommunityToolkit.Mvvm.targets" Condition="Exists('..\packages\CommunityToolkit.Mvvm.8.4.0\build\CommunityToolkit.Mvvm.targets')" />
