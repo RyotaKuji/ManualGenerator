@@ -1,4 +1,5 @@
 ﻿Imports System.IO
+Imports System.Text
 Imports System.Windows.Markup
 
 Public Class Section
@@ -176,14 +177,14 @@ Public Class Section
 
 	Private Sub EditHyperlink(hyperLink As Hyperlink)
 
-		Dim text As String = TryCast(hyperLink.Inlines.First(), Run)?.Text
+		Dim text As String = GetInlineText(hyperLink.Inlines)
 
 		Dim dialog As New HyperlinkDialog(hyperLink.NavigateUri.AbsoluteUri, text) With {
 			.Owner = Window.GetWindow(Me),
 			.WindowStartupLocation = WindowStartupLocation.CenterOwner
 		}
 
-		Dim dialogResult As Boolean? = dialog.ShowDialog()
+		Dim dialogResult As Boolean = dialog.ShowDialog()
 
 		If dialogResult = False Then
 			Return
@@ -242,6 +243,22 @@ Public Class Section
 
 		Return elements
 	End Function
+
+	Private Function GetInlineText(textElement As InlineCollection) As String
+		Dim sb As New StringBuilder()
+		AppendInlineText(textElement, sb)
+		Return sb.ToString()
+	End Function
+
+	Private Sub AppendInlineText(inlines As InlineCollection, sb As StringBuilder)
+		For Each inline As Inline In inlines
+			If TypeOf inline Is Run Then
+				sb.Append(DirectCast(inline, Run).Text)
+			ElseIf TypeOf inline Is Span Then
+				AppendInlineText(DirectCast(inline, Span).Inlines, sb)
+			End If
+		Next
+	End Sub
 
 	Private Sub OpenLink(sender As Object, e As RequestNavigateEventArgs)
 		Dim hyperlink As Hyperlink = TryCast(e.OriginalSource, Hyperlink)
