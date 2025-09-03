@@ -38,7 +38,7 @@ Public Class Section
 		End Using
 
 		' 出力
-		Dim html As String = XamlToHtmlConverter.XamlToHtmlConverter.ConvertXamlToHtml(xaml)
+		Dim html As String = FlowDocumentToHtmlConverter.FlowDocumentToHtmlConverter.Convert(xaml)
 
 		If VM IsNot Nothing Then
 			VM.DescriptionXaml = xaml

@@ -232,12 +232,11 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\XamlToHtmlConverter\XamlToHtmlConverter.csproj">
-      <Project>{4708a955-7902-41e9-bf16-58d73d68deef}</Project>
-      <Name>XamlToHtmlConverter</Name>
+    <ProjectReference Include="..\FlowDocumentToHtmlConverter\FlowDocumentToHtmlConverter.vbproj">
+      <Project>{0ef453fe-0159-4c22-868e-168fb5b9bea6}</Project>
+      <Name>FlowDocumentToHtmlConverter</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <Import Project="..\packages\CommunityToolkit.Mvvm.8.4.0\build\CommunityToolkit.Mvvm.targets" Condition="Exists('..\packages\CommunityToolkit.Mvvm.8.4.0\build\CommunityToolkit.Mvvm.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
