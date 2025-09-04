@@ -4,63 +4,116 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:ManualGenerator"
+      xmlns:sys="clr-namespace:System;assembly=mscorlib"
       mc:Ignorable="d"
       xmlns:syncfusionskin="clr-namespace:Syncfusion.SfSkinManager;assembly=Syncfusion.SfSkinManager.WPF"
       syncfusionskin:SfSkinManager.Theme="{syncfusionskin:SkinManagerExtension ThemeName=Windows11Light}"
       Title="EditorPage">
 
 	<Page.Resources>
-		<BooleanToVisibilityConverter x:Key="BoolToVis"/>
+
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="Controls/ScrollBarStyle.xaml"/>
+			</ResourceDictionary.MergedDictionaries>
+			<BooleanToVisibilityConverter x:Key="BoolToVis"/>
+		</ResourceDictionary>
+
 	</Page.Resources>
 
 	<Grid>
-
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*"/>
 			<RowDefinition Height="Auto"/>
 		</Grid.RowDefinitions>
 
-		<ListBox ItemsSource="{Binding Sections}"
-		         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-		         HorizontalContentAlignment="Stretch"
-		         ScrollViewer.CanContentScroll="False"
-		         VirtualizingPanel.ScrollUnit="Pixel"
-		         Grid.Row="0">
+		<ScrollViewer x:Name="ScrollViewer"
+		              Grid.Row="0"
+		              Style="{StaticResource CustomScrollViewerStyle}">
+			<Grid>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="*"/>
+				</Grid.RowDefinitions>
 
-			<ListBox.ItemsPanel>
-				<ItemsPanelTemplate>
-					<StackPanel Orientation="Vertical"/>
-				</ItemsPanelTemplate>
-			</ListBox.ItemsPanel>
+				<TextBox Text="{Binding Title}"
+				         Grid.Column="0"
+				         FontSize="25"
+				         FontWeight="Bold"
+				         Padding="8,6,8,2"
+				         TextAlignment="Center"
+				         VerticalContentAlignment="Center"
+				         BorderThickness="0"
+				         FontFamily="Yu Gothic">
+					<TextBox.Style>
+						<Style TargetType="TextBox">
+							<Setter Property="Template">
+								<Setter.Value>
+									<ControlTemplate TargetType="TextBox">
+										<Border Background="{TemplateBinding Background}"
+										        BorderBrush="{TemplateBinding BorderBrush}"
+										        BorderThickness="{TemplateBinding BorderThickness}">
+											<ScrollViewer x:Name="PART_ContentHost"/>
+										</Border>
+									</ControlTemplate>
+								</Setter.Value>
+							</Setter>
+							<Style.Triggers>
+								<Trigger Property="IsMouseOver" Value="False">
+									<Setter Property="Background" Value="White"/>
+								</Trigger>
+								<Trigger Property="IsMouseOver" Value="True">
+									<Setter Property="Background" Value="WhiteSmoke"/>
+								</Trigger>
+							</Style.Triggers>
+						</Style>
+					</TextBox.Style>
+				</TextBox>
 
-			<ListBox.ItemTemplate>
-				<DataTemplate>
-					<StackPanel>
-						<local:AddCommandBar Command="{Binding DataContext.AddCommand, RelativeSource={RelativeSource AncestorType=Page}}"
-						                     CommandParameter="{Binding}"/>
+				<ListBox ItemsSource="{Binding Sections}"
+				         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+				         HorizontalContentAlignment="Stretch"
+				         ScrollViewer.CanContentScroll="False"
+				         VirtualizingPanel.ScrollUnit="Pixel"
+				         PreviewMouseWheel="ListBox_PreviewMouseWheel"
+				         Grid.Row="1">
 
-						<local:Section DataContext="{Binding}"
-						               Margin="15,0"/>
+					<ListBox.ItemsPanel>
+						<ItemsPanelTemplate>
+							<StackPanel Orientation="Vertical"/>
+						</ItemsPanelTemplate>
+					</ListBox.ItemsPanel>
 
-						<local:AddCommandBar Visibility="{Binding IsLastItem, Converter={StaticResource BoolToVis}}"
-						                     Command="{Binding DataContext.AddCommand, RelativeSource={RelativeSource AncestorType=Page}}"/>
-					</StackPanel>
-				</DataTemplate>
-			</ListBox.ItemTemplate>
+					<ListBox.ItemTemplate>
+						<DataTemplate>
+							<StackPanel>
+								<local:AddCommandBar Command="{Binding DataContext.AddCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+								                     CommandParameter="{Binding}"/>
 
-			<!-- 選択を不可視化（IsHitTestVisible が効かない） -->
-			<ListBox.ItemContainerStyle>
-				<Style TargetType="ListBoxItem">
-					<Setter Property="Template">
-						<Setter.Value>
-							<ControlTemplate TargetType="ListBoxItem">
-								<ContentPresenter/>
-							</ControlTemplate>
-						</Setter.Value>
-					</Setter>
-				</Style>
-			</ListBox.ItemContainerStyle>
-		</ListBox>
+								<local:Section DataContext="{Binding}"
+								               Margin="15,0"/>
+
+								<local:AddCommandBar Visibility="{Binding IsLastItem, Converter={StaticResource BoolToVis}}"
+								                     Command="{Binding DataContext.AddCommand, RelativeSource={RelativeSource AncestorType=Page}}"/>
+							</StackPanel>
+						</DataTemplate>
+					</ListBox.ItemTemplate>
+
+					<!-- 選択を不可視化（IsHitTestVisible が効かない） -->
+					<ListBox.ItemContainerStyle>
+						<Style TargetType="ListBoxItem">
+							<Setter Property="Template">
+								<Setter.Value>
+									<ControlTemplate TargetType="ListBoxItem">
+										<ContentPresenter/>
+									</ControlTemplate>
+								</Setter.Value>
+							</Setter>
+						</Style>
+					</ListBox.ItemContainerStyle>
+				</ListBox>
+			</Grid>
+		</ScrollViewer>
 
 		<local:StyledButton Content="送信"
 		                    Command="{Binding SaveCommand}"
@@ -69,4 +122,3 @@
 		                    FontSize="20"/>
 	</Grid>
 </Page>
-
