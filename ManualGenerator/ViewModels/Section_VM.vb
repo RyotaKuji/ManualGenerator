@@ -1,56 +1,69 @@
 ﻿Imports CommunityToolkit.Mvvm.ComponentModel
 Imports CommunityToolkit.Mvvm.Input
-Imports Newtonsoft.Json
 
 Public Class Section_VM
 	Inherits ObservableObject
 
+	Public Property Entity As Section_E
+
 	Public Property Heading As String
-
-	Public Property DescriptionXaml As String
-
-	Public Property DescriptionHtml As String
-
-	Private _imagePath As String
-	Public Property ImagePath As String
 		Get
-			Return _imagePath
+			Return Entity.Heading
 		End Get
 		Set(value As String)
-			SetProperty(_imagePath, value)
+			SetProperty(Entity.Heading, value)
+		End Set
+	End Property
+
+	Public Property DescriptionXaml As String
+		Get
+			Return Entity.DescriptionXaml
+		End Get
+		Set(value As String)
+			SetProperty(Entity.DescriptionXaml, value)
+		End Set
+	End Property
+
+	Public Property ImagePath As String
+		Get
+			Return Entity.ImagePath
+		End Get
+		Set(value As String)
+			SetProperty(Entity.ImagePath, value)
 			OnPropertyChanged(NameOf(HasImage))
 		End Set
 	End Property
 
-	<JsonIgnore>
 	Public ReadOnly Property HasImage As Boolean
 		Get
 			Return Not String.IsNullOrEmpty(ImagePath)
 		End Get
 	End Property
 
-	Private _isHeading As Boolean
-	Public Property IsHeading As Boolean
+	Public Property IsHeadline As Boolean
 		Get
-			Return _isHeading
+			Return Entity.IsHeadline
 		End Get
 		Set(value As Boolean)
-			SetProperty(_isHeading, value)
+			SetProperty(Entity.IsHeadline, value)
 		End Set
 	End Property
 
-	<JsonIgnore>
 	Public Property RemoveCommand As RelayCommand
 
-	<JsonIgnore>
 	Public ReadOnly Property SelectImageCommand As RelayCommand
 
 	Public Sub New()
+		Entity = New Section_E()
+		SelectImageCommand = New RelayCommand(AddressOf SelectImage)
+	End Sub
+
+	Public Sub New(entity As Section_E)
+		Me.Entity = entity
 		SelectImageCommand = New RelayCommand(AddressOf SelectImage)
 	End Sub
 
 	Private _isLastItem As Boolean
-	<JsonIgnore>
 	Public Property IsLastItem As Boolean
 		Get
 			Return _isLastItem

@@ -37,12 +37,8 @@ Public Class Section
 			End Using
 		End Using
 
-		' 出力
-		Dim html As String = FlowDocumentToHtmlConverter.Convert(xaml)
-
 		If VM IsNot Nothing Then
 			VM.DescriptionXaml = xaml
-			VM.DescriptionHtml = html
 		End If
 	End Sub
 

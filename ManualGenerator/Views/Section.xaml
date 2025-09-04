@@ -26,7 +26,7 @@
 				<Thickness x:Key="VerticalMargin">0,0,0,8</Thickness>
 			</StackPanel.Resources>
 
-			<ToggleButton IsChecked="{Binding IsHeading}"
+			<ToggleButton IsChecked="{Binding IsHeadline}"
 			              HorizontalAlignment="Left"
 			              Margin="{StaticResource VerticalMargin}">
 				<ToggleButton.Style>
@@ -115,7 +115,7 @@
 							<!-- Process -->
 							<MultiDataTrigger>
 								<MultiDataTrigger.Conditions>
-									<Condition Binding="{Binding IsHeading}" Value="False"/>
+									<Condition Binding="{Binding IsHeadline}" Value="False"/>
 									<Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="False"/>
 								</MultiDataTrigger.Conditions>
 								<Setter Property="FontWeight" Value="Medium"/>
@@ -125,7 +125,7 @@
 							<!-- Heading -->
 							<MultiDataTrigger>
 								<MultiDataTrigger.Conditions>
-									<Condition Binding="{Binding IsHeading}" Value="True"/>
+									<Condition Binding="{Binding IsHeadline}" Value="True"/>
 									<Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="False"/>
 								</MultiDataTrigger.Conditions>
 								<Setter Property="FontWeight" Value="Bold"/>
@@ -136,7 +136,7 @@
 							<!-- Process / MouseOver -->
 							<MultiDataTrigger>
 								<MultiDataTrigger.Conditions>
-									<Condition Binding="{Binding IsHeading}" Value="False"/>
+									<Condition Binding="{Binding IsHeadline}" Value="False"/>
 									<Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="True"/>
 								</MultiDataTrigger.Conditions>
 								<Setter Property="FontWeight" Value="Medium"/>
@@ -146,7 +146,7 @@
 							<!-- Heading / MouseOver -->
 							<MultiDataTrigger>
 								<MultiDataTrigger.Conditions>
-									<Condition Binding="{Binding IsHeading}" Value="True"/>
+									<Condition Binding="{Binding IsHeadline}" Value="True"/>
 									<Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="True"/>
 								</MultiDataTrigger.Conditions>
 								<Setter Property="FontWeight" Value="Bold"/>

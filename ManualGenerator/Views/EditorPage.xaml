@@ -63,7 +63,7 @@
 		</ListBox>
 
 		<local:StyledButton Content="送信"
-		                    Command="{Binding SubmitCommand}"
+		                    Command="{Binding SaveCommand}"
 		                    Grid.Row="1"
 		                    Height="50"
 		                    FontSize="20"/>

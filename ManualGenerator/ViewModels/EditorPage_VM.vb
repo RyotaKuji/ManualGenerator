@@ -6,25 +6,39 @@ Imports Newtonsoft.Json
 Public Class EditorPage_VM
 	Inherits ObservableObject
 
-	Public ReadOnly Property SubmitCommand As RelayCommand
-	Public ReadOnly Property AddCommand As RelayCommand(Of Section_VM)
+	Private ReadOnly Entity As Document_E
 
 	Public ReadOnly Property Id As String
+		Get
+			Return Entity.Id
+		End Get
+	End Property
+
+	Public Property Title As String
+		Get
+			Return Entity.Title
+		End Get
+		Set(value As String)
+			SetProperty(Entity.Title, value)
+		End Set
+	End Property
 
 	Public ReadOnly Property Sections As New ObservableCollection(Of Section_VM)
 
+	Public ReadOnly Property SaveCommand As RelayCommand
+	Public ReadOnly Property AddCommand As RelayCommand(Of Section_VM)
+
 	Public Sub New(Optional id As String = Nothing)
 		' Command の初期化
-		SubmitCommand = New RelayCommand(AddressOf Submit)
+		SaveCommand = New RelayCommand(AddressOf Save)
 		AddCommand = New RelayCommand(Of Section_VM)(AddressOf AddItem)
 
 		' ドキュメントのロード
-		Dim isLoadSucceeded = Load(id)
-		If isLoadSucceeded Then
-			Me.Id = id
+		Dim entity = Load(id)
+		If entity Is Nothing Then
+			Me.Entity = New Document_E()
 		Else
-			' ロードに失敗した場合は新しいドキュメントとして扱う
-			Me.Id = Guid.NewGuid().ToString()
+			Me.Entity = entity
 		End If
 
 		' 要素が空の場合はデフォルトの要素を追加
@@ -38,54 +52,52 @@ Public Class EditorPage_VM
 	''' 指定した Id のファイルを読み込み
 	''' </summary>
 	''' <param name="id">ドキュメント ID</param>
-	''' <returns>読み込みに成功したか</returns>
-	Private Function Load(id As String) As Boolean
+	''' <returns>Entity（失敗した場合は Nothing）</returns>
+	Private Function Load(id As String) As Document_E
 		' ファイルパスの取得
 		Dim filePath = FileManager.GetFilePathById(id)
 
 		' ファイルが存在しない場合は失敗
 		If Not FileManager.ExistsFile(filePath) Then
-			Return False
+			Return Nothing
 		End If
 
 		Try
 			' JSON を読み込み、デシリアライズ
 			Dim json As String = FileManager.ReadContent(filePath)
-			Dim deserialized = JsonConvert.DeserializeObject(Of IEnumerable(Of Section_VM))(json)
+			Dim entity = JsonConvert.DeserializeObject(Of Document_E)(json)
 			' デシアライズできなかったら失敗
-			If deserialized Is Nothing Then
-				Return False
+			If entity Is Nothing Then
+				Return Nothing
 			End If
 
 			' 要素を追加
 			Sections.Clear()
-			For Each item In deserialized
-				Dim formedItem As Section_VM = SetCommands(item)
-				Sections.Add(item)
+			For Each item As Section_E In entity.Sections
+				Dim sectionVM = New Section_VM(item)
+				Dim formedSectionVM As Section_VM = SetCommands(sectionVM)
+				Sections.Add(formedSectionVM)
 			Next
 
-			MarkLastItem()
-			Return True
+			MarkLastSection()
+			Return entity
 
 		Catch ex As Exception
 			' 例外が発生した場合は失敗
-			Return False
+			Return Nothing
 		End Try
 	End Function
-
-	''' <summary>
-	''' 送信
-	''' </summary>
-	Private Sub Submit()
-		Save()
-	End Sub
 
 	''' <summary>
 	''' 保存
 	''' </summary>
 	Private Sub Save()
+
+		' Sections の内容を Entity に反映
+		Entity.Sections = Sections.Select(Function(x) x.Entity)
+
 		Dim filePath = FileManager.GetFilePathById(Id)
-		Dim json As String = JsonConvert.SerializeObject(Sections)
+		Dim json As String = JsonConvert.SerializeObject(Entity)
 		FileManager.WriteContent(json, filePath)
 	End Sub
 
@@ -95,15 +107,15 @@ Public Class EditorPage_VM
 	''' </summary>
 	Private Sub SetDefaultItems()
 		Dim headingItem As New Section_VM With {
-			.IsHeading = True
+			.IsHeadline = True
 		}
 		Dim processItem As New Section_VM With {
-			.IsHeading = False
+			.IsHeadline = False
 		}
 		Sections.Add(headingItem)
 		Sections.Add(processItem)
 
-		MarkLastItem()
+		MarkLastSection()
 	End Sub
 
 	''' <summary>
@@ -124,7 +136,7 @@ Public Class EditorPage_VM
 			Sections.Add(addedItem)
 		End If
 
-		MarkLastItem()
+		MarkLastSection()
 	End Sub
 
 	''' <summary>
@@ -135,14 +147,14 @@ Public Class EditorPage_VM
 		If Sections.Count > 1 Then
 			Sections.Remove(item)
 		End If
-		MarkLastItem()
+		MarkLastSection()
 	End Sub
 
 	''' <summary>
 	''' 末尾の要素に IsLastItem を設定
 	''' AddCommandBar が表示される
 	''' </summary>
-	Private Sub MarkLastItem()
+	Private Sub MarkLastSection()
 		For Each item In Sections
 			item.IsLastItem = False
 		Next
