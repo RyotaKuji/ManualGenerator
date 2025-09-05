@@ -12,7 +12,7 @@
 	                 Color="#bbffffff"/>
 	<!--  ボーダーの色  -->
 	<SolidColorBrush x:Key="ScrollBarBorderBrush"
-	                 Color="#66ffffff"/>
+	                 Color="#bbffffff"/>
 	<!--  トラック（レーン）の色  -->
 	<SolidColorBrush x:Key="ScrollBarTrackBrush"
 	                 Color="Transparent"/>
