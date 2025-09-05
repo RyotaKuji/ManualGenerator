@@ -75,8 +75,8 @@ Public Class EditorPage_VM
 			Sections.Clear()
 			For Each item As Section_E In entity.Sections
 				Dim sectionVM = New Section_VM(item)
-				Dim formedSectionVM As Section_VM = SetCommands(sectionVM)
-				Sections.Add(formedSectionVM)
+				SetCommands(sectionVM)
+				Sections.Add(sectionVM)
 			Next
 
 			MarkLastSection()
@@ -112,6 +112,10 @@ Public Class EditorPage_VM
 		Dim processItem As New Section_VM With {
 			.IsHeadline = False
 		}
+
+		SetCommands(headingItem)
+		SetCommands(processItem)
+
 		Sections.Add(headingItem)
 		Sections.Add(processItem)
 
@@ -127,7 +131,9 @@ Public Class EditorPage_VM
 		' item が Nothing の場合は新しい Section_VM を作成
 		Dim index As Integer = Sections.IndexOf(item)
 
-		Dim addedItem As New Section_VM
+		Dim addedItem As New Section_VM()
+		SetCommands(addedItem)
+
 		If index >= 0 And index < Sections.Count Then
 			' 有効なインデックスの場合
 			Sections.Insert(index, addedItem)
@@ -165,15 +171,13 @@ Public Class EditorPage_VM
 	''' Section_VM に Command を設定
 	''' </summary>
 	''' <param name="item"></param>
-	''' <returns>Command を設定した Section_VM</returns>
-	Private Function SetCommands(item As Section_VM) As Section_VM
+	Private Sub SetCommands(item As Section_VM)
 
 		item.RemoveCommand = New RelayCommand(
 			Sub()
 				RemoveItem(item)
 			End Sub)
 
-		Return item
-	End Function
+	End Sub
 
 End Class

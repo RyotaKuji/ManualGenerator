@@ -2,8 +2,8 @@
 Imports System.Text
 Public Class FileManager
 
-	Public Const DataFileBasePath As String = "C:\WorkSpace\Prog\tmp"
-	Public Const DataFileExtension As String = "json"
+	Private Const DataFileBasePath As String = Configuration.DataFileBasePath
+	Private Const DataFileExtension As String = "json"
 
 	Public Shared Function GetFilePathById(id As String) As String
 		Return Path.Combine(DataFileBasePath, $"{id}.{DataFileExtension}")

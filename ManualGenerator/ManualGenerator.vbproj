@@ -119,6 +119,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Configuration.vb" />
     <Compile Include="Entities\Document_E.vb" />
     <Compile Include="Entities\Section_E.vb" />
     <Compile Include="Shareds\FlowDocumentToHtmlConverter.vb" />
