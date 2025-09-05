@@ -30,7 +30,7 @@
 		<ScrollViewer x:Name="ScrollViewer"
 		              Grid.Row="0"
 		              Style="{StaticResource CustomScrollViewerStyle}">
-			<Grid>
+			<Grid Margin="30,33,30,0">
 				<Grid.RowDefinitions>
 					<RowDefinition Height="Auto"/>
 					<RowDefinition Height="*"/>
@@ -44,7 +44,8 @@
 				         TextAlignment="Center"
 				         VerticalContentAlignment="Center"
 				         BorderThickness="0"
-				         FontFamily="Yu Gothic">
+				         FontFamily="Yu Gothic"
+				         Margin="16,0">
 					<TextBox.Style>
 						<Style TargetType="TextBox">
 							<Setter Property="Template">
@@ -76,7 +77,9 @@
 				         ScrollViewer.CanContentScroll="False"
 				         VirtualizingPanel.ScrollUnit="Pixel"
 				         PreviewMouseWheel="ListBox_PreviewMouseWheel"
-				         Grid.Row="1">
+				         Grid.Row="1"
+				         BorderThickness="0"
+				         Background="Transparent">
 
 					<ListBox.ItemsPanel>
 						<ItemsPanelTemplate>
@@ -99,7 +102,7 @@
 						</DataTemplate>
 					</ListBox.ItemTemplate>
 
-					<!-- 選択を不可視化（IsHitTestVisible が効かない） -->
+					<!--  選択を不可視化（IsHitTestVisible が効かない）  -->
 					<ListBox.ItemContainerStyle>
 						<Style TargetType="ListBoxItem">
 							<Setter Property="Template">

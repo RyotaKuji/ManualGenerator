@@ -11,7 +11,7 @@
         IsTabStop="False"
         FontFamily="Yu Gothic"
         FontWeight="Medium"
-        Background="LightBlue">
+        Background="#C9E7F1">
 	<Grid>
 		<Frame x:Name="Frame"
 		       NavigationUIVisibility="Hidden"
