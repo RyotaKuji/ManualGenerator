@@ -205,58 +205,57 @@
 							       TargetType="{x:Type TextBlock}">
 								<Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
 								<Setter Property="HorizontalAlignment" Value="Center"/>
-								<Setter Property="VerticalAlignment" Value="Stretch"/>
-								<Setter Property="TextAlignment" Value="Left"/>
-								<Setter Property="Width" Value="30"/>
-								<Setter Property="Height" Value="28"/>
+								<Setter Property="VerticalAlignment" Value="Center"/>
+								<Setter Property="TextAlignment" Value="Center"/>
 								<Setter Property="FontSize" Value="20"/>
+							</Style>
+							<Style TargetType="{x:Type MenuItem}">
+								<Setter Property="Template">
+									<Setter.Value>
+										<ControlTemplate TargetType="{x:Type MenuItem}">
+											<Border Name="border"
+											        BorderThickness="1"
+											        BorderBrush="Transparent"
+											        CornerRadius="2">
+												<TextBlock FontFamily="Segoe MDL2 Assets"
+												           FontSize="20"
+												           Padding="5">
+													<ContentPresenter ContentSource="Header"
+													                  RecognizesAccessKey="True"
+													                  VerticalAlignment="Center"
+													                  HorizontalAlignment="Center"/>
+												</TextBlock>
+											</Border>
+											<ControlTemplate.Triggers>
+												<Trigger Property="IsMouseOver" Value="True">
+													<Setter TargetName="border" Property="Background" Value="WhiteSmoke"/>
+													<Setter TargetName="border" Property="BorderBrush" Value="WhiteSmoke"/>
+												</Trigger>
+												<Trigger Property="IsPressed" Value="True">
+													<Setter TargetName="border" Property="Background" Value="WhiteSmoke"/>
+													<Setter TargetName="border" Property="BorderBrush" Value="LightGray"/>
+												</Trigger>
+											</ControlTemplate.Triggers>
+										</ControlTemplate>
+									</Setter.Value>
+								</Setter>
 							</Style>
 						</ContextMenu.Resources>
 						<MenuItem x:Name="RTB_Bold"
 						          Command="EditingCommands.ToggleBold"
-						          Width="33"
-						          Height="28">
-							<MenuItem.Icon>
-								<TextBlock Text="&#xE8DD;"
-								           Style="{StaticResource IconStyle}"/>
-							</MenuItem.Icon>
-						</MenuItem>
+						          Header="&#xE8DD;"/>
 						<MenuItem x:Name="RTB_Underline"
 						          Command="EditingCommands.ToggleUnderline"
-						          Width="33"
-						          Height="28">
-							<MenuItem.Icon>
-								<TextBlock Text="&#xE8DC;"
-								           Style="{StaticResource IconStyle}"/>
-							</MenuItem.Icon>
-						</MenuItem>
+						          Header="&#xE8DC;"/>
 						<MenuItem x:Name="RTB_GrowFont"
 						          Command="EditingCommands.IncreaseFontSize"
-						          Width="33"
-						          Height="28">
-							<MenuItem.Icon>
-								<TextBlock Text="&#xE8E8;"
-								           Style="{StaticResource IconStyle}"/>
-							</MenuItem.Icon>
-						</MenuItem>
+						          Header="&#xE8E8;"/>
 						<MenuItem x:Name="RTB_ShrinkFont"
 						          Command="EditingCommands.DecreaseFontSize"
-						          Width="33"
-						          Height="28">
-							<MenuItem.Icon>
-								<TextBlock Text="&#xE8E7;"
-								           Style="{StaticResource IconStyle}"/>
-							</MenuItem.Icon>
-						</MenuItem>
+						          Header="&#xE8E7;"/>
 						<MenuItem x:Name="RTB_Link"
 						          Click="Command_Hyperlink"
-						          Width="33"
-						          Height="28">
-							<MenuItem.Icon>
-								<TextBlock Text="&#xE71B;"
-								           Style="{StaticResource IconStyle}"/>
-							</MenuItem.Icon>
-						</MenuItem>
+						          Header="&#xE71B;"/>
 					</ContextMenu>
 				</RichTextBox.ContextMenu>
 			</RichTextBox>
