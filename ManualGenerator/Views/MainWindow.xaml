@@ -16,9 +16,9 @@
 		              UseAeroCaptionButtons="True"
 		              GlassFrameThickness="0,55,0,0"/>
 	</WindowChrome.WindowChrome>
-
 	<Border BorderBrush="Gray"
 	        BorderThickness="1">
+
 		<Grid>
 			<Grid.RowDefinitions>
 				<RowDefinition Height="55"/>
@@ -26,21 +26,29 @@
 			</Grid.RowDefinitions>
 
 			<!-- TitleBar -->
-			<Grid Background="Transparent"
-			      Grid.Row="0"
+			<Grid Grid.Row="0"
 			      VerticalAlignment="Stretch"
-			      Panel.ZIndex="200"
-			      Margin="18,12,0,12">
+			      Panel.ZIndex="200">
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="140"/>
 					<ColumnDefinition Width="*"/>
 					<ColumnDefinition Width="140"/>
 				</Grid.ColumnDefinitions>
-
-				<Button Grid.Column="0"
-				        Content="aaa"
-				        WindowChrome.IsHitTestVisibleInChrome="True"
-				        Background="CornflowerBlue"/>
+				<StackPanel VerticalAlignment="Stretch"
+				            Orientation="Horizontal">
+					<local:StyledButton Content="&#xE76B;"
+					                    FontFamily="Segoe MDL2 Assets"
+					                    FontSize="20"
+					                    Width="50"
+					                    BorderBrush="Transparent"
+					                    WindowChrome.IsHitTestVisibleInChrome="True"/>
+					<Button Grid.Column="0"
+					        Content="aaa"
+					        VerticalAlignment="Stretch"
+					        WindowChrome.IsHitTestVisibleInChrome="True"
+					        Margin="10"
+					        Background="CornflowerBlue"/>
+				</StackPanel>
 
 				<TextBlock Text="漢字とカタカナ"
 				           Grid.Column="1"
@@ -78,5 +86,16 @@
 			       Grid.Row="1"
 			       Background="#d3e3e8"/>
 		</Grid>
+
+		<Border.Style>
+			<Style TargetType="{x:Type Border}">
+				<Style.Triggers>
+					<DataTrigger Binding="{Binding WindowState, RelativeSource={RelativeSource AncestorType=Window}}"
+					             Value="Maximized">
+						<Setter Property="Margin" Value="7"/>
+					</DataTrigger>
+				</Style.Triggers>
+			</Style>
+		</Border.Style>
 	</Border>
 </Window>

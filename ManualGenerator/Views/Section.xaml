@@ -263,6 +263,9 @@
 		<local:StyledButton FontSize="50"
 		                    Command="{Binding SelectImageCommand}"
 		                    Height="{Binding ElementName=LeftColumnPanel, Path=ActualHeight}"
+		                    CornerRadius="2"
+		                    Background="White"
+		                    FilterColor="LightGray"
 		                    Grid.Column="1">
 			<Grid>
 				<Grid.Resources>

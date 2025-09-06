@@ -13,33 +13,36 @@
 			<Setter Property="Template">
 				<Setter.Value>
 					<ControlTemplate TargetType="Button">
-						<Border x:Name="border"
-						        BorderThickness="{TemplateBinding BorderThickness}"
-						        BorderBrush="{TemplateBinding BorderBrush}"
-						        Background="{TemplateBinding Background}"
-						        CornerRadius="2">
-							<ContentPresenter HorizontalAlignment="Center"
-							                  VerticalAlignment="Center"
-							                  RecognizesAccessKey="True"/>
-						</Border>
+						<Grid>
+							<Border x:Name="border"
+							        BorderThickness="1"
+							        BorderBrush="{Binding BorderBrush, RelativeSource={RelativeSource AncestorType=Button}}"
+							        Background="{Binding Background, RelativeSource={RelativeSource AncestorType=Button}}"
+							        CornerRadius="{Binding CornerRadius, RelativeSource={RelativeSource AncestorType=Button}}">
+								<ContentPresenter HorizontalAlignment="Center"
+								                  VerticalAlignment="Center"
+								                  RecognizesAccessKey="True"/>
+							</Border>
+							<Border x:Name="filter"
+							        Background="{Binding FilterColor, RelativeSource={RelativeSource AncestorType=Button}}"
+							        CornerRadius="{Binding CornerRadius, RelativeSource={RelativeSource AncestorType=Button}}"
+							        Opacity="0"/>
+						</Grid>
 						<ControlTemplate.Triggers>
 							<Trigger Property="IsMouseOver" Value="True">
-								<Setter TargetName="border" Property="Background" Value="WhiteSmoke"/>
-								<Setter TargetName="border" Property="BorderBrush" Value="Gainsboro"/>
 								<Setter TargetName="border" Property="BorderThickness" Value="1.6"/>
 								<Setter TargetName="border" Property="Padding" Value="0"/>
+								<Setter TargetName="filter" Property="Opacity" Value="0.1"/>
 							</Trigger>
 							<Trigger Property="IsPressed" Value="True">
-								<Setter TargetName="border" Property="Background" Value="WhiteSmoke"/>
-								<Setter TargetName="border" Property="BorderBrush" Value="Gainsboro"/>
 								<Setter TargetName="border" Property="BorderThickness" Value="1"/>
 								<Setter TargetName="border" Property="Padding" Value="0.6"/>
+								<Setter TargetName="filter" Property="Opacity" Value="0.15"/>
 							</Trigger>
 							<Trigger Property="IsEnabled" Value="False">
-								<Setter TargetName="border" Property="BorderBrush" Value="Gray"/>
-								<Setter TargetName="border" Property="Background" Value="Gray"/>
 								<Setter TargetName="border" Property="BorderThickness" Value="1.6"/>
 								<Setter TargetName="border" Property="Padding" Value="0"/>
+								<Setter TargetName="filter" Property="Opacity" Value="0.2"/>
 							</Trigger>
 						</ControlTemplate.Triggers>
 					</ControlTemplate>
