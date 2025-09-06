@@ -1,7 +1,7 @@
 ﻿Public Class Section_E
-	Public Id As String
-	Public Heading As String
-	Public DescriptionXaml As String
-	Public ImagePath As String
-	Public IsHeadline As Boolean
+	Public Property Id As String
+	Public Property Heading As String
+	Public Property DescriptionXaml As String
+	Public Property ImagePath As String
+	Public Property IsHeadline As Boolean
 End Class

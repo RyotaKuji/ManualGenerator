@@ -20,6 +20,13 @@
 
 	</Page.Resources>
 
+	<Page.InputBindings>
+		<!-- Ctrl+S に SaveCommand を割り当て -->
+		<KeyBinding Key="S"
+		            Modifiers="Control"
+		            Command="{Binding SaveCommand}"/>
+	</Page.InputBindings>
+
 	<Grid>
 		<ScrollViewer x:Name="ScrollViewer"
 		              Style="{StaticResource CustomScrollViewerStyle}">

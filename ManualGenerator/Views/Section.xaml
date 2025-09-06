@@ -220,7 +220,6 @@
 												           FontSize="20"
 												           Padding="5">
 													<ContentPresenter ContentSource="Header"
-													                  RecognizesAccessKey="True"
 													                  VerticalAlignment="Center"
 													                  HorizontalAlignment="Center"/>
 												</TextBlock>
@@ -263,9 +262,6 @@
 		<local:StyledButton FontSize="50"
 		                    Command="{Binding SelectImageCommand}"
 		                    Height="{Binding ElementName=LeftColumnPanel, Path=ActualHeight}"
-		                    CornerRadius="2"
-		                    Background="White"
-		                    FilterColor="LightGray"
 		                    Grid.Column="1">
 			<Grid>
 				<Grid.Resources>
