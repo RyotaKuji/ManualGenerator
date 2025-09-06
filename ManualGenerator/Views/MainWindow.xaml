@@ -6,15 +6,77 @@
         xmlns:local="clr-namespace:ManualGenerator"
         mc:Ignorable="d"
         Title="MainWindow"
-        Height="450"
-        Width="800"
         IsTabStop="False"
         FontFamily="Yu Gothic"
         FontWeight="Medium"
-        Background="#C9E7F1">
-	<Grid>
-		<Frame x:Name="Frame"
-		       NavigationUIVisibility="Hidden"
-		       IsTabStop="False"/>
-	</Grid>
+        Background="Transparent">
+
+	<WindowChrome.WindowChrome>
+		<WindowChrome CaptionHeight="55"
+		              UseAeroCaptionButtons="True"
+		              GlassFrameThickness="55"/>
+	</WindowChrome.WindowChrome>
+
+	<Border BorderBrush="Gray"
+	        BorderThickness="1">
+		<Grid>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="55"/>
+				<RowDefinition Height="*"/>
+			</Grid.RowDefinitions>
+
+			<!-- TitleBar -->
+			<Grid Background="Transparent"
+			      Grid.Row="0"
+			      VerticalAlignment="Stretch"
+			      Panel.ZIndex="200"
+			      Margin="18,12,0,12">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="140"/>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="140"/>
+				</Grid.ColumnDefinitions>
+
+				<Button Grid.Column="0"
+				        Content="aaa"
+				        WindowChrome.IsHitTestVisibleInChrome="True"
+				        Background="CornflowerBlue"/>
+
+				<TextBlock Text="漢字とカタカナ"
+				           Grid.Column="1"
+				           VerticalAlignment="Center"
+				           HorizontalAlignment="Center"
+				           FontSize="15"/>
+			</Grid>
+
+			<!-- Shadow -->
+			<Rectangle Height="16"
+			           Panel.ZIndex="120"
+			           HorizontalAlignment="Stretch"
+			           Fill="White"
+			           VerticalAlignment="Bottom"/>
+			<Rectangle Grid.Row="0"
+			           Grid.ColumnSpan="3"
+			           Height="5"
+			           VerticalAlignment="Bottom"
+			           Panel.ZIndex="100"
+			           Fill="White"
+			           Opacity="0.7">
+				<Rectangle.Effect>
+					<DropShadowEffect Color="Black"
+					                  BlurRadius="15"
+					                  ShadowDepth="2"
+					                  Direction="270"
+					                  Opacity="0.5"/>
+				</Rectangle.Effect>
+			</Rectangle>
+
+			<!-- Frame -->
+			<Frame x:Name="Frame"
+			       NavigationUIVisibility="Hidden"
+			       IsTabStop="False"
+			       Grid.Row="1"
+			       Background="#d3e3e8"/>
+		</Grid>
+	</Border>
 </Window>

@@ -1,8 +1,7 @@
 ﻿Imports CommunityToolkit.Mvvm.ComponentModel
 Imports CommunityToolkit.Mvvm.Input
 
-Public Class Section_VM
-	Inherits ObservableObject
+Public Class Section_VM : Inherits ObservableObject
 
 	Public Property Entity As Section_E
 

@@ -11,7 +11,8 @@
       Title="ListPage">
 	<Grid>
 		<ListBox ItemsSource="{Binding ItemNames}"
-		         SelectedItem="{Binding SelectedItem}">
+		         SelectedItem="{Binding SelectedItem}"
+		         BorderThickness="0">
 			<i:Interaction.Triggers>
 				<i:EventTrigger EventName="SelectionChanged">
 					<i:InvokeCommandAction Command="{Binding SelectedCommand}"/>

@@ -3,8 +3,7 @@ Imports CommunityToolkit.Mvvm.ComponentModel
 Imports CommunityToolkit.Mvvm.Input
 Imports Newtonsoft.Json
 
-Public Class EditorPage_VM
-	Inherits ObservableObject
+Public Class EditorPage_VM : Inherits ObservableObject
 
 	Private ReadOnly Entity As Document_E
 

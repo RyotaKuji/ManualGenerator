@@ -1,7 +1,6 @@
 ﻿Imports System.Globalization
 
-Public Class BooleanToVisibilityWithInvertConverter
-	Implements IValueConverter
+Public Class BooleanToVisibilityWithInvertConverter : Implements IValueConverter
 
 	Public Function Convert(value As Object, targetType As Type, parameter As Object, culture As CultureInfo) As Object Implements IValueConverter.Convert
 		Dim flag As Boolean = False

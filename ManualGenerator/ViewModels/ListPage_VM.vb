@@ -1,8 +1,7 @@
 ﻿Imports CommunityToolkit.Mvvm.ComponentModel
 Imports CommunityToolkit.Mvvm.Input
 
-Public Class ListPage_VM
-	Inherits ObservableObject
+Public Class ListPage_VM : Inherits ObservableObject
 
 	Public Property ItemNames As New List(Of String)
 

@@ -4,7 +4,6 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:ManualGenerator"
-      xmlns:sys="clr-namespace:System;assembly=mscorlib"
       mc:Ignorable="d"
       xmlns:syncfusionskin="clr-namespace:Syncfusion.SfSkinManager;assembly=Syncfusion.SfSkinManager.WPF"
       syncfusionskin:SfSkinManager.Theme="{syncfusionskin:SkinManagerExtension ThemeName=Windows11Light}"
@@ -22,32 +21,6 @@
 	</Page.Resources>
 
 	<Grid>
-		<Grid.RowDefinitions>
-			<RowDefinition Height="*"/>
-		</Grid.RowDefinitions>
-		<StackPanel HorizontalAlignment="Right"
-		            VerticalAlignment="Bottom"
-		            Orientation="Horizontal"
-		            Panel.ZIndex="1"
-		            Margin="0,0,20,15">
-			<local:StyledButton Content="送信"
-			                    Command="{Binding SaveCommand}"
-			                    Height="50"
-			                    FontSize="20"/>
-			<StackPanel.Style>
-				<Style TargetType="StackPanel">
-					<Style.Triggers>
-						<Trigger Property="IsMouseOver" Value="False">
-							<Setter Property="Opacity" Value="0.3"/>
-						</Trigger>
-						<Trigger Property="IsMouseOver" Value="True">
-							<Setter Property="Opacity" Value="1"/>
-						</Trigger>
-					</Style.Triggers>
-				</Style>
-			</StackPanel.Style>
-		</StackPanel>
-
 		<ScrollViewer x:Name="ScrollViewer"
 		              Style="{StaticResource CustomScrollViewerStyle}">
 			<Grid Margin="30,33,30,0">
@@ -122,7 +95,7 @@
 						</DataTemplate>
 					</ListBox.ItemTemplate>
 
-					<!--  選択を不可視化（IsHitTestVisible が効かない）  -->
+					<!-- 選択を不可視化（IsHitTestVisible が効かない） -->
 					<ListBox.ItemContainerStyle>
 						<Style TargetType="ListBoxItem">
 							<Setter Property="Template">
