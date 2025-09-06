@@ -37,7 +37,7 @@
 				         TextAlignment="Center"
 				         VerticalContentAlignment="Center"
 				         BorderThickness="0"
-				         FontFamily="Yu Gothic"
+				         FontFamily="Noto Sans JP"
 				         Margin="16,0">
 					<TextBox.Style>
 						<Style TargetType="TextBox">

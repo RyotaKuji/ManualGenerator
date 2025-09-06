@@ -7,14 +7,14 @@
         mc:Ignorable="d"
         Title="MainWindow"
         IsTabStop="False"
-        FontFamily="Yu Gothic"
-        FontWeight="Medium"
+        FontFamily="Noto Sans JP"
+        FontWeight="Normal"
         Background="Transparent">
 
 	<WindowChrome.WindowChrome>
 		<WindowChrome CaptionHeight="55"
 		              UseAeroCaptionButtons="True"
-		              GlassFrameThickness="55"/>
+		              GlassFrameThickness="0,55,0,0"/>
 	</WindowChrome.WindowChrome>
 
 	<Border BorderBrush="Gray"

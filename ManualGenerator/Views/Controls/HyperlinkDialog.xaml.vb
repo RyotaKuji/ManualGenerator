@@ -64,7 +64,7 @@
 	End Sub
 
 	Private Function Validate() As Boolean
-		Return True
+
 		Dim isValid As Boolean = True
 
 		If String.IsNullOrWhiteSpace(TextBox_DisplayText.Text) Then
