@@ -40,14 +40,17 @@
 				</Grid.ColumnDefinitions>
 				<StackPanel VerticalAlignment="Stretch"
 				            Orientation="Horizontal">
-					<local:StyledButton Content="&#xE76B;"
+
+					<local:StyledButton Content="&#xEC52;"
 					                    FontFamily="Segoe MDL2 Assets"
-					                    FontSize="20"
+					                    FontSize="18"
 					                    Width="50"
 					                    FilterColor="Black"
 					                    BorderThickness="0"
 					                    WindowChrome.IsHitTestVisibleInChrome="True"/>
+
 					<syncfusion:SplitButtonAdv Label="保存"
+					                           ToolTip="保存(Ctrl+S)"
 					                           FontSize="13"
 					                           SmallIcon="/Images/Save.png"
 					                           IconWidth="30"
@@ -76,7 +79,7 @@
 													       Margin="10,5,2,5"
 													       RenderOptions.BitmapScalingMode="HighQuality"/>
 													<Label Content="{Binding Header, RelativeSource={RelativeSource AncestorType=syncfusion:DropDownMenuItem}}"
-													       Foreground="White"
+													       Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=syncfusion:DropDownMenuItem}}"
 													       FontSize="13"
 													       FontFamily="Noto Sans JP"
 													       Grid.Column="1"/>
@@ -94,31 +97,14 @@
 							<syncfusion:DropDownMenuItem Header="公開"
 							                             Icon="/Images/Publish.png"
 							                             Background="CornflowerBlue"
+							                             Foreground="White"
 							                             Margin="0,0,0,1"/>
 							<syncfusion:DropDownMenuItem Header="削除"
 							                             Icon="/Images/Delete.png"
-							                             Background="#ff4538"/>
+							                             Background="White"
+							                             Foreground="#ff4538"/>
 						</syncfusion:DropDownMenuGroup>
 					</syncfusion:SplitButtonAdv>
-					<!--
-					<local:StyledButton Grid.Column="0"
-					                    VerticalAlignment="Stretch"
-					                    Margin="10"
-					                    BorderThickness="0"
-					                    Background="CornflowerBlue"
-					                    FilterColor="White"
-					                    WindowChrome.IsHitTestVisibleInChrome="True"
-					                    HorizontalContentAlignment="Center">
-					<Label Content="送信"
-						       Margin="30,0"
-						       HorizontalAlignment="Center"
-						       HorizontalContentAlignment="Center"
-						       VerticalAlignment="Center"
-						       VerticalContentAlignment="Center"
-						       FontSize="14"
-						       Foreground="WhiteSmoke"/>
-					</local:StyledButton>
-					-->
 
 				</StackPanel>
 

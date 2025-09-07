@@ -2,25 +2,25 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
-	<!--  サイズと色の定義。簡潔に記述する為に半透明の白で指定しているので、親の背景色が白の場合は白以外の色を指定してください  -->
-	<!--  スクロールバーの幅  -->
+	<!-- サイズと色の定義。簡潔に記述する為に半透明の白で指定しているので、親の背景色が白の場合は白以外の色を指定してください -->
+	<!-- スクロールバーの幅 -->
 	<sys:Double x:Key="ScrollBarSize">13</sys:Double>
-	<!--  スクロールバーのマージン  -->
+	<!-- スクロールバーのマージン -->
 	<sys:Double x:Key="ScrollBarMarginSize">0</sys:Double>
-	<!--  スクロールバーの色  -->
+	<!-- スクロールバーの色 -->
 	<SolidColorBrush x:Key="ScrollBarColorBrush"
 	                 Color="#bbffffff"/>
-	<!--  ボーダーの色  -->
+	<!-- ボーダーの色 -->
 	<SolidColorBrush x:Key="ScrollBarBorderBrush"
 	                 Color="#bbffffff"/>
-	<!--  トラック（レーン）の色  -->
+	<!-- トラック（レーン）の色 -->
 	<SolidColorBrush x:Key="ScrollBarTrackBrush"
 	                 Color="Transparent"/>
-	<!--  使用不可の色  -->
+	<!-- 使用不可の色 -->
 	<SolidColorBrush x:Key="ScrollBarDisabledBrush"
 	                 Color="#44ffffff"/>
 
-	<!--  トラック（レーン）のスタイル  -->
+	<!-- トラック（レーン）のスタイル -->
 	<Style x:Key="ScrollBarTrackStyle"
 	       TargetType="{x:Type RepeatButton}">
 		<Setter Property="Template">
@@ -32,7 +32,7 @@
 		</Setter>
 	</Style>
 
-	<!--  つまみのスタイル  -->
+	<!-- つまみのスタイル -->
 	<Style x:Key="ScrollBarThumbStyle"
 	       TargetType="{x:Type Thumb}">
 		<Setter Property="Template">
@@ -55,12 +55,12 @@
 		</Style.Triggers>
 	</Style>
 
-	<!--  カスタムスクロールバーのスタイル  -->
+	<!-- カスタムスクロールバーのスタイル -->
 	<Style x:Key="CustomScrollBarStyle"
 	       TargetType="{x:Type ScrollBar}">
 		<Setter Property="OverridesDefaultStyle" Value="true"/>
 		<Style.Triggers>
-			<!--  縦向きのスクロールバー  -->
+			<!-- 縦向きのスクロールバー -->
 			<Trigger Property="Orientation" Value="Vertical">
 				<Setter Property="Width" Value="{StaticResource ScrollBarSize}"/>
 				<Setter Property="Height" Value="Auto"/>
@@ -100,7 +100,7 @@
 					</Setter.Value>
 				</Setter>
 			</Trigger>
-			<!--  横向きのスクロールバー  -->
+			<!-- 横向きのスクロールバー -->
 			<Trigger Property="Orientation" Value="Horizontal">
 				<Setter Property="Width" Value="Auto"/>
 				<Setter Property="Height" Value="{StaticResource ScrollBarSize}"/>
@@ -143,7 +143,7 @@
 		</Style.Triggers>
 	</Style>
 
-	<!--  カスタム ScrollViewer のスタイル  -->
+	<!-- カスタム ScrollViewer のスタイル -->
 	<Style x:Key="CustomScrollViewerStyle"
 	       TargetType="{x:Type ScrollViewer}">
 		<Setter Property="Template">
