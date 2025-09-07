@@ -27,6 +27,6 @@ Public Class MainWindow_VM : Inherits ObservableObject
 	End Sub
 
 	Private Sub Save()
-		EditorPage_VM?.SaveCommand.Execute(Nothing)
+		EditorPage_VM?.SaveDraftCommand.Execute(Nothing)
 	End Sub
 End Class

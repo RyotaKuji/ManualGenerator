@@ -69,14 +69,14 @@
 					<ListBox.ItemTemplate>
 						<DataTemplate>
 							<StackPanel>
-								<local:AddCommandBar Command="{Binding DataContext.AddCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+								<local:AddCommandBar Command="{Binding DataContext.AddSectionCommand, RelativeSource={RelativeSource AncestorType=Page}}"
 								                     CommandParameter="{Binding}"/>
 
 								<local:Section DataContext="{Binding}"
 								               Margin="15,0"/>
 
 								<local:AddCommandBar Visibility="{Binding IsLastItem, Converter={StaticResource BoolToVis}}"
-								                     Command="{Binding DataContext.AddCommand, RelativeSource={RelativeSource AncestorType=Page}}"/>
+								                     Command="{Binding DataContext.AddSectionCommand, RelativeSource={RelativeSource AncestorType=Page}}"/>
 							</StackPanel>
 						</DataTemplate>
 					</ListBox.ItemTemplate>

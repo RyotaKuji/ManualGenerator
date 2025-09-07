@@ -31,7 +31,7 @@ Class EditorPage
 			' 元の要素にフォーカスを戻す
 			Keyboard.Focus(rtb)
 		End If
-		VM.SaveCommand.Execute(Nothing)
+		VM.SaveDraftCommand.Execute(Nothing)
 	End Sub
 
 	''' <summary>

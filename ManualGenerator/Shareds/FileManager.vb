@@ -1,17 +1,7 @@
 ﻿Imports System.IO
 Imports System.Text
+
 Public Class FileManager
-
-	Private Const DataFileBasePath As String = Configuration.DataFileBasePath
-	Private Const DataFileExtension As String = "json"
-
-	Public Shared Function GetFilePathById(id As String) As String
-		Return Path.Combine(DataFileBasePath, $"{id}.{DataFileExtension}")
-	End Function
-
-	Public Shared Function GetId(path As String) As String
-		Return IO.Path.GetFileNameWithoutExtension(path)
-	End Function
 
 	Public Shared Function ExistsFile(path As String)
 		Return File.Exists(path)

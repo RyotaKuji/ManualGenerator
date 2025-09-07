@@ -1,7 +1,6 @@
 ﻿Imports System.Collections.ObjectModel
 Imports CommunityToolkit.Mvvm.ComponentModel
 Imports CommunityToolkit.Mvvm.Input
-Imports Newtonsoft.Json
 
 Public Class EditorPage_VM : Inherits ObservableObject
 
@@ -27,13 +26,16 @@ Public Class EditorPage_VM : Inherits ObservableObject
 
 	Public ReadOnly Property Sections As New ObservableCollection(Of Section_VM)
 
-	Public ReadOnly Property SaveCommand As RelayCommand
-	Public ReadOnly Property AddCommand As RelayCommand(Of Section_VM)
+	Public ReadOnly Property SaveDraftCommand As RelayCommand
+	Public ReadOnly Property PublishDocCommand As RelayCommand
+	Public ReadOnly Property DeleteDocCommand As RelayCommand
+
+	Public ReadOnly Property AddSectionCommand As RelayCommand(Of Section_VM)
 
 	Public Sub New(Optional id As String = Nothing)
 		' Command の初期化
-		SaveCommand = New RelayCommand(AddressOf Save)
-		AddCommand = New RelayCommand(Of Section_VM)(AddressOf AddItem)
+		SaveDraftCommand = New RelayCommand(AddressOf SaveDraft)
+		AddSectionCommand = New RelayCommand(Of Section_VM)(AddressOf AddSection)
 
 		' ドキュメントのロード
 		Dim entity = Load(id)
@@ -58,51 +60,33 @@ Public Class EditorPage_VM : Inherits ObservableObject
 	''' <param name="id">ドキュメント ID</param>
 	''' <returns>Entity（失敗した場合は Nothing）</returns>
 	Private Function Load(id As String) As Document_E
-		' ファイルパスの取得
-		Dim filePath = FileManager.GetFilePathById(id)
 
-		' ファイルが存在しない場合は失敗
-		If Not FileManager.ExistsFile(filePath) Then
+		Dim entity As Document_E = DraftManager.Load(id)
+		If entity Is Nothing Then
 			Return Nothing
 		End If
 
-		Try
-			' JSON を読み込み、デシリアライズ
-			Dim json As String = FileManager.ReadContent(filePath)
-			Dim entity = JsonConvert.DeserializeObject(Of Document_E)(json)
-			' デシアライズできなかったら失敗
-			If entity Is Nothing Then
-				Return Nothing
-			End If
+		' 要素を追加
+		Sections.Clear()
+		For Each item As Section_E In entity.Sections
+			Dim sectionVM = New Section_VM(item)
+			SetCommands(sectionVM)
+			Sections.Add(sectionVM)
+		Next
 
-			' 要素を追加
-			Sections.Clear()
-			For Each item As Section_E In entity.Sections
-				Dim sectionVM = New Section_VM(item)
-				SetCommands(sectionVM)
-				Sections.Add(sectionVM)
-			Next
+		MarkLastSection()
+		Return entity
 
-			MarkLastSection()
-			Return entity
-
-		Catch ex As Exception
-			' 例外が発生した場合は失敗
-			Return Nothing
-		End Try
 	End Function
 
 	''' <summary>
 	''' 保存
 	''' </summary>
-	Private Sub Save()
+	Private Sub SaveDraft()
 
 		' Sections の内容を Entity に反映
 		Entity.Sections = Sections.Select(Function(x) x.Entity)
-
-		Dim filePath = FileManager.GetFilePathById(Id)
-		Dim json As String = JsonConvert.SerializeObject(Entity)
-		FileManager.WriteContent(json, filePath)
+		DraftManager.Save(Entity)
 	End Sub
 
 	''' <summary>
@@ -131,7 +115,7 @@ Public Class EditorPage_VM : Inherits ObservableObject
 	''' item が Nothing か 無効なインデックスの場合は末尾に追加
 	''' </summary>
 	''' <param name="item">追加したい位置の直後にある要素</param>
-	Public Sub AddItem(Optional item As Section_VM = Nothing)
+	Public Sub AddSection(Optional item As Section_VM = Nothing)
 		' item が Nothing の場合は新しい Section_VM を作成
 		Dim index As Integer = Sections.IndexOf(item)
 
