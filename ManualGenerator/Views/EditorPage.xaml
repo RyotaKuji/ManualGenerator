@@ -7,6 +7,7 @@
       mc:Ignorable="d"
       xmlns:syncfusionskin="clr-namespace:Syncfusion.SfSkinManager;assembly=Syncfusion.SfSkinManager.WPF"
       syncfusionskin:SfSkinManager.Theme="{syncfusionskin:SkinManagerExtension ThemeName=Windows11Light}"
+      x:Name="PageRoot"
       Title="EditorPage">
 
 	<Page.Resources>
@@ -24,7 +25,7 @@
 		<!-- Ctrl+S に SaveCommand を割り当て -->
 		<KeyBinding Key="S"
 		            Modifiers="Control"
-		            Command="{Binding SaveCommand}"/>
+		            Command="{Binding ElementName=PageRoot, Path=SaveCommand}"/>
 	</Page.InputBindings>
 
 	<Grid>
@@ -36,7 +37,8 @@
 					<RowDefinition Height="*"/>
 				</Grid.RowDefinitions>
 
-				<TextBox Text="{Binding Title}"
+				<TextBox x:Name="Title"
+				         Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}"
 				         Grid.Column="0"
 				         FontSize="25"
 				         FontWeight="Bold"

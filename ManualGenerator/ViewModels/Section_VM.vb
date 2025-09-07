@@ -3,33 +3,54 @@ Imports CommunityToolkit.Mvvm.Input
 
 Public Class Section_VM : Inherits ObservableObject
 
+	Private __entity As Section_E
 	Public Property Entity As Section_E
+		Get
+			Return __entity
+		End Get
+		Set(value As Section_E)
+			__entity = value
+			Heading = value.Heading
+			DescriptionXaml = value.DescriptionXaml
+			ImagePath = value.ImagePath
+			IsHeadline = value.IsHeadline
+		End Set
+	End Property
 
+	Private _heading As String
 	Public Property Heading As String
 		Get
-			Return Entity.Heading
+			Return _heading
 		End Get
 		Set(value As String)
-			SetProperty(Entity.Heading, value)
+			If SetProperty(_heading, value) Then
+				Entity.Heading = value
+			End If
 		End Set
 	End Property
 
+	Private _descriptionXaml As String
 	Public Property DescriptionXaml As String
 		Get
-			Return Entity.DescriptionXaml
+			Return _descriptionXaml
 		End Get
 		Set(value As String)
-			SetProperty(Entity.DescriptionXaml, value)
+			If SetProperty(_descriptionXaml, value) Then
+				Entity.DescriptionXaml = value
+			End If
 		End Set
 	End Property
 
+	Private _imagePath As String
 	Public Property ImagePath As String
 		Get
-			Return Entity.ImagePath
+			Return _imagePath
 		End Get
 		Set(value As String)
-			SetProperty(Entity.ImagePath, value)
-			OnPropertyChanged(NameOf(HasImage))
+			If SetProperty(_imagePath, value) Then
+				Entity.ImagePath = value
+				OnPropertyChanged(NameOf(HasImage))
+			End If
 		End Set
 	End Property
 
@@ -39,12 +60,15 @@ Public Class Section_VM : Inherits ObservableObject
 		End Get
 	End Property
 
+	Private _isHeadline As Boolean
 	Public Property IsHeadline As Boolean
 		Get
-			Return Entity.IsHeadline
+			Return _isHeadline
 		End Get
 		Set(value As Boolean)
-			SetProperty(Entity.IsHeadline, value)
+			If SetProperty(_isHeadline, value) Then
+				Entity.IsHeadline = value
+			End If
 		End Set
 	End Property
 

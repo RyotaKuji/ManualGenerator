@@ -26,6 +26,7 @@
 				<Thickness x:Key="VerticalMargin">0,0,0,8</Thickness>
 			</StackPanel.Resources>
 
+			<!-- 見出し/手順 切り替え -->
 			<ToggleButton IsChecked="{Binding IsHeadline}"
 			              HorizontalAlignment="Left"
 			              Margin="{StaticResource VerticalMargin}">
@@ -88,6 +89,7 @@
 				</ToggleButton.Style>
 			</ToggleButton>
 
+			<!-- 見出し -->
 			<TextBox x:Name="Heading"
 			         Text="{Binding Heading}"
 			         Grid.Column="0"
@@ -159,16 +161,18 @@
 				</TextBox.Style>
 			</TextBox>
 
+			<!-- セパレータ -->
 			<Separator Height="2"
 			           HorizontalAlignment="Stretch"
 			           VerticalAlignment="Center"
 			           Background="LightGray"
 			           Margin="{StaticResource VerticalMargin}"/>
 
+			<!-- 説明 RichTextBox -->
 			<RichTextBox Name="DescriptionEditor"
 			             MinHeight="40"
 			             BorderThickness="0"
-			             LostFocus="ConfirmedDescription"
+			             LostFocus="ConfirmDescription"
 			             IsDocumentEnabled="True">
 				<FlowDocument x:Name="FlowDocument"
 				              Loaded="SetDescription"
@@ -177,6 +181,7 @@
 				              FontSize="16"
 				              FontFamily="Noto Sans JP"
 				              PagePadding="10"/>
+				<!-- 右クリックメニュー -->
 				<RichTextBox.ContextMenu>
 					<ContextMenu>
 						<ContextMenu.Style>
@@ -239,18 +244,23 @@
 								</Setter>
 							</Style>
 						</ContextMenu.Resources>
+						<!-- 太字 -->
 						<MenuItem x:Name="RTB_Bold"
 						          Command="EditingCommands.ToggleBold"
 						          Header="&#xE8DD;"/>
+						<!-- 下線 -->
 						<MenuItem x:Name="RTB_Underline"
 						          Command="EditingCommands.ToggleUnderline"
 						          Header="&#xE8DC;"/>
+						<!-- 斜体 -->
 						<MenuItem x:Name="RTB_GrowFont"
 						          Command="EditingCommands.IncreaseFontSize"
 						          Header="&#xE8E8;"/>
+						<!-- フォントサイズ大 -->
 						<MenuItem x:Name="RTB_ShrinkFont"
 						          Command="EditingCommands.DecreaseFontSize"
 						          Header="&#xE8E7;"/>
+						<!-- フォントサイズ小 -->
 						<MenuItem x:Name="RTB_Link"
 						          Click="Command_Hyperlink"
 						          Header="&#xE71B;"/>
@@ -259,6 +269,7 @@
 			</RichTextBox>
 		</StackPanel>
 
+		<!-- 画像ボタン -->
 		<local:StyledButton FontSize="50"
 		                    Command="{Binding SelectImageCommand}"
 		                    Height="{Binding ElementName=LeftColumnPanel, Path=ActualHeight}"
@@ -286,7 +297,7 @@
 			</Grid>
 		</local:StyledButton>
 
-		<!-- Remove -->
+		<!-- 削除ボタン -->
 		<Button x:Name="RemoveButton"
 		        Content="✕"
 		        Command="{Binding RemoveCommand}"

@@ -23,7 +23,7 @@ Public Class Section
 		Next
 	End Sub
 
-	Private Sub ConfirmedDescription(sender As Object, e As RoutedEventArgs)
+	Private Sub ConfirmDescription(sender As Object, e As RoutedEventArgs)
 		If FlowDocument Is Nothing Then
 			Return
 		End If
@@ -263,4 +263,5 @@ Public Class Section
 			e.Handled = True
 		End If
 	End Sub
+
 End Class

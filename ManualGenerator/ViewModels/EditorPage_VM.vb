@@ -13,12 +13,15 @@ Public Class EditorPage_VM : Inherits ObservableObject
 		End Get
 	End Property
 
+	Private _title As String
 	Public Property Title As String
 		Get
-			Return Entity.Title
+			Return _title
 		End Get
 		Set(value As String)
-			SetProperty(Entity.Title, value)
+			If SetProperty(_title, value) Then
+				Entity.Title = value
+			End If
 		End Set
 	End Property
 
@@ -39,6 +42,8 @@ Public Class EditorPage_VM : Inherits ObservableObject
 		Else
 			Me.Entity = entity
 		End If
+
+		Title = entity.Title
 
 		' 要素が空の場合はデフォルトの要素を追加
 		If Sections.Count = 0 Then

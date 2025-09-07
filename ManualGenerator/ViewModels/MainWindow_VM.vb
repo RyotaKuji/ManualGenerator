@@ -1,4 +1,5 @@
 ﻿Imports CommunityToolkit.Mvvm.ComponentModel
+Imports CommunityToolkit.Mvvm.Input
 
 Public Class MainWindow_VM : Inherits ObservableObject
 
@@ -18,4 +19,14 @@ Public Class MainWindow_VM : Inherits ObservableObject
 			Return EditorPage_VM IsNot Nothing
 		End Get
 	End Property
+
+	Public ReadOnly Property SaveCommand As RelayCommand
+
+	Public Sub New()
+		SaveCommand = New RelayCommand(AddressOf Save)
+	End Sub
+
+	Private Sub Save()
+		EditorPage_VM?.SaveCommand.Execute(Nothing)
+	End Sub
 End Class

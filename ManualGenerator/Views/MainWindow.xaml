@@ -24,6 +24,7 @@
 		              GlassFrameThickness="0,55,0,0"/>
 	</WindowChrome.WindowChrome>
 
+	<!-- ウィンドウ全体 -->
 	<Border BorderBrush="Gray"
 	        BorderThickness="1">
 
@@ -33,31 +34,33 @@
 				<RowDefinition Height="*"/>
 			</Grid.RowDefinitions>
 
-			<!-- TitleBar -->
+			<!-- タイトルバー -->
 			<StackPanel Grid.Row="0"
-				            VerticalAlignment="Stretch"
-				            HorizontalAlignment="Stretch"
-				            Orientation="Horizontal"
-				            Visibility="{Binding IsEditorMode, Converter={StaticResource BoolToVis}}"
-				            Panel.ZIndex="200">
+			            VerticalAlignment="Stretch"
+			            HorizontalAlignment="Stretch"
+			            Orientation="Horizontal"
+			            Visibility="{Binding IsEditorMode, Converter={StaticResource BoolToVis}}"
+			            Panel.ZIndex="200">
 
 				<local:StyledButton Content="&#xEC52;"
-					                    FontFamily="Segoe MDL2 Assets"
-					                    FontSize="18"
-					                    Width="50"
-					                    FilterColor="Black"
-					                    BorderThickness="0"
-					                    WindowChrome.IsHitTestVisibleInChrome="True"/>
+				                    FontFamily="Segoe MDL2 Assets"
+				                    FontSize="18"
+				                    Width="50"
+				                    FilterColor="Black"
+				                    BorderThickness="0"
+				                    Click="Back"
+				                    WindowChrome.IsHitTestVisibleInChrome="True"/>
 
 				<syncfusion:SplitButtonAdv Label="保存"
-					                           ToolTip="保存(Ctrl+S)"
-					                           FontSize="13"
-					                           SmallIcon="/Images/Save.png"
-					                           IconWidth="30"
-					                           DropDirection="BottomLeft"
-					                           Padding="0,5"
-					                           BorderThickness="0"
-					                           WindowChrome.IsHitTestVisibleInChrome="True">
+				                           ToolTip="保存(Ctrl+S)"
+				                           Command="{Binding SaveCommand}"
+				                           FontSize="13"
+				                           SmallIcon="/Images/Save.png"
+				                           IconWidth="30"
+				                           DropDirection="BottomLeft"
+				                           Padding="0,5"
+				                           BorderThickness="0"
+				                           WindowChrome.IsHitTestVisibleInChrome="True">
 					<syncfusion:DropDownMenuGroup>
 						<syncfusion:DropDownMenuGroup.Resources>
 							<Style TargetType="{x:Type syncfusion:DropDownMenuItem}">
@@ -73,16 +76,16 @@
 													<RowDefinition Height="30"/>
 												</Grid.RowDefinitions>
 												<Image Source="{Binding Icon, RelativeSource={RelativeSource AncestorType=syncfusion:DropDownMenuItem}}"
-													       Grid.Column="0"
-													       HorizontalAlignment="Center"
-													       VerticalAlignment="Center"
-													       Margin="10,5,2,5"
-													       RenderOptions.BitmapScalingMode="HighQuality"/>
+												       Grid.Column="0"
+												       HorizontalAlignment="Center"
+												       VerticalAlignment="Center"
+												       Margin="10,5,2,5"
+												       RenderOptions.BitmapScalingMode="HighQuality"/>
 												<Label Content="{Binding Header, RelativeSource={RelativeSource AncestorType=syncfusion:DropDownMenuItem}}"
-													       Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=syncfusion:DropDownMenuItem}}"
-													       FontSize="13"
-													       FontFamily="Noto Sans JP"
-													       Grid.Column="1"/>
+												       Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=syncfusion:DropDownMenuItem}}"
+												       FontSize="13"
+												       FontFamily="Noto Sans JP"
+												       Grid.Column="1"/>
 											</Grid>
 											<ControlTemplate.Triggers>
 												<Trigger Property="IsMouseOver" Value="True">
@@ -94,21 +97,22 @@
 								</Setter>
 							</Style>
 						</syncfusion:DropDownMenuGroup.Resources>
+
 						<syncfusion:DropDownMenuItem Header="公開"
-							                             Icon="/Images/Publish.png"
-							                             Background="CornflowerBlue"
-							                             Foreground="White"
-							                             Margin="0,0,0,1"/>
+						                             Icon="/Images/Publish.png"
+						                             Background="CornflowerBlue"
+						                             Foreground="White"
+						                             Margin="0,0,0,1"/>
 						<syncfusion:DropDownMenuItem Header="削除"
-							                             Icon="/Images/Delete.png"
-							                             Background="White"
-							                             Foreground="#ff4538"/>
+						                             Icon="/Images/Delete.png"
+						                             Background="White"
+						                             Foreground="#ff4538"/>
 					</syncfusion:DropDownMenuGroup>
 				</syncfusion:SplitButtonAdv>
 
 			</StackPanel>
 
-			<!-- Shadow -->
+			<!-- タイトルバー下部 -->
 			<Rectangle Height="16"
 			           Panel.ZIndex="120"
 			           HorizontalAlignment="Stretch"
@@ -130,7 +134,7 @@
 				</Rectangle.Effect>
 			</Rectangle>
 
-			<!-- Frame -->
+			<!-- ページ -->
 			<Frame x:Name="Frame"
 			       NavigationUIVisibility="Hidden"
 			       IsTabStop="False"
