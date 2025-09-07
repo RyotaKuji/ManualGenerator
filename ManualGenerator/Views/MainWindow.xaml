@@ -57,7 +57,7 @@
 				                           FontSize="13"
 				                           SmallIcon="/Images/Save.png"
 				                           IconWidth="30"
-				                           DropDirection="BottomLeft"
+				                           DropDirection="Left"
 				                           Padding="0,5"
 				                           BorderThickness="0"
 				                           WindowChrome.IsHitTestVisibleInChrome="True">
@@ -100,8 +100,7 @@
 
 						<syncfusion:DropDownMenuItem Header="公開"
 						                             Icon="/Images/Publish.png"
-						                             Background="CornflowerBlue"
-						                             Foreground="White"
+						                             Foreground="#2f77fa"
 						                             Margin="0,0,0,1"/>
 						<syncfusion:DropDownMenuItem Header="削除"
 						                             Icon="/Images/Delete.png"
