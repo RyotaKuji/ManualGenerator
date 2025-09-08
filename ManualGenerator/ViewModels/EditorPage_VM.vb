@@ -61,7 +61,7 @@ Public Class EditorPage_VM : Inherits ObservableObject
 	''' <returns>Entity（失敗した場合は Nothing）</returns>
 	Private Function Load(id As String) As Document_E
 
-		Dim entity As Document_E = DraftManager.Load(id)
+		Dim entity As Document_E = DraftDocManager.Load(id)
 		If entity Is Nothing Then
 			Return Nothing
 		End If
@@ -86,7 +86,7 @@ Public Class EditorPage_VM : Inherits ObservableObject
 
 		' Sections の内容を Entity に反映
 		Entity.Sections = Sections.Select(Function(x) x.Entity)
-		DraftManager.Save(Entity)
+		DraftDocManager.Save(Entity)
 	End Sub
 
 	''' <summary>

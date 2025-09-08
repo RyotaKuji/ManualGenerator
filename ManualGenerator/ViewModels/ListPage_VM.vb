@@ -3,7 +3,8 @@ Imports CommunityToolkit.Mvvm.Input
 
 Public Class ListPage_VM : Inherits ObservableObject
 
-	Public Property ItemNames As New List(Of String)
+	Public Property DraftDocs As New List(Of Document_E)
+	Public Property PublicDocs As New List(Of Document_E)
 
 	Public Property SelectedItem As String
 
@@ -18,5 +19,10 @@ Public Class ListPage_VM : Inherits ObservableObject
 		Dim id As String = FileManager.GetId(SelectedItem)
 		Dim mainWindow As MainWindow = Application.Current.MainWindow
 		mainWindow.NavigateToEditorPage(id)
+	End Sub
+
+	Private Sub SetItems()
+
+		Dim fileNames = IO.Directory.GetFiles(Configuration.DataFileBasePath, "*", IO.SearchOption.AllDirectories)
 	End Sub
 End Class
