@@ -10,9 +10,16 @@
       d:DesignWidth="800"
       Title="ListPage">
 	<Grid>
-		<ListBox ItemsSource="{Binding ItemNames}"
+		<ListBox ItemsSource="{Binding DraftDocs}"
 		         SelectedItem="{Binding SelectedItem}"
 		         BorderThickness="0">
+			<ListBox.ItemTemplate>
+				<DataTemplate>
+					<TextBlock Text="{Binding Title}"
+					           FontSize="16"
+					           Padding="10,5"/>
+				</DataTemplate>
+			</ListBox.ItemTemplate>
 			<i:Interaction.Triggers>
 				<i:EventTrigger EventName="SelectionChanged">
 					<i:InvokeCommandAction Command="{Binding SelectedCommand}"/>

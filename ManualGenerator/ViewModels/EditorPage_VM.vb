@@ -32,25 +32,17 @@ Public Class EditorPage_VM : Inherits ObservableObject
 
 	Public ReadOnly Property AddSectionCommand As RelayCommand(Of Section_VM)
 
+	Private repo As New DocumentRepository()
+
 	Public Sub New(Optional id As String = Nothing)
 		' Command の初期化
 		SaveDraftCommand = New RelayCommand(AddressOf SaveDraft)
 		AddSectionCommand = New RelayCommand(Of Section_VM)(AddressOf AddSection)
 
-		' ドキュメントのロード
-		Dim entity = Load(id)
-		If entity Is Nothing Then
-			Me.Entity = New Document_E()
-		Else
-			Me.Entity = entity
-		End If
+		Entity = GetEntity(id)
+		Title = Entity.Title
 
-		Title = entity.Title
-
-		' 要素が空の場合はデフォルトの要素を追加
-		If Sections.Count = 0 Then
-			SetDefaultItems()
-		End If
+		SetSections()
 
 	End Sub
 
@@ -59,25 +51,34 @@ Public Class EditorPage_VM : Inherits ObservableObject
 	''' </summary>
 	''' <param name="id">ドキュメント ID</param>
 	''' <returns>Entity（失敗した場合は Nothing）</returns>
-	Private Function Load(id As String) As Document_E
+	Private Function GetEntity(id As String) As Document_E
 
-		Dim entity As Document_E = DraftDocManager.Load(id)
+		Dim entity As Document_E = repo.Read(id)
 		If entity Is Nothing Then
-			Return Nothing
+			Return New Document_E()
 		End If
+
+		Return entity
+
+	End Function
+
+	Private Sub SetSections()
 
 		' 要素を追加
 		Sections.Clear()
-		For Each item As Section_E In entity.Sections
+		For Each item As Section_E In Entity.Sections
 			Dim sectionVM = New Section_VM(item)
 			SetCommands(sectionVM)
 			Sections.Add(sectionVM)
 		Next
 
-		MarkLastSection()
-		Return entity
+		' 要素が空の場合はデフォルトの要素を追加
+		If Sections.Count = 0 Then
+			SetDefaultItems()
+		End If
 
-	End Function
+		MarkLastSection()
+	End Sub
 
 	''' <summary>
 	''' 保存
@@ -85,8 +86,13 @@ Public Class EditorPage_VM : Inherits ObservableObject
 	Private Sub SaveDraft()
 
 		' Sections の内容を Entity に反映
-		Entity.Sections = Sections.Select(Function(x) x.Entity)
-		DraftDocManager.Save(Entity)
+		Dim sectionEntities = Sections.Select(Function(x) x.Entity)
+		For i As Integer = 0 To sectionEntities.Count() - 1
+			sectionEntities(i).OrderIndex = i
+		Next
+		Entity.Sections = sectionEntities
+
+		repo.CreateOrUpdate(Entity)
 	End Sub
 
 	''' <summary>

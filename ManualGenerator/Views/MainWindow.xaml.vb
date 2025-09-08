@@ -21,15 +21,11 @@
 	End Sub
 
 	' EditorPage へ移動
-	Public Sub NavigateToEditorPage(id As String)
+	Public Sub NavigateToEditorPage(Optional id As String = Nothing)
 		Dim pageVM As New EditorPage_VM(id)
 		VM.EditorPage_VM = pageVM
 
 		Frame.Navigate(New EditorPage(pageVM))
-	End Sub
-
-	Private Sub Back(sender As Object, e As RoutedEventArgs)
-		NavigateToListPage()
 	End Sub
 
 End Class

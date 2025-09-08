@@ -16,6 +16,7 @@
 
 	<Window.Resources>
 		<BooleanToVisibilityConverter x:Key="BoolToVis"/>
+		<local:BooleanToVisibilityWithInvertConverter x:Key="BoolToVisInvert"/>
 	</Window.Resources>
 
 	<WindowChrome.WindowChrome>
@@ -35,80 +36,14 @@
 			</Grid.RowDefinitions>
 
 			<!-- タイトルバー -->
-			<StackPanel Grid.Row="0"
-			            VerticalAlignment="Stretch"
-			            HorizontalAlignment="Stretch"
-			            Orientation="Horizontal"
-			            Visibility="{Binding IsEditorMode, Converter={StaticResource BoolToVis}}"
-			            Panel.ZIndex="200">
-
-				<local:StyledButton Content="&#xEC52;"
-				                    FontFamily="Segoe MDL2 Assets"
-				                    FontSize="18"
-				                    Width="50"
-				                    FilterColor="Black"
-				                    BorderThickness="0"
-				                    Click="Back"
-				                    WindowChrome.IsHitTestVisibleInChrome="True"/>
-
-				<syncfusion:SplitButtonAdv Label="保存"
-				                           ToolTip="保存(Ctrl+S)"
-				                           Command="{Binding SaveCommand}"
-				                           FontSize="13"
-				                           SmallIcon="/Images/Save.png"
-				                           IconWidth="30"
-				                           DropDirection="Left"
-				                           Padding="0,5"
-				                           BorderThickness="0"
-				                           WindowChrome.IsHitTestVisibleInChrome="True">
-					<syncfusion:DropDownMenuGroup>
-						<syncfusion:DropDownMenuGroup.Resources>
-							<Style TargetType="{x:Type syncfusion:DropDownMenuItem}">
-								<Setter Property="Template">
-									<Setter.Value>
-										<ControlTemplate TargetType="{x:Type syncfusion:DropDownMenuItem}">
-											<Grid Background="{Binding Background, RelativeSource={RelativeSource AncestorType=syncfusion:DropDownMenuItem}}">
-												<Grid.ColumnDefinitions>
-													<ColumnDefinition Width="40"/>
-													<ColumnDefinition Width="50"/>
-												</Grid.ColumnDefinitions>
-												<Grid.RowDefinitions>
-													<RowDefinition Height="30"/>
-												</Grid.RowDefinitions>
-												<Image Source="{Binding Icon, RelativeSource={RelativeSource AncestorType=syncfusion:DropDownMenuItem}}"
-												       Grid.Column="0"
-												       HorizontalAlignment="Center"
-												       VerticalAlignment="Center"
-												       Margin="10,5,2,5"
-												       RenderOptions.BitmapScalingMode="HighQuality"/>
-												<Label Content="{Binding Header, RelativeSource={RelativeSource AncestorType=syncfusion:DropDownMenuItem}}"
-												       Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=syncfusion:DropDownMenuItem}}"
-												       FontSize="13"
-												       FontFamily="Noto Sans JP"
-												       Grid.Column="1"/>
-											</Grid>
-											<ControlTemplate.Triggers>
-												<Trigger Property="IsMouseOver" Value="True">
-													<Setter Property="Opacity" Value="0.8"/>
-												</Trigger>
-											</ControlTemplate.Triggers>
-										</ControlTemplate>
-									</Setter.Value>
-								</Setter>
-							</Style>
-						</syncfusion:DropDownMenuGroup.Resources>
-
-						<syncfusion:DropDownMenuItem Header="公開"
-						                             Icon="/Images/Publish.png"
-						                             Foreground="#2f77fa"/>
-						<syncfusion:DropDownMenuItem Header="削除"
-						                             Icon="/Images/Delete.png"
-						                             Background="White"
-						                             Foreground="#ff4538"/>
-					</syncfusion:DropDownMenuGroup>
-				</syncfusion:SplitButtonAdv>
-
-			</StackPanel>
+			<local:TitleBar_EditorPage Grid.Row="0"
+			                           Visibility="{Binding IsEditorMode, Converter={StaticResource BoolToVis}}"
+			                           VerticalAlignment="Stretch"
+			                           Panel.ZIndex="200"/>
+			<local:TitleBar_ListPage Grid.Row="0"
+			                         Visibility="{Binding IsEditorMode, Converter={StaticResource BoolToVisInvert}}"
+			                         VerticalAlignment="Stretch"
+			                         Panel.ZIndex="200"/>
 
 			<!-- タイトルバー下部 -->
 			<Rectangle Height="16"
