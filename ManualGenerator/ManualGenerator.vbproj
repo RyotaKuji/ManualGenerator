@@ -161,10 +161,8 @@
     <Compile Include="Entities\Document_E.vb" />
     <Compile Include="Entities\Section_E.vb" />
     <Compile Include="Repositories\DocumentRepository.vb" />
-    <Compile Include="Shareds\DraftDocManager.vb" />
     <Compile Include="Shareds\FlowDocumentToHtmlConverter.vb" />
     <Compile Include="Shareds\FileManager.vb" />
-    <Compile Include="Shareds\PublicDocManager.vb" />
     <Compile Include="ViewModels\EditorPage_VM.vb" />
     <Compile Include="ViewModels\ListPage_VM.vb" />
     <Compile Include="ViewModels\MainWindow_VM.vb" />
