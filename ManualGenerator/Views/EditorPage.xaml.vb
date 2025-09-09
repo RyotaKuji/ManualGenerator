@@ -20,8 +20,14 @@ Class EditorPage
 
 	''' <summary>
 	''' 編集中の RichTextBox の内容を確定する
+	''' ショートカットキー使用時に編集中の内容が反映されない問題を回避するため
 	''' </summary>
 	Private Sub Save()
+		ConfirmEditingRTB()
+		VM.SaveDraftCommand.Execute(Nothing)
+	End Sub
+
+	Private Sub ConfirmEditingRTB()
 		' フォーカス要素が RichTextBox なら、編集中の内容を確定
 		Dim rtb As RichTextBox = TryCast(Keyboard.FocusedElement, RichTextBox)
 		If rtb IsNot Nothing Then
@@ -31,7 +37,6 @@ Class EditorPage
 			' 元の要素にフォーカスを戻す
 			Keyboard.Focus(rtb)
 		End If
-		VM.SaveDraftCommand.Execute(Nothing)
 	End Sub
 
 	''' <summary>

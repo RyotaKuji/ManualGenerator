@@ -22,6 +22,29 @@ Public Class DocumentRepository
 		Return doc
 	End Function
 
+	' READ by Title
+	Public Function ReadAllByTitle(keyword As String) As IEnumerable(Of Document_E)
+		Dim docs As List(Of Document_E)
+
+		If String.IsNullOrWhiteSpace(keyword) Then
+			docs = _db.Table(Of Document_E).ToList()
+		Else
+			docs = _db.Table(Of Document_E).
+				Where(Function(d) d.Title.Contains(keyword)).
+				ToList()
+		End If
+
+		' 各 Document に対応する Section を読み込む
+		For Each doc In docs
+			doc.Sections = _db.Table(Of Section_E)().
+				Where(Function(s) s.DocumentId = doc.Id).
+				OrderBy(Function(s) s.OrderIndex).
+				ToList()
+		Next
+
+		Return docs
+	End Function
+
 	' CREATE or UPDATE (セクションは差分更新)
 	Public Sub CreateOrUpdate(doc As Document_E)
 		_db.RunInTransaction(
@@ -88,27 +111,4 @@ Public Class DocumentRepository
 
 		_db.Delete(Of Document_E)(id)
 	End Sub
-
-	' READ by Title (部分一致 / 全件)
-	Public Function ReadAllByTitle(keyword As String) As IEnumerable(Of Document_E)
-		Dim docs As List(Of Document_E)
-
-		If String.IsNullOrWhiteSpace(keyword) Then
-			docs = _db.Table(Of Document_E).ToList()
-		Else
-			docs = _db.Table(Of Document_E).
-				Where(Function(d) d.Title.Contains(keyword)).
-				ToList()
-		End If
-
-		' 各 Document に対応する Section を読み込む
-		For Each doc In docs
-			doc.Sections = _db.Table(Of Section_E)().
-				Where(Function(s) s.DocumentId = doc.Id).
-				OrderBy(Function(s) s.OrderIndex).
-				ToList()
-		Next
-
-		Return docs
-	End Function
 End Class

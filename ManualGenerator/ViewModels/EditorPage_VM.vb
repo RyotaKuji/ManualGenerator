@@ -27,7 +27,7 @@ Public Class EditorPage_VM : Inherits ObservableObject
 	Public ReadOnly Property Sections As New ObservableCollection(Of Section_VM)
 
 	Public ReadOnly Property SaveDraftCommand As RelayCommand
-	Public ReadOnly Property PublishDocCommand As RelayCommand
+	Public ReadOnly Property PublishDocCommand As AsyncRelayCommand
 	Public ReadOnly Property DeleteDocCommand As RelayCommand
 
 	Public ReadOnly Property AddSectionCommand As RelayCommand(Of Section_VM)
@@ -37,6 +37,7 @@ Public Class EditorPage_VM : Inherits ObservableObject
 	Public Sub New(Optional id As String = Nothing)
 		' Command の初期化
 		SaveDraftCommand = New RelayCommand(AddressOf SaveDraft)
+		PublishDocCommand = New AsyncRelayCommand(AddressOf PublishDoc)
 		AddSectionCommand = New RelayCommand(Of Section_VM)(AddressOf AddSection)
 
 		Entity = GetEntity(id)
@@ -94,6 +95,14 @@ Public Class EditorPage_VM : Inherits ObservableObject
 
 		repo.CreateOrUpdate(Entity)
 	End Sub
+
+	''' <summary>
+	''' 公開
+	''' </summary>
+	Private Async Function PublishDoc() As Task
+		SaveDraft()
+		Await WebDocManager.PublishAsync(Entity)
+	End Function
 
 	''' <summary>
 	''' デフォルトの要素を追加

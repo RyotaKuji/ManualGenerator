@@ -6,8 +6,8 @@
             xmlns:local="clr-namespace:ManualGenerator"
             mc:Ignorable="d"
             xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
-        xmlns:syncfusionskin="clr-namespace:Syncfusion.SfSkinManager;assembly=Syncfusion.SfSkinManager.WPF"
-        syncfusionskin:SfSkinManager.Theme="{syncfusionskin:SkinManagerExtension ThemeName=Windows11Light}"
+            xmlns:syncfusionskin="clr-namespace:Syncfusion.SfSkinManager;assembly=Syncfusion.SfSkinManager.WPF"
+            syncfusionskin:SfSkinManager.Theme="{syncfusionskin:SkinManagerExtension ThemeName=Windows11Light}"
             Orientation="Horizontal">
 
 	<local:StyledButton Content="&#xEC52;"
@@ -67,6 +67,7 @@
 			</syncfusion:DropDownMenuGroup.Resources>
 
 			<syncfusion:DropDownMenuItem Header="公開"
+			                             Command="{Binding PublishCommand}"
 			                             Icon="/Images/Publish.png"
 			                             Foreground="#2f77fa"/>
 			<syncfusion:DropDownMenuItem Header="削除"
