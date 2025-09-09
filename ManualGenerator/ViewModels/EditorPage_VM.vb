@@ -2,7 +2,8 @@
 Imports CommunityToolkit.Mvvm.ComponentModel
 Imports CommunityToolkit.Mvvm.Input
 
-Public Class EditorPage_VM : Inherits ObservableObject
+Public Class EditorPage_VM
+	Inherits ObservableObject : Implements IDisposable
 
 	Private ReadOnly Entity As Document_E
 
@@ -32,7 +33,8 @@ Public Class EditorPage_VM : Inherits ObservableObject
 
 	Public ReadOnly Property AddSectionCommand As RelayCommand(Of Section_VM)
 
-	Private repo As New DocumentRepository()
+	Private draftRepo As New DraftDoc_R()
+	Private publishedDocRepo As New PublishedDoc_R()
 
 	Public Sub New(Optional id As String = Nothing)
 		' Command の初期化
@@ -54,7 +56,7 @@ Public Class EditorPage_VM : Inherits ObservableObject
 	''' <returns>Entity（失敗した場合は Nothing）</returns>
 	Private Function GetEntity(id As String) As Document_E
 
-		Dim entity As Document_E = repo.Read(id)
+		Dim entity As Document_E = draftRepo.Read(id)
 		If entity Is Nothing Then
 			Return New Document_E()
 		End If
@@ -93,7 +95,7 @@ Public Class EditorPage_VM : Inherits ObservableObject
 		Next
 		Entity.Sections = sectionEntities
 
-		repo.CreateOrUpdate(Entity)
+		draftRepo.CreateOrUpdate(Entity)
 	End Sub
 
 	''' <summary>
@@ -102,6 +104,7 @@ Public Class EditorPage_VM : Inherits ObservableObject
 	Private Async Function PublishDoc() As Task
 		SaveDraft()
 		Await WebDocManager.PublishAsync(Entity)
+		'publishedDocRepo.CreateOrUpdate(Entity)
 	End Function
 
 	''' <summary>
@@ -183,4 +186,8 @@ Public Class EditorPage_VM : Inherits ObservableObject
 
 	End Sub
 
+	Public Sub Dispose() Implements IDisposable.Dispose
+		draftRepo.Dispose()
+		publishedDocRepo.Dispose()
+	End Sub
 End Class

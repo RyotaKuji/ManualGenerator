@@ -11,7 +11,7 @@ Public Class ListPage_VM : Inherits ObservableObject
 
 	Public Property SelectedCommand As RelayCommand
 
-	Private repo As New DocumentRepository()
+	Private repo As New DraftDoc_R()
 
 	Public Sub New()
 		SelectedCommand = New RelayCommand(AddressOf Selected)
