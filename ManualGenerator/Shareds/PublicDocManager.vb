@@ -50,7 +50,7 @@ Public Class PublicDocManager : Implements IDisposable
 	End Function
 
 	Public Shared Function GetDocumentPath(id As String) As String
-		Return Path.Combine(Configuration.WebDocDir, $"{id}.html")
+		Return Path.Combine(Configuration.PublicDocDir, $"{id}.html")
 	End Function
 
 	Public Sub Dispose() Implements IDisposable.Dispose
