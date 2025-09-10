@@ -45,7 +45,7 @@ Public Class PublicDoc_R : Implements IDisposable
 
 	' CREATE or UPDATE
 	Public Sub CreateOrUpdate(doc As Document_E)
-		Dim allText As New StringBuilder()
+		Dim allText As New StringBuilder($"{doc.Title} ")
 		For Each sec As Section_E In doc.Sections
 			Dim heading As String = sec.Heading
 			Dim text As String = FlowDocumentToHtmlConverter.Convert(sec.DescriptionXaml)

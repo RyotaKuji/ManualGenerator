@@ -17,7 +17,7 @@
 		<ListBox ItemsSource="{Binding DraftDocs}"
 		         SelectedItem="{Binding SelectedItem}"
 		         BorderThickness="0"
-				 Grid.Row="0">
+		         Grid.Row="0">
 			<ListBox.ItemTemplate>
 				<DataTemplate>
 					<TextBlock Text="{Binding Title}"
@@ -34,7 +34,7 @@
 
 		<ListBox ItemsSource="{Binding PublicDocs}"
 		         BorderThickness="0"
-				 Grid.Row="1">
+		         Grid.Row="1">
 			<ListBox.ItemTemplate>
 				<DataTemplate>
 					<TextBlock Text="{Binding Title}"

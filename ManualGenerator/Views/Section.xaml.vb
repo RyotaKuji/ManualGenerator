@@ -13,7 +13,11 @@ Public Class Section
 	Private Sub SetDescription(sender As Object, e As RoutedEventArgs)
 		Dim xaml As String = VM?.DescriptionXaml
 
-		If String.IsNullOrEmpty(xaml) Then Return
+		If String.IsNullOrEmpty(xaml) Then
+			FlowDocument.Blocks.Add(New Paragraph())
+			ConfirmDescription(Nothing, Nothing)
+			Return
+		End If
 
 		Dim doc = XamlReader.Parse(xaml)
 		FlowDocument.Blocks.Clear()
