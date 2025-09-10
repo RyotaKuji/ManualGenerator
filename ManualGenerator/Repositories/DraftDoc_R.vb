@@ -88,11 +88,11 @@ Public Class DraftDoc_R : Implements IDisposable
 							' 新規追加
 							db.Insert(sec)
 						End If
+					Next
 
-						' 残っているものは削除対象
-						For Each toDelete In existingDict.Values
-							db.Delete(toDelete)
-						Next
+					' 残っているものは削除対象
+					For Each toDelete In existingDict.Values
+						db.Delete(toDelete)
 					Next
 				End If
 			End If
