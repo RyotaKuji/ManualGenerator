@@ -4,7 +4,7 @@ Public Class DraftDoc_R : Implements IDisposable
 	Private ReadOnly db As SQLiteConnection
 
 	Public Sub New()
-		db = New SQLiteConnection(Configuration.DbPath)
+		db = New SQLiteConnection(My.Resources.DbPath)
 		db.CreateTable(Of Document_E)()
 		db.CreateTable(Of Section_E)()
 	End Sub

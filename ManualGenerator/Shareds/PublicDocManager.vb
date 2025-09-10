@@ -17,8 +17,8 @@ Public Class PublicDocManager : Implements IDisposable
 
 			' php.exe を起動
 			Dim psi As New ProcessStartInfo() With {
-				.FileName = Configuration.PHPExePath,
-				.Arguments = $"""{Configuration.PHPScriptPath}"" ""{tempJsonPath}""",
+				.FileName = My.Resources.PHPExePath,
+				.Arguments = $"""{My.Resources.PHPScriptPath}"" ""{tempJsonPath}""",
 				.RedirectStandardOutput = True,
 				.RedirectStandardError = True,
 				.UseShellExecute = False,
@@ -50,7 +50,7 @@ Public Class PublicDocManager : Implements IDisposable
 	End Function
 
 	Public Shared Function GetDocumentPath(id As String) As String
-		Return Path.Combine(Configuration.PublicDocDir, $"{id}.html")
+		Return Path.Combine(My.Resources.PublicDocDir, $"{id}.html")
 	End Function
 
 	Public Sub Dispose() Implements IDisposable.Dispose

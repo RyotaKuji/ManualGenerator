@@ -6,7 +6,7 @@ Public Class PublicDoc_R : Implements IDisposable
 	Private ReadOnly db As SQLiteConnection
 
 	Public Sub New()
-		db = New SQLiteConnection(Configuration.DbPath)
+		db = New SQLiteConnection(My.Resources.DbPath)
 		db.CreateTable(Of PublicDoc_E)()
 	End Sub
 
