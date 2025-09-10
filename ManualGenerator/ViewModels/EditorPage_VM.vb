@@ -34,7 +34,7 @@ Public Class EditorPage_VM
 	Public ReadOnly Property AddSectionCommand As RelayCommand(Of Section_VM)
 
 	Private draftRepo As New DraftDoc_R()
-	Private publishedDocRepo As New PublishedDoc_R()
+	Private publicDocManager As New PublicDocManager()
 
 	Public Sub New(Optional id As String = Nothing)
 		' Command の初期化
@@ -103,8 +103,7 @@ Public Class EditorPage_VM
 	''' </summary>
 	Private Async Function PublishDoc() As Task
 		SaveDraft()
-		Await WebDocManager.PublishAsync(Entity)
-		'publishedDocRepo.CreateOrUpdate(Entity)
+		Await publicDocManager.PublishAsync(Entity)
 	End Function
 
 	''' <summary>
@@ -188,6 +187,5 @@ Public Class EditorPage_VM
 
 	Public Sub Dispose() Implements IDisposable.Dispose
 		draftRepo.Dispose()
-		publishedDocRepo.Dispose()
 	End Sub
 End Class

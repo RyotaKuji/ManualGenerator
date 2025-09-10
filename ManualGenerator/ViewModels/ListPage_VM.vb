@@ -5,13 +5,14 @@ Imports CommunityToolkit.Mvvm.Input
 Public Class ListPage_VM : Inherits ObservableObject
 
 	Public Property DraftDocs As New ObservableCollection(Of Document_E)
-	Public Property PublicDocs As New ObservableCollection(Of Document_E)
+	Public Property PublicDocs As New ObservableCollection(Of PublicDoc_E)
 
 	Public Property SelectedItem As Document_E
 
 	Public Property SelectedCommand As RelayCommand
 
-	Private repo As New DraftDoc_R()
+	Private draftRepo As New DraftDoc_R()
+	Private ReadOnly pubRepo As New PublicDoc_R()
 
 	Public Sub New()
 		SelectedCommand = New RelayCommand(AddressOf Selected)
@@ -26,9 +27,15 @@ Public Class ListPage_VM : Inherits ObservableObject
 
 	Private Sub SetItems()
 		DraftDocs.Clear()
-		Dim draftDocsResult = repo.ReadAllByTitle("")
+		Dim draftDocsResult = draftRepo.ReadAllByTitle("")
 		For Each doc In draftDocsResult
 			DraftDocs.Add(doc)
+		Next
+
+		PublicDocs.Clear()
+		Dim publicDocsResult = pubRepo.ReadAllByTitle("")
+		For Each doc In publicDocsResult
+			PublicDocs.Add(doc)
 		Next
 	End Sub
 End Class
