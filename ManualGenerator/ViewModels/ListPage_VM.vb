@@ -20,9 +20,9 @@ Public Class ListPage_VM : Inherits ObservableObject
 	End Sub
 
 	Private Sub Selected()
-		Dim a As ResourceDictionary = Application.Current.Resources
-		Dim b As String = My.Resources.DbPath
-		UserInfo.UserName = "acb"
+		Dim a As String = My.MySettings.Default.UserName
+		My.MySettings.Default.UserName = Environment.SpecialFolder.ApplicationData
+		My.MySettings.Default.Save()
 		Dim id As String = SelectedItem.Id
 		Dim mainWindow As MainWindow = Application.Current.MainWindow
 		mainWindow.NavigateToEditorPage(id)

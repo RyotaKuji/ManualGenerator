@@ -20,7 +20,7 @@
 	                    WindowChrome.IsHitTestVisibleInChrome="True"/>
 
 	<syncfusion:SplitButtonAdv Label="保存"
-	                           ToolTip="保存(Ctrl+S)"
+	                           ToolTip="保存 (Ctrl+S)"
 	                           Command="{Binding SaveCommand}"
 	                           FontSize="13"
 	                           SmallIcon="/Images/Save.png"

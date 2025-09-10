@@ -13,6 +13,16 @@ Public Class MainWindow_VM : Inherits ObservableObject
 			OnPropertyChanged(NameOf(IsEditorMode))
 		End Set
 	End Property
+	Private _listPage_VM As ListPage_VM
+	Public Property ListPage_VM As ListPage_VM
+		Get
+			Return _listPage_VM
+		End Get
+		Set(value As ListPage_VM)
+			SetProperty(_listPage_VM, value)
+			OnPropertyChanged(NameOf(IsEditorMode))
+		End Set
+	End Property
 
 	Public ReadOnly Property IsEditorMode As Boolean
 		Get
