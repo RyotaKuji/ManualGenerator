@@ -57,12 +57,12 @@ Namespace My
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("")>  _
-        Public Property UserName() As String
+        Public Property DisplayUserName() As String
             Get
-                Return CType(Me("UserName"),String)
+                Return CType(Me("DisplayUserName"),String)
             End Get
             Set
-                Me("UserName") = value
+                Me("DisplayUserName") = value
             End Set
         End Property
     End Class

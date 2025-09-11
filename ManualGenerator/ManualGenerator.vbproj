@@ -165,6 +165,7 @@
     <Compile Include="Shareds\FlowDocumentToHtmlConverter.vb" />
     <Compile Include="Shareds\FileManager.vb" />
     <Compile Include="Shareds\PublicDocManager.vb" />
+    <Compile Include="Shareds\UserSettings.vb" />
     <Compile Include="ViewModels\EditorPage_VM.vb" />
     <Compile Include="ViewModels\ListPage_VM.vb" />
     <Compile Include="ViewModels\MainWindow_VM.vb" />
