@@ -2,10 +2,13 @@
 
 <Table("Documents")>
 Public Class Document_E
-	<PrimaryKey>
+	<PrimaryKey, NotNull>
 	Public Property Id As String = Guid.NewGuid().ToString()
 
-	<Indexed>
+	<NotNull>
+	Public Property IsPublished As Boolean = False
+
+	<NotNull>
 	Public Property Title As String
 
 	<Ignore>

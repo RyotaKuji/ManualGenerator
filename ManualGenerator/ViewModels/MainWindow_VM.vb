@@ -30,19 +30,19 @@ Public Class MainWindow_VM : Inherits ObservableObject
 		End Get
 	End Property
 
-	Public ReadOnly Property SaveCommand As RelayCommand
-	Public ReadOnly Property PublishCommand As RelayCommand
+	Public ReadOnly Property SaveDraftCommand As RelayCommand
+	Public ReadOnly Property PublishDocCommand As RelayCommand
 
 	Public Sub New()
-		SaveCommand = New RelayCommand(AddressOf Save)
-		PublishCommand = New RelayCommand(AddressOf Publish)
+		SaveDraftCommand = New RelayCommand(AddressOf SaveDraft)
+		PublishDocCommand = New RelayCommand(AddressOf PublishDoc)
 	End Sub
 
-	Private Sub Save()
+	Private Sub SaveDraft()
 		EditorPage_VM?.SaveDraftCommand.Execute(Nothing)
 	End Sub
 
-	Private Sub Publish()
+	Private Sub PublishDoc()
 		EditorPage_VM?.PublishDocCommand.Execute(Nothing)
 	End Sub
 End Class

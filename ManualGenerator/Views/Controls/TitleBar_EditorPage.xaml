@@ -21,7 +21,7 @@
 
 	<syncfusion:SplitButtonAdv Label="保存"
 	                           ToolTip="保存 (Ctrl+S)"
-	                           Command="{Binding SaveCommand}"
+	                           Command="{Binding SaveDraftCommand}"
 	                           FontSize="13"
 	                           SmallIcon="/Images/Save.png"
 	                           IconWidth="30"
@@ -67,7 +67,7 @@
 			</syncfusion:DropDownMenuGroup.Resources>
 
 			<syncfusion:DropDownMenuItem Header="公開"
-			                             Command="{Binding PublishCommand}"
+			                             Command="{Binding PublishDocCommand}"
 			                             Icon="/Images/Publish.png"
 			                             Foreground="#2f77fa"/>
 			<syncfusion:DropDownMenuItem Header="削除"

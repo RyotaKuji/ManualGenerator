@@ -1,11 +1,13 @@
 ﻿Imports System.Collections.ObjectModel
+Imports System.Runtime.CompilerServices
+Imports System.Windows.Threading
 Imports CommunityToolkit.Mvvm.ComponentModel
 Imports CommunityToolkit.Mvvm.Input
 
 Public Class EditorPage_VM
-	Inherits ObservableObject : Implements IDisposable
+	Inherits ObservableObject
 
-	Private ReadOnly Entity As Document_E
+	Private Entity As Document_E
 
 	Public ReadOnly Property Id As String
 		Get
@@ -27,25 +29,35 @@ Public Class EditorPage_VM
 
 	Public ReadOnly Property Sections As New ObservableCollection(Of Section_VM)
 
-	Public ReadOnly Property SaveDraftCommand As RelayCommand
+	Public ReadOnly Property SaveDraftCommand As AsyncRelayCommand
 	Public ReadOnly Property PublishDocCommand As AsyncRelayCommand
 	Public ReadOnly Property DeleteDocCommand As RelayCommand
 
 	Public ReadOnly Property AddSectionCommand As RelayCommand(Of Section_VM)
 
-	Private draftRepo As New DraftDoc_R()
+	Private repo As Document_R
 	Private publicDocManager As New PublicDocManager()
 
 	Public Sub New(Optional id As String = Nothing)
 		' Command の初期化
-		SaveDraftCommand = New RelayCommand(AddressOf SaveDraft)
-		PublishDocCommand = New AsyncRelayCommand(AddressOf PublishDoc)
+		SaveDraftCommand = New AsyncRelayCommand(AddressOf SaveDraftAsync)
+		PublishDocCommand = New AsyncRelayCommand(AddressOf PublishDocAsync)
 		AddSectionCommand = New RelayCommand(Of Section_VM)(AddressOf AddSection)
 
-		Entity = GetEntity(id)
-		Title = Entity.Title
+		Task.Run(
+			Async Function()
+				Dim entity = Await GetEntityAsync(id) ' 完了を待つ
 
-		SetSections()
+				' UI スレッドでプロパティ/コレクション更新
+				Await Application.Current.Dispatcher.InvokeAsync(
+					Sub()
+						Me.Entity = entity
+						Title = entity.Title
+						SetSections() ' 内部で Sections を更新（Clear/Add）
+					End Sub,
+					DispatcherPriority.DataBind)
+			End Function
+		)
 
 	End Sub
 
@@ -54,11 +66,16 @@ Public Class EditorPage_VM
 	''' </summary>
 	''' <param name="id">ドキュメント ID</param>
 	''' <returns>Entity（失敗した場合は Nothing）</returns>
-	Private Function GetEntity(id As String) As Document_E
+	Private Async Function GetEntityAsync(id As String) As Task(Of Document_E)
 
-		Dim entity As Document_E = draftRepo.Read(id)
+		If repo Is Nothing Then
+			repo = Await Document_R.CreateAsync()
+		End If
+
+		Dim entity As Document_E = Await repo.ReadAsync(id)
+
 		If entity Is Nothing Then
-			Return New Document_E()
+			entity = New Document_E()
 		End If
 
 		Return entity
@@ -66,7 +83,6 @@ Public Class EditorPage_VM
 	End Function
 
 	Private Sub SetSections()
-
 		' 要素を追加
 		Sections.Clear()
 		For Each item As Section_E In Entity.Sections
@@ -86,7 +102,7 @@ Public Class EditorPage_VM
 	''' <summary>
 	''' 保存
 	''' </summary>
-	Private Sub SaveDraft()
+	Private Async Function SaveAsync(isPublic As Boolean) As Task
 
 		' Sections の内容を Entity に反映
 		Dim sectionEntities = Sections.Select(Function(x) x.Entity)
@@ -95,14 +111,21 @@ Public Class EditorPage_VM
 		Next
 		Entity.Sections = sectionEntities
 
-		draftRepo.CreateOrUpdate(Entity)
-	End Sub
+		Await repo.CreateOrUpdateAsync(Entity, isPublic)
+	End Function
+
+	''' <summary>
+	''' 下書き保存
+	''' </summary>
+	Private Async Function SaveDraftAsync() As Task
+		Await SaveAsync(False)
+	End Function
 
 	''' <summary>
 	''' 公開
 	''' </summary>
-	Private Async Function PublishDoc() As Task
-		SaveDraft()
+	Private Async Function PublishDocAsync() As Task
+		Await SaveAsync(True)
 		Await publicDocManager.PublishAsync(Entity)
 	End Function
 
@@ -183,9 +206,5 @@ Public Class EditorPage_VM
 				RemoveItem(item)
 			End Sub)
 
-	End Sub
-
-	Public Sub Dispose() Implements IDisposable.Dispose
-		draftRepo.Dispose()
 	End Sub
 End Class

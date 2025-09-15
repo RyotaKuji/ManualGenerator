@@ -2,14 +2,10 @@
 Imports System.Text
 Imports Newtonsoft.Json
 
-Public Class PublicDocManager : Implements IDisposable
-
-	Private ReadOnly repo As New PublicDoc_R
+Public Class PublicDocManager
 
 	Public Async Function PublishAsync(entity As Document_E) As Task(Of String)
 		Try
-			repo.CreateOrUpdate(entity)
-
 			' JSON を一時ファイルに保存
 			Dim json As String = JsonConvert.SerializeObject(entity)
 			Dim tempJsonPath As String = Path.GetTempFileName()
@@ -52,9 +48,5 @@ Public Class PublicDocManager : Implements IDisposable
 	Public Shared Function GetDocumentPath(id As String) As String
 		Return Path.Combine(My.Resources.PublicDocDir, $"{id}.html")
 	End Function
-
-	Public Sub Dispose() Implements IDisposable.Dispose
-		repo.Dispose()
-	End Sub
 
 End Class

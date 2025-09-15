@@ -1,22 +1,52 @@
 ﻿Imports System.Collections.ObjectModel
+Imports System.Windows.Threading
 Imports CommunityToolkit.Mvvm.ComponentModel
 Imports CommunityToolkit.Mvvm.Input
 
 Public Class ListPage_VM : Inherits ObservableObject
 
 	Public Property DraftDocs As New ObservableCollection(Of Document_E)
-	Public Property PublicDocs As New ObservableCollection(Of PublicDoc_E)
+	Public Property PublicDocs As New ObservableCollection(Of Document_E)
+	Public Property AllDocs As New ObservableCollection(Of Document_E)
 
 	Public Property SelectedItem As Document_E
 
 	Public Property SelectedCommand As RelayCommand
 
-	Private draftRepo As New DraftDoc_R()
-	Private ReadOnly pubRepo As New PublicDoc_R()
+	Private repo As Document_R
 
 	Public Sub New()
 		SelectedCommand = New RelayCommand(AddressOf Selected)
-		SetItems()
+		Task.Run(
+			Async Function()
+				repo = Await Document_R.CreateAsync()
+
+				Dim publicTask As Task(Of List(Of Document_E)) = GetPublicItems()
+				Dim draftTask As Task(Of List(Of Document_E)) = GetDraftItems()
+
+				' 両方終わるまで待つ
+				Await Task.WhenAll(publicTask, draftTask)
+
+				' 結果を取得
+				Dim publicItems As List(Of Document_E) = publicTask.Result
+				Dim draftItems As List(Of Document_E) = draftTask.Result
+
+				' UI スレッドでプロパティ/コレクション更新
+				Await Application.Current.Dispatcher.InvokeAsync(
+					Sub()
+						PublicDocs.Clear()
+						For Each doc In draftItems
+							PublicDocs.Add(doc)
+						Next
+						DraftDocs.Clear()
+						For Each doc In draftItems
+							DraftDocs.Add(doc)
+						Next
+					End Sub,
+					DispatcherPriority.DataBind)
+			End Function
+		)
+		Dim t As Task = SetItemsAsync()
 	End Sub
 
 	Private Sub Selected()
@@ -25,17 +55,30 @@ Public Class ListPage_VM : Inherits ObservableObject
 		mainWindow.NavigateToEditorPage(id)
 	End Sub
 
-	Private Sub SetItems()
+	Private Async Function GetPublicItems() As Task(Of List(Of Document_E))
+		Return Await repo.ReadAllByTitleAsync("", True)
+	End Function
+
+	Private Async Function GetDraftItems() As Task(Of List(Of Document_E))
+		Return Await repo.ReadAllByTitleAsync("", False)
+	End Function
+
+	Private Async Function SetItemsAsync() As Task
+		If repo Is Nothing Then
+			repo = Await Document_R.CreateAsync()
+		End If
+
 		DraftDocs.Clear()
-		Dim draftDocsResult = draftRepo.ReadAllByTitle("")
+		Dim draftDocsResult = Await repo.ReadAllByTitleAsync("", False)
 		For Each doc In draftDocsResult
 			DraftDocs.Add(doc)
 		Next
 
 		PublicDocs.Clear()
-		Dim publicDocsResult = pubRepo.ReadAllByTitle("")
+		Dim publicDocsResult = Await repo.ReadAllByTitleAsync("", True)
 		For Each doc In publicDocsResult
 			PublicDocs.Add(doc)
 		Next
-	End Sub
+
+	End Function
 End Class

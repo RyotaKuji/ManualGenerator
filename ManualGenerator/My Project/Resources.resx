@@ -117,16 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="DbPath" xml:space="preserve">
-    <value>C:\WorkSpace\Prog\Db\app.db</value>
+  <data name="DBPath" xml:space="preserve">
+    <value>\\wsrvfile\開発本部\第一開発部\福祉システム４課\81_個人用Work\久慈 涼太\ManualGenerator\DB\app.db</value>
+  </data>
+  <data name="DraftDocSuffix" xml:space="preserve">
+    <value>_Draft</value>
   </data>
   <data name="PHPExePath" xml:space="preserve">
-    <value>C:\WorkSpace\Prog\WebDoc\System\PHP\php.exe</value>
+    <value>\\wsrvfile\開発本部\第一開発部\福祉システム４課\81_個人用Work\久慈 涼太\ManualGenerator\System\PHP\php.exe</value>
   </data>
   <data name="PHPScriptPath" xml:space="preserve">
-    <value>C:\WorkSpace\Prog\PublicDoc\System\Converter.php</value>
+    <value>\\wsrvfile\開発本部\第一開発部\福祉システム４課\81_個人用Work\久慈 涼太\ManualGenerator\System\Converter.php</value>
   </data>
   <data name="PublicDocDir" xml:space="preserve">
-    <value>C:\WorkSpace\Prog\WebDoc\Docs\</value>
+    <value>\\wsrvfile\開発本部\第一開発部\福祉システム４課\81_個人用Work\久慈 涼太\ManualGenerator\Public</value>
+  </data>
+  <data name="PublicDocSuffix" xml:space="preserve">
+    <value>_Public</value>
   </data>
 </root>

@@ -159,9 +159,7 @@
     </ApplicationDefinition>
     <Compile Include="Entities\Document_E.vb" />
     <Compile Include="Entities\Section_E.vb" />
-    <Compile Include="Entities\PublicDoc_E.vb" />
-    <Compile Include="Repositories\DraftDoc_R.vb" />
-    <Compile Include="Repositories\PublicDoc_R.vb" />
+    <Compile Include="Repositories\Document_R.vb" />
     <Compile Include="Shareds\FlowDocumentToHtmlConverter.vb" />
     <Compile Include="Shareds\FileManager.vb" />
     <Compile Include="Shareds\PublicDocManager.vb" />

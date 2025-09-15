@@ -61,16 +61,25 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  C:\WorkSpace\Prog\Db\app.db に類似しているローカライズされた文字列を検索します。
+        '''  \\wsrvfile\開発本部\第一開発部\福祉システム４課\81_個人用Work\久慈 涼太\ManualGenerator\DB\app.db に類似しているローカライズされた文字列を検索します。
         '''</summary>
-        Friend ReadOnly Property DbPath() As String
+        Friend ReadOnly Property DBPath() As String
             Get
-                Return ResourceManager.GetString("DbPath", resourceCulture)
+                Return ResourceManager.GetString("DBPath", resourceCulture)
             End Get
         End Property
         
         '''<summary>
-        '''  C:\WorkSpace\Prog\WebDoc\System\PHP\php.exe に類似しているローカライズされた文字列を検索します。
+        '''  _Draft に類似しているローカライズされた文字列を検索します。
+        '''</summary>
+        Friend ReadOnly Property DraftDocSuffix() As String
+            Get
+                Return ResourceManager.GetString("DraftDocSuffix", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  \\wsrvfile\開発本部\第一開発部\福祉システム４課\81_個人用Work\久慈 涼太\ManualGenerator\System\PHP\php.exe に類似しているローカライズされた文字列を検索します。
         '''</summary>
         Friend ReadOnly Property PHPExePath() As String
             Get
@@ -79,7 +88,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  C:\WorkSpace\Prog\PublicDoc\System\Converter.php に類似しているローカライズされた文字列を検索します。
+        '''  \\wsrvfile\開発本部\第一開発部\福祉システム４課\81_個人用Work\久慈 涼太\ManualGenerator\System\Converter.php に類似しているローカライズされた文字列を検索します。
         '''</summary>
         Friend ReadOnly Property PHPScriptPath() As String
             Get
@@ -88,11 +97,20 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  C:\WorkSpace\Prog\WebDoc\Docs\ に類似しているローカライズされた文字列を検索します。
+        '''  \\wsrvfile\開発本部\第一開発部\福祉システム４課\81_個人用Work\久慈 涼太\ManualGenerator\Public に類似しているローカライズされた文字列を検索します。
         '''</summary>
         Friend ReadOnly Property PublicDocDir() As String
             Get
                 Return ResourceManager.GetString("PublicDocDir", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  _Public に類似しているローカライズされた文字列を検索します。
+        '''</summary>
+        Friend ReadOnly Property PublicDocSuffix() As String
+            Get
+                Return ResourceManager.GetString("PublicDocSuffix", resourceCulture)
             End Get
         End Property
     End Module
