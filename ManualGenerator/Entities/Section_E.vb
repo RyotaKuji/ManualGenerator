@@ -10,6 +10,7 @@ Public Class Section_E
 
 	Public Property Heading As String
 	Public Property DescriptionXaml As String
+	Public Property DescriptionText As String
 	Public Property ImagePath As String
 	Public Property IsHeadline As Boolean
 	Public Property OrderIndex As Integer
