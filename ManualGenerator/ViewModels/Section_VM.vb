@@ -41,6 +41,18 @@ Public Class Section_VM : Inherits ObservableObject
 		End Set
 	End Property
 
+	Private _descriptionText As String
+	Public Property DescriptionText As String
+		Get
+			Return _descriptionText
+		End Get
+		Set(value As String)
+			If SetProperty(_descriptionText, value) Then
+				Entity.DescriptionText = value
+			End If
+		End Set
+	End Property
+
 	Private _imagePath As String
 	Public Property ImagePath As String
 		Get

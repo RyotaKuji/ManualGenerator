@@ -1,8 +1,8 @@
 ﻿Imports System.Text
 Imports SQLite
 
-<Table("PlainTexts")>
-Public Class PlainText_E
+<Table("WebDocs")>
+Public Class WebDoc_E
 
 	<PrimaryKey, NotNull>
 	Public Property Id As String

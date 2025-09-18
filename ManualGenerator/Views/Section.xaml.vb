@@ -41,8 +41,11 @@ Public Class Section
 			End Using
 		End Using
 
+		Dim plainText As String = New TextRange(FlowDocument.ContentStart, FlowDocument.ContentEnd).Text
+
 		If VM IsNot Nothing Then
 			VM.DescriptionXaml = xaml
+			VM.DescriptionText = plainText
 		End If
 	End Sub
 

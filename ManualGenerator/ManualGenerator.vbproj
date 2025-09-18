@@ -158,7 +158,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Entities\Document_E.vb" />
-    <Compile Include="Entities\PlainText_E.vb" />
+    <Compile Include="Entities\WebDoc_E.vb" />
     <Compile Include="Entities\Section_E.vb" />
     <Compile Include="Repositories\Document_R.vb" />
     <Compile Include="Shareds\FlowDocumentToHtmlConverter.vb" />
