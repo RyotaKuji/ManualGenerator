@@ -6,9 +6,6 @@ Public Class Document_E
 	Public Property Id As String = Guid.NewGuid().ToString()
 
 	<NotNull>
-	Public Property IsPublished As Boolean = False
-
-	<NotNull>
 	Public Property Title As String
 
 	<Ignore>

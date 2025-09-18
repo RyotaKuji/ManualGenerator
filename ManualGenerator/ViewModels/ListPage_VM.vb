@@ -46,7 +46,6 @@ Public Class ListPage_VM : Inherits ObservableObject
 					DispatcherPriority.DataBind)
 			End Function
 		)
-		Dim t As Task = SetItemsAsync()
 	End Sub
 
 	Private Sub Selected()
@@ -56,11 +55,11 @@ Public Class ListPage_VM : Inherits ObservableObject
 	End Sub
 
 	Private Async Function GetPublicItems() As Task(Of List(Of Document_E))
-		Return Await repo.ReadAllByTitleAsync("", True)
+		Return Await repo.ReadAllByTitleAsync("")
 	End Function
 
 	Private Async Function GetDraftItems() As Task(Of List(Of Document_E))
-		Return Await repo.ReadAllByTitleAsync("", False)
+		Return Await repo.ReadAllByTitleAsync("")
 	End Function
 
 	Private Async Function SetItemsAsync() As Task
@@ -69,13 +68,13 @@ Public Class ListPage_VM : Inherits ObservableObject
 		End If
 
 		DraftDocs.Clear()
-		Dim draftDocsResult = Await repo.ReadAllByTitleAsync("", False)
+		Dim draftDocsResult = Await repo.ReadAllByTitleAsync("")
 		For Each doc In draftDocsResult
 			DraftDocs.Add(doc)
 		Next
 
 		PublicDocs.Clear()
-		Dim publicDocsResult = Await repo.ReadAllByTitleAsync("", True)
+		Dim publicDocsResult = Await repo.ReadAllByTitleAsync("")
 		For Each doc In publicDocsResult
 			PublicDocs.Add(doc)
 		Next

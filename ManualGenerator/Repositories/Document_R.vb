@@ -35,33 +35,16 @@ Public Class Document_R
 	End Function
 
 	' READ by Title
-	Public Async Function ReadAllByTitleAsync(keyword As String, Optional isPublic As Boolean = Nothing) As Task(Of List(Of Document_E))
+	Public Async Function ReadAllByTitleAsync(keyword As String) As Task(Of List(Of Document_E))
 		Dim docs As List(Of Document_E)
 
 		If String.IsNullOrWhiteSpace(keyword) Then
-			Select Case isPublic
-				Case True
-					docs = Await db.Table(Of Document_E)().Where(Function(d) d.IsPublished = True).ToListAsync()
-				Case False
-					docs = Await db.Table(Of Document_E)().Where(Function(d) d.IsPublished = False).ToListAsync()
-				Case Else
-					docs = Await db.Table(Of Document_E)().ToListAsync()
-			End Select
+			docs = Await db.Table(Of Document_E)().
+						ToListAsync()
 		Else
-			Select Case isPublic
-				Case True
-					docs = Await db.Table(Of Document_E)().
-						Where(Function(d) d.Title.Contains(keyword) And d.IsPublished = True).
-						ToListAsync()
-				Case False
-					docs = Await db.Table(Of Document_E)().
-						Where(Function(d) d.Title.Contains(keyword) And d.IsPublished = False).
-						ToListAsync()
-				Case Else
-					docs = Await db.Table(Of Document_E)().
+			docs = Await db.Table(Of Document_E)().
 						Where(Function(d) d.Title.Contains(keyword)).
 						ToListAsync()
-			End Select
 		End If
 
 		' 各 Document に対応する Section を読み込む（逐次）
@@ -76,9 +59,7 @@ Public Class Document_R
 	End Function
 
 	' CREATE or UPDATE (セクションは差分更新)
-	Public Async Function CreateOrUpdateAsync(doc As Document_E, isPublic As Boolean) As Task
-
-		doc.IsPublished = isPublic
+	Public Async Function CreateOrUpdateAsync(doc As Document_E) As Task
 
 		' 1トランザクションで実行（同期APIはコールバック内のSQLiteConnectionで使用可）
 		Await db.RunInTransactionAsync(
