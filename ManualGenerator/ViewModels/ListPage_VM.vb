@@ -5,42 +5,44 @@ Imports CommunityToolkit.Mvvm.Input
 
 Public Class ListPage_VM : Inherits ObservableObject
 
-	Public Property DraftDocs As New ObservableCollection(Of Document_E)
-	Public Property PublicDocs As New ObservableCollection(Of Document_E)
+	Public Property Documents As New ObservableCollection(Of Document_E)
+	Public Property WebDocs As New ObservableCollection(Of WebDoc_E)
 	Public Property AllDocs As New ObservableCollection(Of Document_E)
 
 	Public Property SelectedItem As Document_E
 
 	Public Property SelectedCommand As RelayCommand
 
-	Private repo As Document_R
+	Private documentRepo As Document_R
+	Private webDocRepo As WebDoc_R
 
 	Public Sub New()
 		SelectedCommand = New RelayCommand(AddressOf Selected)
 		Task.Run(
 			Async Function()
-				repo = Await Document_R.CreateAsync()
+				documentRepo = Await Document_R.CreateAsync()
+				webDocRepo = Await WebDoc_R.CreateAsync()
 
-				Dim publicTask As Task(Of List(Of Document_E)) = GetPublicItems()
-				Dim draftTask As Task(Of List(Of Document_E)) = GetDraftItems()
+				Dim webDocTask As Task(Of List(Of WebDoc_E)) = GetWebDocItems()
+				Dim documentTask As Task(Of List(Of Document_E)) = GetDocumentItems()
 
 				' 両方終わるまで待つ
-				Await Task.WhenAll(publicTask, draftTask)
+				Await Task.WhenAll(webDocTask, documentTask)
 
 				' 結果を取得
-				Dim publicItems As List(Of Document_E) = publicTask.Result
-				Dim draftItems As List(Of Document_E) = draftTask.Result
+				Dim webDocItems As List(Of WebDoc_E) = webDocTask.Result
+				Dim draftItems As List(Of Document_E) = documentTask.Result
 
 				' UI スレッドでプロパティ/コレクション更新
 				Await Application.Current.Dispatcher.InvokeAsync(
 					Sub()
-						PublicDocs.Clear()
-						For Each doc In draftItems
-							PublicDocs.Add(doc)
+						WebDocs.Clear()
+						For Each webDoc In webDocItems
+							WebDocs.Add(webDoc)
 						Next
-						DraftDocs.Clear()
+						Documents.Clear()
 						For Each doc In draftItems
-							DraftDocs.Add(doc)
+							Documents.Add(doc)
 						Next
 					End Sub,
 					DispatcherPriority.DataBind)
@@ -54,29 +56,29 @@ Public Class ListPage_VM : Inherits ObservableObject
 		mainWindow.NavigateToEditorPage(id)
 	End Sub
 
-	Private Async Function GetPublicItems() As Task(Of List(Of Document_E))
-		Return Await repo.ReadAllByTitleAsync("")
+	Private Async Function GetWebDocItems() As Task(Of List(Of WebDoc_E))
+		Return Await webDocRepo.ReadAllByTitleAsync("")
 	End Function
 
-	Private Async Function GetDraftItems() As Task(Of List(Of Document_E))
-		Return Await repo.ReadAllByTitleAsync("")
+	Private Async Function GetDocumentItems() As Task(Of List(Of Document_E))
+		Return Await documentRepo.ReadAllByTitleAsync("")
 	End Function
 
 	Private Async Function SetItemsAsync() As Task
-		If repo Is Nothing Then
-			repo = Await Document_R.CreateAsync()
+		If documentRepo Is Nothing Then
+			documentRepo = Await Document_R.CreateAsync()
 		End If
 
-		DraftDocs.Clear()
-		Dim draftDocsResult = Await repo.ReadAllByTitleAsync("")
+		Documents.Clear()
+		Dim draftDocsResult = Await documentRepo.ReadAllByTitleAsync("")
 		For Each doc In draftDocsResult
-			DraftDocs.Add(doc)
+			Documents.Add(doc)
 		Next
 
-		PublicDocs.Clear()
-		Dim publicDocsResult = Await repo.ReadAllByTitleAsync("")
-		For Each doc In publicDocsResult
-			PublicDocs.Add(doc)
+		WebDocs.Clear()
+		Dim webDocsResult = Await webDocRepo.ReadAllByTitleAsync("")
+		For Each webDoc In webDocsResult
+			WebDocs.Add(webDoc)
 		Next
 
 	End Function

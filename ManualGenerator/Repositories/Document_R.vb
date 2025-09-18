@@ -14,7 +14,7 @@ Public Class Document_R
 			Await inst.db.CreateTableAsync(Of Document_E)()
 			Await inst.db.CreateTableAsync(Of Section_E)()
 		Catch ex As Exception
-			Dim a As String = ex.Message
+			Dim exStr As String = ex.Message
 		End Try
 
 		Return inst

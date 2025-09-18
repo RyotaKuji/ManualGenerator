@@ -35,7 +35,7 @@ Public Class EditorPage_VM
 	Public ReadOnly Property AddSectionCommand As RelayCommand(Of Section_VM)
 
 	Private repo As Document_R
-	Private publicDocManager As New PublicDocManager()
+	Private publicDocManager As WebDocManager
 
 	Public Sub New(Optional id As String = Nothing)
 		' Command の初期化
@@ -45,6 +45,9 @@ Public Class EditorPage_VM
 
 		Task.Run(
 			Async Function()
+
+				Await Initialize()
+
 				Dim entity = Await GetEntityAsync(id) ' 完了を待つ
 
 				' UI スレッドでプロパティ/コレクション更新
@@ -60,16 +63,21 @@ Public Class EditorPage_VM
 
 	End Sub
 
+	Private Async Function Initialize() As Task
+		If repo Is Nothing Then
+			repo = Await Document_R.CreateAsync()
+		End If
+		If publicDocManager Is Nothing Then
+			publicDocManager = Await WebDocManager.CreateAsync()
+		End If
+	End Function
+
 	''' <summary>
 	''' 指定した Id のファイルを読み込み
 	''' </summary>
 	''' <param name="id">ドキュメント ID</param>
 	''' <returns>Entity（失敗した場合は Nothing）</returns>
 	Private Async Function GetEntityAsync(id As String) As Task(Of Document_E)
-
-		If repo Is Nothing Then
-			repo = Await Document_R.CreateAsync()
-		End If
 
 		Dim entity As Document_E = Await repo.ReadAsync(id)
 

@@ -20,4 +20,9 @@ Public Class WebDoc_E
 		Next
 		Text = sb.ToString()
 	End Sub
+
+	' デフォルトコンストラクタ（SQLite.NET 用）
+	Public Sub New()
+
+	End Sub
 End Class

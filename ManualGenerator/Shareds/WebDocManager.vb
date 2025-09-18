@@ -2,10 +2,24 @@
 Imports System.Text
 Imports Newtonsoft.Json
 
-Public Class PublicDocManager
+Public Class WebDocManager
+
+	Private repo As WebDoc_R
+
+	Private Sub New()
+	End Sub
+
+	' 非同期ファクトリ
+	Public Shared Async Function CreateAsync() As Task(Of WebDocManager)
+		Dim inst = New WebDocManager()
+		inst.repo = Await WebDoc_R.CreateAsync()
+		Return inst
+	End Function
 
 	Public Async Function PublishAsync(entity As Document_E) As Task(Of String)
 		Try
+			Await repo.CreateOrUpdateAsync(entity)
+
 			' JSON を一時ファイルに保存
 			Dim json As String = JsonConvert.SerializeObject(entity)
 			Dim tempJsonPath As String = Path.GetTempFileName()

@@ -16,7 +16,7 @@
 			<RowDefinition Height="*"/>
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
-		<ListBox ItemsSource="{Binding DraftDocs}"
+		<ListBox ItemsSource="{Binding Documents}"
 		         SelectedItem="{Binding SelectedItem}"
 		         BorderThickness="0"
 		         Grid.Row="0">
@@ -39,7 +39,7 @@
 			</i:Interaction.Triggers>
 		</ListBox>
 
-		<ListBox ItemsSource="{Binding PublicDocs}"
+		<ListBox ItemsSource="{Binding WebDocs}"
 		         SelectedItem="{Binding SelectedItem}"
 		         BorderThickness="0"
 		         Grid.Row="1">
