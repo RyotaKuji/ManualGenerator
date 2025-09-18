@@ -38,29 +38,6 @@
 				</i:EventTrigger>
 			</i:Interaction.Triggers>
 		</ListBox>
-
-		<ListBox ItemsSource="{Binding WebDocs}"
-		         SelectedItem="{Binding SelectedItem}"
-		         BorderThickness="0"
-		         Grid.Row="1">
-			<ListBox.ItemTemplate>
-				<DataTemplate>
-					<StackPanel>
-						<TextBlock Text="{Binding Title}"
-						           FontSize="16"
-						           Padding="10,5"/>
-						<TextBlock Text="{Binding Id}"
-						           FontSize="14"
-						           Padding="10,5"/>
-					</StackPanel>
-				</DataTemplate>
-			</ListBox.ItemTemplate>
-			<i:Interaction.Triggers>
-				<i:EventTrigger EventName="SelectionChanged">
-					<i:InvokeCommandAction Command="{Binding SelectedCommand}"/>
-				</i:EventTrigger>
-			</i:Interaction.Triggers>
-		</ListBox>
 	</Grid>
 
 </Page>

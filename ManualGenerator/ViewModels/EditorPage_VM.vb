@@ -35,7 +35,7 @@ Public Class EditorPage_VM
 	Public ReadOnly Property AddSectionCommand As RelayCommand(Of Section_VM)
 
 	Private repo As Document_R
-	Private publicDocManager As WebDocManager
+	Private publicDocManager As New WebDocManager()
 
 	Public Sub New(Optional id As String = Nothing)
 		' Command の初期化
@@ -66,9 +66,6 @@ Public Class EditorPage_VM
 	Private Async Function Initialize() As Task
 		If repo Is Nothing Then
 			repo = Await Document_R.CreateAsync()
-		End If
-		If publicDocManager Is Nothing Then
-			publicDocManager = Await WebDocManager.CreateAsync()
 		End If
 	End Function
 
@@ -133,7 +130,7 @@ Public Class EditorPage_VM
 	''' </summary>
 	Private Async Function PublishDocAsync() As Task
 		Await SaveAsync()
-		Await publicDocManager.PublishAsync(Entity)
+		Await publicDocManager.PublishAsync(Entity.Id)
 	End Function
 
 	''' <summary>

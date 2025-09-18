@@ -1,38 +1,20 @@
 ﻿Imports System.IO
 Imports System.Text
-Imports Newtonsoft.Json
 
 Public Class WebDocManager
 
-	Private repo As WebDoc_R
-
-	Private Sub New()
-	End Sub
-
-	' 非同期ファクトリ
-	Public Shared Async Function CreateAsync() As Task(Of WebDocManager)
-		Dim inst = New WebDocManager()
-		inst.repo = Await WebDoc_R.CreateAsync()
-		Return inst
-	End Function
-
-	Public Async Function PublishAsync(entity As Document_E) As Task(Of String)
+	Public Async Function PublishAsync(id As String) As Task(Of String)
 		Try
-			Await repo.CreateOrUpdateAsync(entity)
-
-			' JSON を一時ファイルに保存
-			Dim json As String = JsonConvert.SerializeObject(entity)
-			Dim tempJsonPath As String = Path.GetTempFileName()
-			File.WriteAllText(tempJsonPath, json, Encoding.UTF8)
-
 			' php.exe を起動
 			Dim psi As New ProcessStartInfo() With {
 				.FileName = My.Resources.PHPExePath,
-				.Arguments = $"""{My.Resources.PHPScriptPath}"" ""{tempJsonPath}""",
+				.Arguments = $"""{My.Resources.PHPScriptPath}"" ""{id}""",
 				.RedirectStandardOutput = True,
 				.RedirectStandardError = True,
 				.UseShellExecute = False,
-				.CreateNoWindow = True
+				.CreateNoWindow = True,
+				.StandardOutputEncoding = Encoding.UTF8,
+				.StandardErrorEncoding = Encoding.UTF8
 			}
 
 			Dim htmlContent As String = ""
@@ -46,10 +28,7 @@ Public Class WebDocManager
 				End If
 			End Using
 
-			' 一時ファイル削除
-			File.Delete(tempJsonPath)
-
-			Dim documentPath = GetDocumentPath(entity.Id)
+			Dim documentPath = GetDocumentPath(id)
 			File.WriteAllText(documentPath, htmlContent, Encoding.UTF8)
 
 			Return documentPath
