@@ -63,9 +63,13 @@ Public Class Document_R
 	' CREATE or UPDATE (セクションは差分更新)
 	Public Async Function CreateOrUpdateAsync(doc As Document_E, isPublic As Boolean) As Task
 
-		If doc.IsPublic = False And isPublic = True Then
-			doc = doc.GetPublicEntity()
-		End If
+		For i As Integer = 0 To If(doc.Sections?.Count(), 0) - 1
+			Dim sec = doc.Sections(i)
+			sec.DocumentId = doc.Id
+			sec.OrderIndex = i
+		Next
+
+		doc = doc.Clone(isPublic)
 
 		' 1トランザクションで実行（同期APIはコールバック内のSQLiteConnectionで使用可）
 		Await db.RunInTransactionAsync(
@@ -74,17 +78,17 @@ Public Class Document_R
 				' --- Document 保存 ---
 				Dim existingDoc = conn.Find(Of Document_E)(doc.Id)
 				If existingDoc Is Nothing Then
+
 					conn.Insert(doc)
-					For i As Integer = 0 To If(doc.Sections?.Count(), 0) - 1
-						Dim sec = doc.Sections(i)
-						sec.DocumentId = doc.Id
-						sec.OrderIndex = i
+					For Each sec In doc.Sections
 						conn.Insert(sec)
 					Next
+
 				Else
+
 					conn.Update(doc)
 
-					' --- Sections 差分更新 ---
+					' Sections 差分更新
 					If doc.Sections IsNot Nothing Then
 						Dim existingSections = conn.Table(Of Section_E)().
 							Where(Function(s) s.DocumentId = doc.Id).
@@ -92,11 +96,7 @@ Public Class Document_R
 
 						Dim existingDict = existingSections.ToDictionary(Function(sec) sec.Id, StringComparer.OrdinalIgnoreCase)
 
-						For i As Integer = 0 To doc.Sections.Count() - 1
-							Dim sec = doc.Sections(i)
-							sec.DocumentId = doc.Id
-							sec.OrderIndex = i
-
+						For Each sec In doc.Sections
 							If existingDict.ContainsKey(sec.Id) Then
 								' 更新
 								conn.Update(sec)
@@ -112,6 +112,21 @@ Public Class Document_R
 							conn.Delete(toDelete)
 						Next
 					End If
+				End If
+
+				If isPublic Then
+
+					Dim deletedId = Document_E.GetIdWithPubStatus(doc.Id, False)
+
+					Dim deleteSections = conn.Table(Of Section_E)().
+							Where(Function(s) s.DocumentId = deletedId).
+							ToList()
+					For Each sec In deleteSections
+						conn.Delete(sec)
+					Next
+
+					conn.Delete(Of Document_E)(deletedId)
+
 				End If
 			End Sub
 		)

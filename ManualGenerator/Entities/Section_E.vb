@@ -2,8 +2,18 @@
 
 <Table("Sections")>
 Public Class Section_E
-	<PrimaryKey>
-	Public Property Id As String = Guid.NewGuid().ToString()
+	<PrimaryKey, NotNull>
+	Public Property Id As String
+		Get
+			Return BaseId & If(IsPublic, My.Resources.PublicSuffix, My.Resources.DraftSuffix)
+		End Get
+		Set(value As String)
+			BaseId = GetBaseId(value)
+		End Set
+	End Property
+
+	<Ignore>
+	Private Property BaseId As String = Guid.NewGuid().ToString()
 
 	<Indexed>
 	Public Property DocumentId As String
@@ -17,17 +27,16 @@ Public Class Section_E
 	Public Property OrderIndex As Integer
 
 	Public Property IsPublic As Boolean
-		Get
-			Return IsPublicId(Id)
-		End Get
-		Set(value As Boolean)
-		End Set
-	End Property
 
-	Public Function GetPublicEntity() As Section_E
-		Dim publicDoc As New Section_E With {
-			.Id = GetPublicId(),
-			.DocumentId = Document_E.GetPublicId(DocumentId),
+	Public Function Clone(isPublic As Boolean) As Section_E
+		If Me.IsPublic = isPublic Then
+			Return Me
+		End If
+
+		Dim newEntity As New Section_E With {
+			.BaseId = BaseId,
+			.IsPublic = isPublic,
+			.DocumentId = Document_E.GetIdWithPubStatus(DocumentId, isPublic),
 			.Heading = Heading,
 			.DescriptionXaml = DescriptionXaml,
 			.DescriptionHtml = DescriptionHtml,
@@ -36,34 +45,23 @@ Public Class Section_E
 			.IsHeadline = IsHeadline,
 			.OrderIndex = OrderIndex
 		}
-		Return publicDoc
+
+		Return newEntity
 	End Function
 
-	Public Function GetPublicId() As String
-		Return GetPublicId(Id)
+	Public Shared Function GetIdWithPubStatus(id As String, isPublic As Boolean) As String
+		Dim baseId As String = id.Substring(0, id.IndexOf(My.Resources.SuffixDelimiter))
+		Dim suffix As String = If(isPublic, My.Resources.PublicSuffix, My.Resources.DraftSuffix)
+		Return baseId & suffix
 	End Function
 
-	Public Function GetDraftId() As String
-		Return GetDraftId(Id)
-	End Function
-
-	Public Shared Function GetPublicId(id As String) As String
-		If IsPublicId(id) Then
-			Return id
-		Else
-			Return id & My.Resources.PublicSuffix
-		End If
-	End Function
-
-	Public Shared Function GetDraftId(id As String) As String
-		If IsPublicId(id) Then
-			Return id.TrimEnd(My.Resources.PublicSuffix)
-		Else
+	Private Shared Function GetBaseId(id As String) As String
+		Dim delimiterIndex As Integer = id.IndexOf(My.Resources.SuffixDelimiter)
+		If delimiterIndex = -1 Then
 			Return id
 		End If
+
+		Return id.Substring(0, delimiterIndex)
 	End Function
 
-	Public Shared Function IsPublicId(id As String) As Boolean
-		Return id.EndsWith(My.Resources.PublicSuffix)
-	End Function
 End Class

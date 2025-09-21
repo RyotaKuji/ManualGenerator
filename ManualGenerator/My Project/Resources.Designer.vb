@@ -70,6 +70,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  _Draft に類似しているローカライズされた文字列を検索します。
+        '''</summary>
+        Friend ReadOnly Property DraftSuffix() As String
+            Get
+                Return ResourceManager.GetString("DraftSuffix", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  C:\WorkSpace\Prog\ManualGenerator\WebDoc\System\PHP\php.exe に類似しているローカライズされた文字列を検索します。
         '''</summary>
         Friend ReadOnly Property PHPExePath() As String
@@ -102,6 +111,15 @@ Namespace My.Resources
         Friend ReadOnly Property PublicSuffix() As String
             Get
                 Return ResourceManager.GetString("PublicSuffix", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  _ に類似しているローカライズされた文字列を検索します。
+        '''</summary>
+        Friend ReadOnly Property SuffixDelimiter() As String
+            Get
+                Return ResourceManager.GetString("SuffixDelimiter", resourceCulture)
             End Get
         End Property
     End Module
