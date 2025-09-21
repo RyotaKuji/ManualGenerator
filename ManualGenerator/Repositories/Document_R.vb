@@ -35,15 +35,17 @@ Public Class Document_R
 	End Function
 
 	' READ by Title
-	Public Async Function ReadAllByTitleAsync(keyword As String) As Task(Of List(Of Document_E))
+	Public Async Function ReadAllByTitleAsync(keyword As String, isPublic As Boolean) As Task(Of List(Of Document_E))
 		Dim docs As List(Of Document_E)
 
 		If String.IsNullOrWhiteSpace(keyword) Then
 			docs = Await db.Table(Of Document_E)().
+						Where(Function(d) d.IsPublic = isPublic).
 						ToListAsync()
 		Else
 			docs = Await db.Table(Of Document_E)().
-						Where(Function(d) d.Title.Contains(keyword)).
+						Where(Function(d) d.Title.Contains(keyword) And
+										d.IsPublic = isPublic).
 						ToListAsync()
 		End If
 
@@ -59,7 +61,11 @@ Public Class Document_R
 	End Function
 
 	' CREATE or UPDATE (セクションは差分更新)
-	Public Async Function CreateOrUpdateAsync(doc As Document_E) As Task
+	Public Async Function CreateOrUpdateAsync(doc As Document_E, isPublic As Boolean) As Task
+
+		If doc.IsPublic = False And isPublic = True Then
+			doc = doc.GetPublicEntity()
+		End If
 
 		' 1トランザクションで実行（同期APIはコールバック内のSQLiteConnectionで使用可）
 		Await db.RunInTransactionAsync(

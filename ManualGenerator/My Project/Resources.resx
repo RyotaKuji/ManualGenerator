@@ -129,4 +129,7 @@
   <data name="PublicDocDir" xml:space="preserve">
     <value>C:\WorkSpace\Prog\ManualGenerator\WebDoc\Docs\</value>
   </data>
+  <data name="PublicSuffix" xml:space="preserve">
+    <value>_Public</value>
+  </data>
 </root>

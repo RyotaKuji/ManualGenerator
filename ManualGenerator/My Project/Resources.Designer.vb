@@ -88,11 +88,20 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  C:\WorkSpace\Prog\ManualGenerator\WebDoc\Documents\ に類似しているローカライズされた文字列を検索します。
+        '''  C:\WorkSpace\Prog\ManualGenerator\WebDoc\Docs\ に類似しているローカライズされた文字列を検索します。
         '''</summary>
         Friend ReadOnly Property PublicDocDir() As String
             Get
                 Return ResourceManager.GetString("PublicDocDir", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  _Public に類似しているローカライズされた文字列を検索します。
+        '''</summary>
+        Friend ReadOnly Property PublicSuffix() As String
+            Get
+                Return ResourceManager.GetString("PublicSuffix", resourceCulture)
             End Get
         End Property
     End Module

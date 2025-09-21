@@ -106,7 +106,7 @@ Public Class EditorPage_VM
 	''' <summary>
 	''' 保存
 	''' </summary>
-	Private Async Function SaveAsync() As Task
+	Private Async Function SaveAsync(isPublic As Boolean) As Task
 
 		' Sections の内容を Entity に反映
 		Dim sectionEntities = Sections.Select(Function(x) x.Entity)
@@ -115,21 +115,21 @@ Public Class EditorPage_VM
 		Next
 		Entity.Sections = sectionEntities
 
-		Await repo.CreateOrUpdateAsync(Entity)
+		Await repo.CreateOrUpdateAsync(Entity, isPublic)
 	End Function
 
 	''' <summary>
 	''' 下書き保存
 	''' </summary>
 	Private Async Function SaveDraftAsync() As Task
-		Await SaveAsync()
+		Await SaveAsync(False)
 	End Function
 
 	''' <summary>
 	''' 公開
 	''' </summary>
 	Private Async Function PublishDocAsync() As Task
-		Await SaveAsync()
+		Await SaveAsync(True)
 		Await publicDocManager.PublishAsync(Entity.Id)
 	End Function
 
