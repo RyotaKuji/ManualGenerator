@@ -30,13 +30,13 @@
 				<RowDefinition Height="*"/>
 			</Grid.RowDefinitions>
 
-			<!-- タイトルバー -->
+			<!-- ヘッダー -->
 			<ContentControl Content="{Binding CurrentHeader}"
 			                Grid.Row="0"
 			                VerticalAlignment="Stretch"
 			                Panel.ZIndex="200"/>
 
-			<!-- タイトルバー下部 -->
+			<!-- ヘッダー下部 -->
 			<Rectangle Height="16"
 			           Panel.ZIndex="120"
 			           HorizontalAlignment="Stretch"

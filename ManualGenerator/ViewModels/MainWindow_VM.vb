@@ -25,7 +25,7 @@ Public Class MainWindow_VM : Inherits ObservableObject
 	' ListPage へ移動
 	Public Sub NavigateToListPage()
 		Dim vm = New ListPage_VM()
-		CurrentHeader = New TitleBar_ListPage() With {
+		CurrentHeader = New Header_ListPage() With {
 			.DataContext = vm
 		}
 		CurrentPage = New ListPage With {
@@ -36,7 +36,7 @@ Public Class MainWindow_VM : Inherits ObservableObject
 	' EditorPage へ移動
 	Public Sub NavigateToEditorPage(Optional id As String = Nothing)
 		Dim vm = New EditorPage_VM(id)
-		CurrentHeader = New TitleBar_EditorPage() With {
+		CurrentHeader = New Header_EditorPage() With {
 			.DataContext = vm
 		}
 		CurrentPage = New EditorPage() With {
