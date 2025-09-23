@@ -10,13 +10,12 @@ Class EditorPage
 
 	Public ReadOnly Property SaveCommand As ICommand
 
-	Public Sub New(vm As EditorPage_VM)
+	Public Sub New()
 		' Command の初期化
 		' InitializeComponent の前に登録が必要
 		SaveCommand = New RelayCommand(AddressOf Save)
 
 		InitializeComponent()
-		DataContext = vm
 	End Sub
 
 	''' <summary>

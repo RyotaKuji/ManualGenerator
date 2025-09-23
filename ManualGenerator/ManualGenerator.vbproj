@@ -191,7 +191,7 @@
     <Compile Include="Views\Controls\StyledButton.xaml.vb">
       <DependentUpon>StyledButton.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Section.xaml.vb">
+    <Compile Include="Views\Controls\Section.xaml.vb">
       <DependentUpon>Section.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\Controls\AddCommandBar.xaml">
@@ -238,7 +238,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Section.xaml">
+    <Page Include="Views\Controls\Section.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

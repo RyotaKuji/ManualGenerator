@@ -1,16 +1,16 @@
-﻿<Page x:Class="EditorPage"
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:local="clr-namespace:ManualGenerator"
-      mc:Ignorable="d"
-      xmlns:syncfusionskin="clr-namespace:Syncfusion.SfSkinManager;assembly=Syncfusion.SfSkinManager.WPF"
-      syncfusionskin:SfSkinManager.Theme="{syncfusionskin:SkinManagerExtension ThemeName=Windows11Light}"
-      x:Name="PageRoot"
-      Title="EditorPage">
+﻿<UserControl x:Class="EditorPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:ManualGenerator"
+             mc:Ignorable="d"
+             xmlns:syncfusionskin="clr-namespace:Syncfusion.SfSkinManager;assembly=Syncfusion.SfSkinManager.WPF"
+             syncfusionskin:SfSkinManager.Theme="{syncfusionskin:SkinManagerExtension ThemeName=Windows11Light}"
+             Background="#d3e3e8"
+             x:Name="PageRoot">
 
-	<Page.Resources>
+	<UserControl.Resources>
 
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
@@ -19,14 +19,14 @@
 			<BooleanToVisibilityConverter x:Key="BoolToVis"/>
 		</ResourceDictionary>
 
-	</Page.Resources>
+	</UserControl.Resources>
 
-	<Page.InputBindings>
+	<UserControl.InputBindings>
 		<!-- Ctrl+S に SaveCommand を割り当て -->
 		<KeyBinding Key="S"
 		            Modifiers="Control"
 		            Command="{Binding ElementName=PageRoot, Path=SaveCommand}"/>
-	</Page.InputBindings>
+	</UserControl.InputBindings>
 
 	<Grid>
 		<ScrollViewer x:Name="ScrollViewer"
@@ -97,4 +97,4 @@
 			</Grid>
 		</ScrollViewer>
 	</Grid>
-</Page>
+</UserControl>

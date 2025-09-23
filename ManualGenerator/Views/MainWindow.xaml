@@ -14,11 +14,6 @@
         FontWeight="Normal"
         Background="Transparent">
 
-	<Window.Resources>
-		<BooleanToVisibilityConverter x:Key="BoolToVis"/>
-		<local:BooleanToVisibilityWithInvertConverter x:Key="BoolToVisInvert"/>
-	</Window.Resources>
-
 	<WindowChrome.WindowChrome>
 		<WindowChrome CaptionHeight="55"
 		              UseAeroCaptionButtons="True"
@@ -36,15 +31,10 @@
 			</Grid.RowDefinitions>
 
 			<!-- タイトルバー -->
-			<local:TitleBar_EditorPage Grid.Row="0"
-			                           Visibility="{Binding IsEditorMode, Converter={StaticResource BoolToVis}}"
-			                           VerticalAlignment="Stretch"
-			                           Panel.ZIndex="200"/>
-			<local:TitleBar_ListPage Grid.Row="0"
-			                         DataContext="{Binding}"
-			                         Visibility="{Binding IsEditorMode, Converter={StaticResource BoolToVisInvert}}"
-			                         VerticalAlignment="Stretch"
-			                         Panel.ZIndex="200"/>
+			<ContentControl Content="{Binding CurrentHeader}"
+			                Grid.Row="0"
+			                VerticalAlignment="Stretch"
+			                Panel.ZIndex="200"/>
 
 			<!-- タイトルバー下部 -->
 			<Rectangle Height="16"
@@ -69,11 +59,9 @@
 			</Rectangle>
 
 			<!-- ページ -->
-			<Frame x:Name="Frame"
-			       NavigationUIVisibility="Hidden"
-			       IsTabStop="False"
-			       Grid.Row="1"
-			       Background="#d3e3e8"/>
+			<ContentControl Content="{Binding CurrentPage}"
+			                IsTabStop="False"
+			                Grid.Row="1"/>
 		</Grid>
 
 		<Border.Style>

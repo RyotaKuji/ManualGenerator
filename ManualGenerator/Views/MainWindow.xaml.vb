@@ -16,16 +16,12 @@
 
 	' ListPage へ移動
 	Public Sub NavigateToListPage()
-		VM.EditorPage_VM = Nothing
-		Frame.Navigate(New ListPage())
+		VM.NavigateToListPage()
 	End Sub
 
 	' EditorPage へ移動
 	Public Sub NavigateToEditorPage(Optional id As String = Nothing)
-		Dim pageVM As New EditorPage_VM(id)
-		VM.EditorPage_VM = pageVM
-
-		Frame.Navigate(New EditorPage(pageVM))
+		VM.NavigateToEditorPage(id)
 	End Sub
 
 End Class

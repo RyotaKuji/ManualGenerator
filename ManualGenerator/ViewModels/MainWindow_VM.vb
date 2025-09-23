@@ -1,48 +1,46 @@
 ﻿Imports CommunityToolkit.Mvvm.ComponentModel
-Imports CommunityToolkit.Mvvm.Input
 
 Public Class MainWindow_VM : Inherits ObservableObject
 
-	Private _editorPage_VM As EditorPage_VM
-	Public Property EditorPage_VM As EditorPage_VM
+	Private _currentHeader As Object
+	Public Property CurrentHeader As Object
 		Get
-			Return _editorPage_VM
+			Return _currentHeader
 		End Get
-		Set(value As EditorPage_VM)
-			SetProperty(_editorPage_VM, value)
-			OnPropertyChanged(NameOf(IsEditorMode))
-		End Set
-	End Property
-	Private _listPage_VM As ListPage_VM
-	Public Property ListPage_VM As ListPage_VM
-		Get
-			Return _listPage_VM
-		End Get
-		Set(value As ListPage_VM)
-			SetProperty(_listPage_VM, value)
-			OnPropertyChanged(NameOf(IsEditorMode))
+		Set(value As Object)
+			SetProperty(_currentHeader, value)
 		End Set
 	End Property
 
-	Public ReadOnly Property IsEditorMode As Boolean
+	Private _currentPage As Object
+	Public Property CurrentPage As Object
 		Get
-			Return EditorPage_VM IsNot Nothing
+			Return _currentPage
 		End Get
+		Set(value As Object)
+			SetProperty(_currentPage, value)
+		End Set
 	End Property
 
-	Public ReadOnly Property SaveDraftCommand As RelayCommand
-	Public ReadOnly Property PublishDocCommand As RelayCommand
-
-	Public Sub New()
-		SaveDraftCommand = New RelayCommand(AddressOf SaveDraft)
-		PublishDocCommand = New RelayCommand(AddressOf PublishDoc)
+	' ListPage へ移動
+	Public Sub NavigateToListPage()
+		Dim vm = New ListPage_VM()
+		CurrentHeader = New TitleBar_ListPage() With {
+			.DataContext = vm
+		}
+		CurrentPage = New ListPage With {
+			.DataContext = vm
+		}
 	End Sub
 
-	Private Sub SaveDraft()
-		EditorPage_VM?.SaveDraftCommand.Execute(Nothing)
-	End Sub
-
-	Private Sub PublishDoc()
-		EditorPage_VM?.PublishDocCommand.Execute(Nothing)
+	' EditorPage へ移動
+	Public Sub NavigateToEditorPage(Optional id As String = Nothing)
+		Dim vm = New EditorPage_VM(id)
+		CurrentHeader = New TitleBar_EditorPage() With {
+			.DataContext = vm
+		}
+		CurrentPage = New EditorPage() With {
+			.DataContext = vm
+		}
 	End Sub
 End Class

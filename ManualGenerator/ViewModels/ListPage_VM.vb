@@ -11,11 +11,14 @@ Public Class ListPage_VM : Inherits ObservableObject
 	Public Property SelectedItem As Document_E
 
 	Public Property SelectedCommand As RelayCommand
+	Public Property CreateNewCommand As RelayCommand
 
 	Private repo As Document_R
 
 	Public Sub New()
 		SelectedCommand = New RelayCommand(AddressOf Selected)
+		CreateNewCommand = New RelayCommand(AddressOf CreateNew)
+
 		Task.Run(
 			Async Function()
 
@@ -52,6 +55,11 @@ Public Class ListPage_VM : Inherits ObservableObject
 		Dim id As String = SelectedItem.Id
 		Dim mainWindow As MainWindow = Application.Current.MainWindow
 		mainWindow.NavigateToEditorPage(id)
+	End Sub
+
+	Private Sub CreateNew()
+		Dim mainWindow As MainWindow = Application.Current.MainWindow
+		mainWindow.NavigateToEditorPage()
 	End Sub
 
 	Private Async Function GetDocuments(isPublic As Boolean) As Task(Of List(Of Document_E))
