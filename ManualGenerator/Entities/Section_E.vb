@@ -5,7 +5,7 @@ Public Class Section_E
 	<PrimaryKey, NotNull>
 	Public Property Id As String
 		Get
-			Return BaseId & If(IsPublic, My.Resources.PublicSuffix, My.Resources.DraftSuffix)
+			Return GetIdWithPubStatus(BaseId, PubStatus)
 		End Get
 		Set(value As String)
 			BaseId = GetBaseId(value)
@@ -26,17 +26,17 @@ Public Class Section_E
 	Public Property IsHeadline As Boolean
 	Public Property OrderIndex As Integer
 
-	Public Property IsPublic As Boolean
+	Public Property PubStatus As Definitions.PubStatus
 
-	Public Function Clone(isPublic As Boolean) As Section_E
-		If Me.IsPublic = isPublic Then
+	Public Function Clone(pubStatus As Definitions.PubStatus) As Section_E
+		If Me.PubStatus = pubStatus Then
 			Return Me
 		End If
 
 		Dim newEntity As New Section_E With {
 			.BaseId = BaseId,
-			.IsPublic = isPublic,
-			.DocumentId = Document_E.GetIdWithPubStatus(DocumentId, isPublic),
+			.PubStatus = pubStatus,
+			.DocumentId = Document_E.GetIdWithPubStatus(DocumentId, pubStatus),
 			.Heading = Heading,
 			.DescriptionXaml = DescriptionXaml,
 			.DescriptionHtml = DescriptionHtml,

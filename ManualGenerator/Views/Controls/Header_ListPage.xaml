@@ -63,10 +63,15 @@
 
 	<StackPanel Grid.Column="1"
 	            Orientation="Horizontal"
-	            HorizontalAlignment="Center">
+	            HorizontalAlignment="Center"
+	            WindowChrome.IsHitTestVisibleInChrome="True">
 		<Button Content="公開済み"
+		        Command="{Binding SwitchIsPublicCommand}"
+		        CommandParameter="{x:Static local:Definitions+PubStatus.Published}"
 		        Style="{StaticResource TabButtonSytle}"/>
-		<Button Content="公開済み"
+		<Button Content="下書き"
+		        Command="{Binding SwitchIsPublicCommand}"
+		        CommandParameter="{x:Static local:Definitions+PubStatus.Draft}"
 		        Style="{StaticResource TabButtonSytle}"/>
 	</StackPanel>
 

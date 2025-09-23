@@ -6,7 +6,7 @@ Public Class Document_E
 	<PrimaryKey, NotNull>
 	Public Property Id As String
 		Get
-			Return BaseId & If(IsPublic, My.Resources.PublicSuffix, My.Resources.DraftSuffix)
+			Return GetIdWithPubStatus(BaseId, PubStatus)
 		End Get
 		Set(value As String)
 			BaseId = GetBaseId(value)
@@ -22,25 +22,25 @@ Public Class Document_E
 	<Ignore>
 	Public Property Sections As IEnumerable(Of Section_E) = {}
 
-	Public Property IsPublic As Boolean
+	Public Property PubStatus As Definitions.PubStatus
 
-	Public Function Clone(isPublic As Boolean)
-		If Me.IsPublic = isPublic Then
+	Public Function Clone(pubStatus As Definitions.PubStatus)
+		If Me.PubStatus = pubStatus Then
 			Return Me
 		End If
 
 		Dim newEntity As New Document_E With {
 			.BaseId = BaseId,
-			.IsPublic = isPublic,
+			.PubStatus = pubStatus,
 			.Title = Title,
-			.Sections = Sections.Select(Function(s) s.Clone(isPublic)).ToList()
+			.Sections = Sections.Select(Function(s) s.Clone(pubStatus)).ToList()
 		}
 		Return newEntity
 	End Function
 
-	Public Shared Function GetIdWithPubStatus(id As String, isPublic As Boolean) As String
-		Dim baseId As String = id.Substring(0, id.IndexOf(My.Resources.SuffixDelimiter))
-		Dim suffix As String = If(isPublic, My.Resources.PublicSuffix, My.Resources.DraftSuffix)
+	Public Shared Function GetIdWithPubStatus(id As String, pubStatus As Definitions.PubStatus) As String
+		Dim baseId As String = GetBaseId(id)
+		Dim suffix As String = GetSuffix(pubStatus)
 		Return baseId & suffix
 	End Function
 
@@ -51,6 +51,10 @@ Public Class Document_E
 		End If
 
 		Return id.Substring(0, delimiterIndex)
+	End Function
+
+	Private Shared Function GetSuffix(pubStatus As Definitions.PubStatus) As String
+		Return My.Resources.SuffixDelimiter & pubStatus.ToString()
 	End Function
 
 End Class

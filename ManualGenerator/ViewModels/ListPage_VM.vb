@@ -5,19 +5,35 @@ Imports CommunityToolkit.Mvvm.Input
 
 Public Class ListPage_VM : Inherits ObservableObject
 
-	Public Property Publics As New ObservableCollection(Of Document_E)
-	Public Property Drafts As New ObservableCollection(Of Document_E)
+	Public Property Items As New ObservableCollection(Of Document_E)
+
+	Private _isPublic As Boolean
+	Public Property IsPublic As Boolean
+		Get
+			Return _isPublic
+		End Get
+		Set(value As Boolean)
+			If SetProperty(_isPublic, value) Then
+				SetItems(value)
+			End If
+		End Set
+	End Property
 
 	Public Property SelectedItem As Document_E
 
 	Public Property SelectedCommand As RelayCommand
 	Public Property CreateNewCommand As RelayCommand
+	Public Property SwitchIsPublicCommand As RelayCommand(Of Definitions.PubStatus)
 
 	Private repo As Document_R
+
+	Private draftItems As List(Of Document_E)
+	Private publicItems As List(Of Document_E)
 
 	Public Sub New()
 		SelectedCommand = New RelayCommand(AddressOf Selected)
 		CreateNewCommand = New RelayCommand(AddressOf CreateNew)
+		SwitchIsPublicCommand = New RelayCommand(Of Definitions.PubStatus)(Sub(b) IsPublic = b = Definitions.PubStatus.Published)
 
 		Task.Run(
 			Async Function()
@@ -25,20 +41,14 @@ Public Class ListPage_VM : Inherits ObservableObject
 				Await Initialize()
 
 				' 結果を取得
-				Dim draftItems As List(Of Document_E) = Await GetDocuments(False)
-				Dim PublicItems As List(Of Document_E) = Await GetDocuments(True)
+				draftItems = Await repo.ReadAllByTitleAsync("", False)
+				publicItems = Await repo.ReadAllByTitleAsync("", True)
 
 				' UI スレッドでプロパティ/コレクション更新
 				Await Application.Current.Dispatcher.InvokeAsync(
 					Sub()
-						Publics.Clear()
-						For Each doc In draftItems
-							Publics.Add(doc)
-						Next
-						Drafts.Clear()
-						For Each doc In PublicItems
-							Drafts.Add(doc)
-						Next
+						IsPublic = False
+						SetItems(IsPublic)
 					End Sub,
 					DispatcherPriority.DataBind)
 			End Function
@@ -62,20 +72,13 @@ Public Class ListPage_VM : Inherits ObservableObject
 		mainWindow.NavigateToEditorPage()
 	End Sub
 
-	Private Async Function GetDocuments(isPublic As Boolean) As Task(Of List(Of Document_E))
-		Return Await repo.ReadAllByTitleAsync("", isPublic)
-	End Function
+	Private Sub SetItems(isPublic As Boolean)
 
-	Private Async Function SetItemsAsync() As Task
-		Drafts.Clear()
-		Dim draftDocsResult = Await repo.ReadAllByTitleAsync("", False)
-		For Each doc In draftDocsResult
-			Drafts.Add(doc)
+		Dim displayItems As List(Of Document_E) = If(isPublic, publicItems, draftItems)
+
+		Items.Clear()
+		For Each doc In displayItems
+			Items.Add(doc)
 		Next
-		Publics.Clear()
-		Dim publicDocsResult = Await repo.ReadAllByTitleAsync("", True)
-		For Each doc In publicDocsResult
-			Publics.Add(doc)
-		Next
-	End Function
+	End Sub
 End Class
