@@ -10,12 +10,9 @@ Public Class Document_R
 	' 非同期ファクトリ（テーブル作成もここでAwait）
 	Public Shared Async Function CreateAsync() As Task(Of Document_R)
 		Dim inst = New Document_R(My.Resources.DBPath)
-		Try
-			Await inst.db.CreateTableAsync(Of Document_E)()
-			Await inst.db.CreateTableAsync(Of Section_E)()
-		Catch ex As Exception
-			Dim exStr As String = ex.Message
-		End Try
+
+		Await inst.db.CreateTableAsync(Of Document_E)()
+		Await inst.db.CreateTableAsync(Of Section_E)()
 
 		Return inst
 	End Function
@@ -35,19 +32,13 @@ Public Class Document_R
 	End Function
 
 	' READ by Title
-	Public Async Function ReadAllByTitleAsync(keyword As String, isPublic As Boolean) As Task(Of List(Of Document_E))
-		Dim docs As List(Of Document_E)
+	Public Async Function ReadAllAsync(pubStatus As Definitions.PubStatus) As Task(Of List(Of Document_E))
+		Dim statusValue As Integer = pubStatus
 
-		If String.IsNullOrWhiteSpace(keyword) Then
-			docs = Await db.Table(Of Document_E)().
-						Where(Function(d) d.IsPublic = isPublic).
-						ToListAsync()
-		Else
-			docs = Await db.Table(Of Document_E)().
-						Where(Function(d) d.Title.Contains(keyword) And
-										d.IsPublic = isPublic).
-						ToListAsync()
-		End If
+		Dim docs As List(Of Document_E) =
+		Await db.Table(Of Document_E)().
+				Where(Function(d) d.PubStatusValue = statusValue).
+				ToListAsync()
 
 		' 各 Document に対応する Section を読み込む（逐次）
 		For Each doc In docs
@@ -61,7 +52,7 @@ Public Class Document_R
 	End Function
 
 	' CREATE or UPDATE (セクションは差分更新)
-	Public Async Function CreateOrUpdateAsync(doc As Document_E, isPublic As Boolean) As Task
+	Public Async Function CreateOrUpdateAsync(doc As Document_E, pubStatus As Definitions.PubStatus) As Task
 
 		For i As Integer = 0 To If(doc.Sections?.Count(), 0) - 1
 			Dim sec = doc.Sections(i)
@@ -69,7 +60,7 @@ Public Class Document_R
 			sec.OrderIndex = i
 		Next
 
-		doc = doc.Clone(isPublic)
+		doc = doc.Clone(pubStatus)
 
 		' 1トランザクションで実行（同期APIはコールバック内のSQLiteConnectionで使用可）
 		Await db.RunInTransactionAsync(
@@ -83,7 +74,6 @@ Public Class Document_R
 					For Each sec In doc.Sections
 						conn.Insert(sec)
 					Next
-
 				Else
 
 					conn.Update(doc)
@@ -114,7 +104,7 @@ Public Class Document_R
 					End If
 				End If
 
-				If isPublic Then
+				If pubStatus Then
 
 					Dim deletedId = Document_E.GetIdWithPubStatus(doc.Id, False)
 

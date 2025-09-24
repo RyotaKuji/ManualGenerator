@@ -15,7 +15,7 @@ Public Class Section_E
 	<Ignore>
 	Private Property BaseId As String = Guid.NewGuid().ToString()
 
-	<Indexed>
+	<Indexed, NotNull>
 	Public Property DocumentId As String
 
 	Public Property Heading As String
@@ -26,7 +26,19 @@ Public Class Section_E
 	Public Property IsHeadline As Boolean
 	Public Property OrderIndex As Integer
 
+	' SQLite.NET では Enum を直接保存できないため、整数値として保存する
+	<NotNull>
+	Public Property PubStatusValue As Integer = 0
+
+	<Ignore>
 	Public Property PubStatus As Definitions.PubStatus
+		Get
+			Return PubStatusValue
+		End Get
+		Set(value As Definitions.PubStatus)
+			PubStatusValue = value
+		End Set
+	End Property
 
 	Public Function Clone(pubStatus As Definitions.PubStatus) As Section_E
 		If Me.PubStatus = pubStatus Then
@@ -49,9 +61,9 @@ Public Class Section_E
 		Return newEntity
 	End Function
 
-	Public Shared Function GetIdWithPubStatus(id As String, isPublic As Boolean) As String
-		Dim baseId As String = id.Substring(0, id.IndexOf(My.Resources.SuffixDelimiter))
-		Dim suffix As String = If(isPublic, My.Resources.PublicSuffix, My.Resources.DraftSuffix)
+	Public Shared Function GetIdWithPubStatus(id As String, pubStatus As Definitions.PubStatus) As String
+		Dim baseId As String = GetBaseId(id)
+		Dim suffix As String = My.Resources.SuffixDelimiter & pubStatus.ToString()
 		Return baseId & suffix
 	End Function
 

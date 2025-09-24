@@ -66,11 +66,11 @@
 	            HorizontalAlignment="Center"
 	            WindowChrome.IsHitTestVisibleInChrome="True">
 		<Button Content="公開済み"
-		        Command="{Binding SwitchIsPublicCommand}"
+		        Command="{Binding SwitchPubStatusCommand}"
 		        CommandParameter="{x:Static local:Definitions+PubStatus.Published}"
 		        Style="{StaticResource TabButtonSytle}"/>
 		<Button Content="下書き"
-		        Command="{Binding SwitchIsPublicCommand}"
+		        Command="{Binding SwitchPubStatusCommand}"
 		        CommandParameter="{x:Static local:Definitions+PubStatus.Draft}"
 		        Style="{StaticResource TabButtonSytle}"/>
 	</StackPanel>

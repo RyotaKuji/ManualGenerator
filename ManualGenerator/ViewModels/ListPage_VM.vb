@@ -7,48 +7,47 @@ Public Class ListPage_VM : Inherits ObservableObject
 
 	Public Property Items As New ObservableCollection(Of Document_E)
 
-	Private _isPublic As Boolean
-	Public Property IsPublic As Boolean
-		Get
-			Return _isPublic
-		End Get
-		Set(value As Boolean)
-			If SetProperty(_isPublic, value) Then
-				SetItems(value)
-			End If
-		End Set
-	End Property
-
 	Public Property SelectedItem As Document_E
 
 	Public Property SelectedCommand As RelayCommand
 	Public Property CreateNewCommand As RelayCommand
-	Public Property SwitchIsPublicCommand As RelayCommand(Of Definitions.PubStatus)
+	Public Property SwitchPubStatusCommand As RelayCommand(Of Definitions.PubStatus)
 
 	Private repo As Document_R
 
-	Private draftItems As List(Of Document_E)
-	Private publicItems As List(Of Document_E)
+	Private pubStatus_Items As New Dictionary(Of Definitions.PubStatus, List(Of Document_E))
 
 	Public Sub New()
 		SelectedCommand = New RelayCommand(AddressOf Selected)
 		CreateNewCommand = New RelayCommand(AddressOf CreateNew)
-		SwitchIsPublicCommand = New RelayCommand(Of Definitions.PubStatus)(Sub(b) IsPublic = b = Definitions.PubStatus.Published)
+		SwitchPubStatusCommand = New RelayCommand(Of Definitions.PubStatus)(AddressOf SwitchPubStatus)
 
 		Task.Run(
 			Async Function()
 
 				Await Initialize()
 
-				' 結果を取得
-				draftItems = Await repo.ReadAllByTitleAsync("", False)
-				publicItems = Await repo.ReadAllByTitleAsync("", True)
+				' Enumの全値でTaskを作成
+				Dim tasks = New List(Of Task)()
+				For Each status As Definitions.PubStatus In [Enum].GetValues(GetType(Definitions.PubStatus))
+					tasks.Add(
+						Task.Run(
+							Async Function()
+								Dim items = Await repo.ReadAllAsync(status)
+								SyncLock pubStatus_Items
+									pubStatus_Items(status) = items
+								End SyncLock
+							End Function
+						)
+					)
+				Next
+
+				Await Task.WhenAll(tasks)
 
 				' UI スレッドでプロパティ/コレクション更新
 				Await Application.Current.Dispatcher.InvokeAsync(
 					Sub()
-						IsPublic = False
-						SetItems(IsPublic)
+						SetItems(Definitions.PubStatus.Draft)
 					End Sub,
 					DispatcherPriority.DataBind)
 			End Function
@@ -72,9 +71,13 @@ Public Class ListPage_VM : Inherits ObservableObject
 		mainWindow.NavigateToEditorPage()
 	End Sub
 
-	Private Sub SetItems(isPublic As Boolean)
+	Private Sub SwitchPubStatus(newStatus As Definitions.PubStatus)
+		SetItems(newStatus)
+	End Sub
 
-		Dim displayItems As List(Of Document_E) = If(isPublic, publicItems, draftItems)
+	Private Sub SetItems(pubStatus As Definitions.PubStatus)
+
+		Dim displayItems As List(Of Document_E) = pubStatus_Items(pubStatus)
 
 		Items.Clear()
 		For Each doc In displayItems

@@ -17,14 +17,26 @@ Public Class Document_E
 	Private Property BaseId As String = Guid.NewGuid().ToString()
 
 	<NotNull>
-	Public Property Title As String
+	Public Property Title As String = ""
 
 	<Ignore>
 	Public Property Sections As IEnumerable(Of Section_E) = {}
 
-	Public Property PubStatus As Definitions.PubStatus
+	' SQLite.NET では Enum を直接保存できないため、整数値として保存する
+	<NotNull>
+	Public Property PubStatusValue As Integer = 0
 
-	Public Function Clone(pubStatus As Definitions.PubStatus)
+	<Ignore>
+	Public Property PubStatus As Definitions.PubStatus
+		Get
+			Return PubStatusValue
+		End Get
+		Set(value As Definitions.PubStatus)
+			PubStatusValue = value
+		End Set
+	End Property
+
+	Public Function Clone(pubStatus As Definitions.PubStatus) As Document_E
 		If Me.PubStatus = pubStatus Then
 			Return Me
 		End If
