@@ -29,7 +29,7 @@ Public Class Document_E
 	<Ignore>
 	Public Property PubStatus As Definitions.PubStatus
 		Get
-			Return PubStatusValue
+			Return CType(PubStatusValue, Definitions.PubStatus)
 		End Get
 		Set(value As Definitions.PubStatus)
 			PubStatusValue = value
@@ -66,6 +66,7 @@ Public Class Document_E
 	End Function
 
 	Private Shared Function GetSuffix(pubStatus As Definitions.PubStatus) As String
+		Dim a As String = pubStatus.ToString()
 		Return My.Resources.SuffixDelimiter & pubStatus.ToString()
 	End Function
 

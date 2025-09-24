@@ -21,8 +21,14 @@ Public Class Section
 
 		Dim doc = XamlReader.Parse(xaml)
 		FlowDocument.Blocks.Clear()
-		For Each a In doc.Blocks
-			Dim clone = XamlReader.Parse(XamlWriter.Save(a))
+
+		Dim blocks As BlockCollection = TryCast(doc, FlowDocument)?.Blocks
+		If blocks Is Nothing Then
+			Return
+		End If
+
+		For Each a In blocks
+			Dim clone As Block = CType(XamlReader.Parse(XamlWriter.Save(a)), Block)
 			FlowDocument.Blocks.Add(clone)
 		Next
 	End Sub
@@ -189,9 +195,10 @@ Public Class Section
 			.WindowStartupLocation = WindowStartupLocation.CenterOwner
 		}
 
-		Dim dialogResult As Boolean = dialog.ShowDialog()
+		Dim dialogResult As Boolean? = dialog.ShowDialog()
 
-		If dialogResult = False Then
+		If dialogResult Is Nothing OrElse
+			dialogResult = False Then
 			Return
 		End If
 
@@ -232,10 +239,10 @@ Public Class Section
 				Continue While
 			End If
 
-			Dim elem As TextElement = navigator.Parent
+			Dim elem As TextElement = CType(navigator.Parent, TextElement)
 			While TypeOf elem.Parent IsNot Paragraph AndAlso
 				  TypeOf elem.Parent IsNot FlowDocument
-				elem = elem.Parent
+				elem = CType(elem.Parent, TextElement)
 			End While
 			If TypeOf elem Is Inline Or
 				TypeOf elem Is Hyperlink Then

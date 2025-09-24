@@ -104,9 +104,9 @@ Public Class Document_R
 					End If
 				End If
 
-				If pubStatus Then
+				If pubStatus = Definitions.PubStatus.Published Then
 
-					Dim deletedId = Document_E.GetIdWithPubStatus(doc.Id, False)
+					Dim deletedId = Document_E.GetIdWithPubStatus(doc.Id, Definitions.PubStatus.Draft)
 
 					Dim deleteSections = conn.Table(Of Section_E)().
 							Where(Function(s) s.DocumentId = deletedId).

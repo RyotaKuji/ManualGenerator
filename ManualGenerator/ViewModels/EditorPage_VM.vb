@@ -130,7 +130,7 @@ Public Class EditorPage_VM
 	''' </summary>
 	Private Async Function PublishDocAsync() As Task
 		Await SaveAsync(Definitions.PubStatus.Published)
-		Await publicDocManager.PublishAsync(Document_E.GetIdWithPubStatus(Entity.Id, True))
+		Await publicDocManager.PublishAsync(Document_E.GetIdWithPubStatus(Entity.Id, Definitions.PubStatus.Published))
 	End Function
 
 	''' <summary>

@@ -3,7 +3,7 @@ Imports System.Text
 
 Public Class FileManager
 
-	Public Shared Function ExistsFile(path As String)
+	Public Shared Function ExistsFile(path As String) As Boolean
 		Return File.Exists(path)
 	End Function
 

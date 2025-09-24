@@ -33,7 +33,7 @@ Public Class Section_E
 	<Ignore>
 	Public Property PubStatus As Definitions.PubStatus
 		Get
-			Return PubStatusValue
+			Return CType(PubStatusValue, Definitions.PubStatus)
 		End Get
 		Set(value As Definitions.PubStatus)
 			PubStatusValue = value

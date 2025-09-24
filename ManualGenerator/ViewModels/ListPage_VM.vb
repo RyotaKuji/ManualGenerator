@@ -74,12 +74,12 @@ Public Class ListPage_VM : Inherits ObservableObject
 
 	Private Sub Selected()
 		Dim id As String = SelectedItem.Id
-		Dim mainWindow As MainWindow = Application.Current.MainWindow
+		Dim mainWindow As MainWindow = CType(Application.Current.MainWindow, MainWindow)
 		mainWindow.NavigateToEditorPage(id)
 	End Sub
 
 	Private Sub CreateNew()
-		Dim mainWindow As MainWindow = Application.Current.MainWindow
+		Dim mainWindow As MainWindow = CType(Application.Current.MainWindow, MainWindow)
 		mainWindow.NavigateToEditorPage()
 	End Sub
 
