@@ -26,7 +26,7 @@
 						</Border>
 						<ControlTemplate.Triggers>
 							<Trigger Property="IsChecked" Value="True">
-								<Setter TargetName="border" Property="BorderBrush" Value="Gray"/>
+								<Setter TargetName="border" Property="BorderBrush" Value="#7894eb"/>
 							</Trigger>
 							<Trigger Property="IsChecked" Value="False">
 								<Setter TargetName="border" Property="BorderBrush" Value="Transparent"/>
@@ -80,13 +80,13 @@
 			<local:EnumToBooleanConverter x:Key="EnumToBoolean"/>
 		</StackPanel.Resources>
 
+		<RadioButton Content="作成中"
+		             Style="{StaticResource SegButtonStyle}"
+		             IsChecked="{Binding SelectedPubStatus, Converter={StaticResource EnumToBoolean}, ConverterParameter={x:Static local:Definitions+PubStatus.Draft}}"
+		             GroupName="PubStatus"/>
 		<RadioButton Content="公開"
 		             Style="{StaticResource SegButtonStyle}"
 		             IsChecked="{Binding SelectedPubStatus, Converter={StaticResource EnumToBoolean}, ConverterParameter={x:Static local:Definitions+PubStatus.Published}}"
-		             GroupName="PubStatus"/>
-		<RadioButton Content="下書き"
-		             Style="{StaticResource SegButtonStyle}"
-		             IsChecked="{Binding SelectedPubStatus, Converter={StaticResource EnumToBoolean}, ConverterParameter={x:Static local:Definitions+PubStatus.Draft}}"
 		             GroupName="PubStatus"/>
 	</StackPanel>
 
