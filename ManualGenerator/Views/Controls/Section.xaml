@@ -31,13 +31,13 @@
 			              HorizontalAlignment="Left"
 			              Margin="{StaticResource VerticalMargin}">
 				<ToggleButton.Style>
-					<Style TargetType="ToggleButton">
+					<Style TargetType="{x:Type ToggleButton}">
 						<Setter Property="BorderThickness" Value="0"/>
 						<Setter Property="Width" Value="55"/>
 						<Setter Property="Height" Value="25"/>
 						<Setter Property="Template">
 							<Setter.Value>
-								<ControlTemplate TargetType="ToggleButton">
+								<ControlTemplate TargetType="{x:Type ToggleButton}">
 									<Border Background="{TemplateBinding Background}"
 									        Padding="10,0"
 									        CornerRadius="3">
@@ -100,10 +100,10 @@
 			         FontFamily="Noto Sans JP"
 			         Margin="{StaticResource VerticalMargin}">
 				<TextBox.Style>
-					<Style TargetType="TextBox">
+					<Style TargetType="{x:Type TextBox}">
 						<Setter Property="Template">
 							<Setter.Value>
-								<ControlTemplate TargetType="TextBox">
+								<ControlTemplate TargetType="{x:Type TextBox}">
 									<Border Background="{TemplateBinding Background}"
 									        BorderBrush="{TemplateBinding BorderBrush}"
 									        BorderThickness="{TemplateBinding BorderThickness}"
@@ -314,7 +314,7 @@
 		        Foreground="White"
 		        Grid.Column="1">
 			<Button.Template>
-				<ControlTemplate TargetType="Button">
+				<ControlTemplate TargetType="{x:Type Button}">
 					<Border x:Name="RemoveButton_Visual"
 					        Background="{TemplateBinding Background}"
 					        CornerRadius="0,5,0,0"
@@ -322,7 +322,7 @@
 						<ContentPresenter HorizontalAlignment="Right"
 						                  VerticalAlignment="Top"/>
 						<Border.Style>
-							<Style TargetType="Border">
+							<Style TargetType="{x:Type Border}">
 								<Style.Triggers>
 									<DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Border}}"
 									             Value="False">

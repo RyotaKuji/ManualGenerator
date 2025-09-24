@@ -9,6 +9,18 @@ Public Class ListPage_VM : Inherits ObservableObject
 
 	Public Property SelectedItem As Document_E
 
+	Private _selectedPubStatus As Definitions.PubStatus = Definitions.PubStatus.Draft
+	Public Property SelectedPubStatus As Definitions.PubStatus
+		Get
+			Return _selectedPubStatus
+		End Get
+		Set(value As Definitions.PubStatus)
+			If SetProperty(_selectedPubStatus, value) Then
+				SetItems(value)
+			End If
+		End Set
+	End Property
+
 	Public Property SelectedCommand As RelayCommand
 	Public Property CreateNewCommand As RelayCommand
 	Public Property SwitchPubStatusCommand As RelayCommand(Of Definitions.PubStatus)

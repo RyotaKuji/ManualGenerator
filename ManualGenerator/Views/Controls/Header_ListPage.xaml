@@ -8,20 +8,30 @@
       mc:Ignorable="d">
 
 	<Grid.Resources>
-		<Style x:Key="TabButtonSytle"
-		       TargetType="{x:Type Button}">
-			<Setter Property="Margin" Value="0"/>
+		<Style x:Key="SegButtonStyle"
+		       TargetType="{x:Type RadioButton}">
 			<Setter Property="Template">
 				<Setter.Value>
-					<ControlTemplate TargetType="{x:Type Button}">
+					<ControlTemplate TargetType="{x:Type RadioButton}">
+						<!-- 当たり判定を得るために、Background を設定 -->
 						<Border x:Name="border"
 						        Width="80"
 						        BorderThickness="0,0,0,2"
-						        BorderBrush="Gray"
-						        CornerRadius="0">
-							<ContentPresenter VerticalAlignment="Center"
-							                  HorizontalAlignment="Center"/>
+						        CornerRadius="0"
+						        VerticalAlignment="Stretch"
+						        HorizontalAlignment="Stretch"
+						        Background="Transparent">
+							<ContentPresenter HorizontalAlignment="Center"
+							                  VerticalAlignment="Center"/>
 						</Border>
+						<ControlTemplate.Triggers>
+							<Trigger Property="IsChecked" Value="True">
+								<Setter TargetName="border" Property="BorderBrush" Value="Gray"/>
+							</Trigger>
+							<Trigger Property="IsChecked" Value="False">
+								<Setter TargetName="border" Property="BorderBrush" Value="Transparent"/>
+							</Trigger>
+						</ControlTemplate.Triggers>
 					</ControlTemplate>
 				</Setter.Value>
 			</Setter>
@@ -65,14 +75,19 @@
 	            Orientation="Horizontal"
 	            HorizontalAlignment="Center"
 	            WindowChrome.IsHitTestVisibleInChrome="True">
-		<Button Content="公開済み"
-		        Command="{Binding SwitchPubStatusCommand}"
-		        CommandParameter="{x:Static local:Definitions+PubStatus.Published}"
-		        Style="{StaticResource TabButtonSytle}"/>
-		<Button Content="下書き"
-		        Command="{Binding SwitchPubStatusCommand}"
-		        CommandParameter="{x:Static local:Definitions+PubStatus.Draft}"
-		        Style="{StaticResource TabButtonSytle}"/>
+
+		<StackPanel.Resources>
+			<local:EnumToBooleanConverter x:Key="EnumToBoolean"/>
+		</StackPanel.Resources>
+
+		<RadioButton Content="公開"
+		             Style="{StaticResource SegButtonStyle}"
+		             IsChecked="{Binding SelectedPubStatus, Converter={StaticResource EnumToBoolean}, ConverterParameter={x:Static local:Definitions+PubStatus.Published}}"
+		             GroupName="PubStatus"/>
+		<RadioButton Content="下書き"
+		             Style="{StaticResource SegButtonStyle}"
+		             IsChecked="{Binding SelectedPubStatus, Converter={StaticResource EnumToBoolean}, ConverterParameter={x:Static local:Definitions+PubStatus.Draft}}"
+		             GroupName="PubStatus"/>
 	</StackPanel>
 
 </Grid>

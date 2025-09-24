@@ -83,10 +83,10 @@
 
 					<!-- 選択を不可視化（IsHitTestVisible が効かない） -->
 					<ListBox.ItemContainerStyle>
-						<Style TargetType="ListBoxItem">
+						<Style TargetType="{x:Type ListBoxItem}">
 							<Setter Property="Template">
 								<Setter.Value>
-									<ControlTemplate TargetType="ListBoxItem">
+									<ControlTemplate TargetType="{x:Type ListBoxItem}">
 										<ContentPresenter/>
 									</ControlTemplate>
 								</Setter.Value>

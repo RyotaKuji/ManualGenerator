@@ -183,6 +183,7 @@
       <DependentUpon>Header_ListPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Converters\BooleanToVisibilityWithInvertConverter.vb" />
+    <Compile Include="Views\Converters\EnumToBooleanConverter.vb" />
     <Compile Include="Views\EditorPage.xaml.vb">
       <DependentUpon>EditorPage.xaml</DependentUpon>
     </Compile>
