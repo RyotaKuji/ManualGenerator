@@ -164,9 +164,11 @@
     <Compile Include="Definitions.vb" />
     <Compile Include="Entities\Document_E.vb" />
     <Compile Include="Entities\Section_E.vb" />
+    <Compile Include="IFs\IPrintScreenResult.vb" />
     <Compile Include="Repositories\Document_R.vb" />
     <Compile Include="Shareds\FlowDocumentToHtmlConverter.vb" />
     <Compile Include="Shareds\FileManager.vb" />
+    <Compile Include="Shareds\PrintScreenManager.vb" />
     <Compile Include="Shareds\UserSettings.vb" />
     <Compile Include="Shareds\WebDocManager.vb" />
     <Compile Include="ViewModels\EditorPage_VM.vb" />

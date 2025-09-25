@@ -1,7 +1,9 @@
 ﻿Imports CommunityToolkit.Mvvm.ComponentModel
 Imports CommunityToolkit.Mvvm.Input
 
-Public Class Section_VM : Inherits ObservableObject
+Public Class Section_VM
+	Inherits ObservableObject
+	Implements IPrintScreenResult
 
 	Private __entity As Section_E
 	Public Property Entity As Section_E
@@ -66,7 +68,7 @@ Public Class Section_VM : Inherits ObservableObject
 	End Property
 
 	Private _imagePath As String
-	Public Property ImagePath As String
+	Public Property ImagePath As String Implements IPrintScreenResult.ImagePath
 		Get
 			Return _imagePath
 		End Get
@@ -121,18 +123,7 @@ Public Class Section_VM : Inherits ObservableObject
 	End Property
 
 	Private Sub SelectImage()
-		Dim dialog = New Microsoft.Win32.OpenFileDialog With {
-			.Filter = "画像ファイル|*.png;*.jpeg;*.jpg"
-		}
-
-		Dim selected = dialog.ShowDialog()
-
-		If selected Then
-
-			Dim filename = dialog.FileName
-			ImagePath = filename
-
-		End If
+		PrintScreenManager.StartPrintScreen(Me)
 	End Sub
 
 End Class
