@@ -8,18 +8,24 @@ Public Class PrintScreenManager
 
 	Private Shared result As IPrintScreenResult
 
+	Private Shared editedCount As Integer
+
 	Public Shared Sub StartPrintScreen(result As IPrintScreenResult)
 		If clipboardTimer IsNot Nothing Then
 			clipboardTimer.Stop()
+			RemoveHandler clipboardTimer.Tick, AddressOf CheckClipboard
+			clipboardTimer = Nothing
 		End If
 
 		PrintScreenManager.result = result
 
-		lastClipboardImage = Clipboard.GetImage()
 		clipboardTimer = New DispatcherTimer()
 		clipboardTimer.Interval = TimeSpan.FromMilliseconds(500)
 		AddHandler clipboardTimer.Tick, AddressOf CheckClipboard
 		clipboardTimer.Start()
+
+		lastClipboardImage = Clipboard.GetImage()
+		editedCount = 0
 
 		' Snipping Tool を起動
 		Try
@@ -34,7 +40,6 @@ Public Class PrintScreenManager
 		' 取得した画像が開始時と異なる場合のみ処理
 		If img IsNot Nothing AndAlso (lastClipboardImage Is Nothing OrElse Not IsSameImage(img, lastClipboardImage)) Then
 			lastClipboardImage = img
-			clipboardTimer.Stop()
 
 			Dim tempPath As String = "C:\WorkSpace\Prog\ManualGenerator\snip_" & DateTime.Now.ToString("yyyyMMdd_HHmmss") & ".png"
 			Using fileStream As New FileStream(tempPath, FileMode.Create)
@@ -44,8 +49,14 @@ Public Class PrintScreenManager
 			End Using
 
 			result.ImagePath = tempPath
+			editedCount += 1
 		End If
 
+		If editedCount >= 10 AndAlso Process.GetProcessesByName("SnippingTool").Length = 0 Then
+			clipboardTimer.Stop()
+			RemoveHandler clipboardTimer.Tick, AddressOf CheckClipboard
+			clipboardTimer = Nothing
+		End If
 	End Sub
 
 	Private Shared Function IsSameImage(img1 As BitmapSource, img2 As BitmapSource) As Boolean
