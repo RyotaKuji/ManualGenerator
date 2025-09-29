@@ -6,18 +6,19 @@ Public Class PrintScreenManager
 	Private Shared clipboardTimer As DispatcherTimer
 	Private Shared lastClipboardImage As BitmapSource
 
-	Private Shared result As IPrintScreenResult
+	Public Shared Event ChangedImage(path As String)
+	Public Shared Event Stopped()
 
-	Private Shared editedCount As Integer
-
-	Public Shared Sub StartPrintScreen(result As IPrintScreenResult)
+	Public Shared Sub StartPrintScreen()
 		If clipboardTimer IsNot Nothing Then
 			clipboardTimer.Stop()
 			RemoveHandler clipboardTimer.Tick, AddressOf CheckClipboard
 			clipboardTimer = Nothing
 		End If
 
-		PrintScreenManager.result = result
+		If StoppedEvent IsNot Nothing Then
+			RaiseEvent Stopped()
+		End If
 
 		clipboardTimer = New DispatcherTimer()
 		clipboardTimer.Interval = TimeSpan.FromMilliseconds(500)
@@ -25,7 +26,6 @@ Public Class PrintScreenManager
 		clipboardTimer.Start()
 
 		lastClipboardImage = Clipboard.GetImage()
-		editedCount = 0
 
 		' Snipping Tool を起動
 		Try
@@ -35,27 +35,32 @@ Public Class PrintScreenManager
 		End Try
 	End Sub
 
+	Public Shared Sub StopPrintScreen()
+		If clipboardTimer IsNot Nothing Then
+			clipboardTimer.Stop()
+			RemoveHandler clipboardTimer.Tick, AddressOf CheckClipboard
+			clipboardTimer = Nothing
+		End If
+
+		If StoppedEvent IsNot Nothing Then
+			RaiseEvent Stopped()
+		End If
+	End Sub
+
 	Private Shared Sub CheckClipboard(sender As Object, e As EventArgs)
 		Dim img = Clipboard.GetImage()
 		' 取得した画像が開始時と異なる場合のみ処理
 		If img IsNot Nothing AndAlso (lastClipboardImage Is Nothing OrElse Not IsSameImage(img, lastClipboardImage)) Then
 			lastClipboardImage = img
 
-			Dim tempPath As String = "C:\WorkSpace\Prog\ManualGenerator\snip_" & DateTime.Now.ToString("yyyyMMdd_HHmmss") & ".png"
-			Using fileStream As New FileStream(tempPath, FileMode.Create)
+			Dim path As String = "C:\WorkSpace\Prog\ManualGenerator\snip_" & DateTime.Now.ToString("yyyyMMdd_HHmmss") & ".png"
+			Using fileStream As New FileStream(path, FileMode.Create)
 				Dim encoder As New PngBitmapEncoder()
 				encoder.Frames.Add(BitmapFrame.Create(img))
 				encoder.Save(fileStream)
 			End Using
 
-			result.ImagePath = tempPath
-			editedCount += 1
-		End If
-
-		If editedCount >= 10 AndAlso Process.GetProcessesByName("SnippingTool").Length = 0 Then
-			clipboardTimer.Stop()
-			RemoveHandler clipboardTimer.Tick, AddressOf CheckClipboard
-			clipboardTimer = Nothing
+			RaiseEvent ChangedImage(path)
 		End If
 	End Sub
 

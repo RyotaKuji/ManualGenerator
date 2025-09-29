@@ -9,6 +9,11 @@
         Background="White"
         CornerRadius="5">
 
+	<Border.Resources>
+		<BooleanToVisibilityConverter x:Key="BoolToVis"/>
+		<local:BooleanToVisibilityWithInvertConverter x:Key="BoolToVisInvert"/>
+	</Border.Resources>
+
 	<Grid Margin="16">
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="*"
@@ -271,14 +276,11 @@
 
 		<!-- 画像ボタン -->
 		<local:StyledButton FontSize="50"
-		                    Command="{Binding SelectImageCommand}"
+		                    Command="{Binding SwitchPrintingScreenModeCommand}"
 		                    Height="{Binding ElementName=LeftColumnPanel, Path=ActualHeight}"
-		                    Grid.Column="1">
+		                    Grid.Column="1"
+		                    CornerRadius="2">
 			<Grid>
-				<Grid.Resources>
-					<BooleanToVisibilityConverter x:Key="BoolToVis"/>
-					<local:BooleanToVisibilityWithInvertConverter x:Key="BoolToVisInvert"/>
-				</Grid.Resources>
 				<TextBlock Text="&#xE722;"
 				           FontFamily="Segoe MDL2 Assets"
 				           FontSize="50"
@@ -286,7 +288,7 @@
 				           Padding="0"
 				           VerticalAlignment="Center"
 				           HorizontalAlignment="Center"
-				           Visibility="{Binding HasImage, Converter={StaticResource BoolToVisInvert}}"/>
+				           Visibility="{Binding IsVisibleEmptyIcon, Converter={StaticResource BoolToVis}}"/>
 				<Border BorderThickness="1"
 				        BorderBrush="LightGray"
 				        Margin="5"
@@ -296,6 +298,42 @@
 				</Border>
 			</Grid>
 		</local:StyledButton>
+
+		<!-- PrintScreen 中のフィルター -->
+		<Border Visibility="{Binding InPrintScreenMode, Converter={StaticResource BoolToVis}}"
+		        Grid.Column="1"
+		        Height="{Binding ElementName=LeftColumnPanel, Path=ActualHeight}"
+		        IsHitTestVisible="False"
+		        CornerRadius="2"
+		        Background="#40000000">
+			<TextBlock Text="&#xE722;"
+			           FontFamily="Segoe MDL2 Assets"
+			           FontSize="50"
+			           FontWeight="Black"
+			           Foreground="White"
+			           Padding="0"
+			           VerticalAlignment="Center"
+			           HorizontalAlignment="Center">
+				<TextBlock.Triggers>
+					<EventTrigger RoutedEvent="Loaded">
+						<BeginStoryboard>
+							<Storyboard RepeatBehavior="Forever">
+								<DoubleAnimation Storyboard.TargetProperty="Opacity"
+								                 From="0"
+								                 To="1"
+								                 Duration="0:0:0.7"
+								                 AutoReverse="True"
+								                 RepeatBehavior="Forever">
+									<DoubleAnimation.EasingFunction>
+										<CubicEase EasingMode="EaseInOut"/>
+									</DoubleAnimation.EasingFunction>
+								</DoubleAnimation>
+							</Storyboard>
+						</BeginStoryboard>
+					</EventTrigger>
+				</TextBlock.Triggers>
+			</TextBlock>
+		</Border>
 
 		<!-- 削除ボタン -->
 		<Button x:Name="RemoveButton"

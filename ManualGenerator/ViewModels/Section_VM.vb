@@ -1,9 +1,9 @@
-﻿Imports CommunityToolkit.Mvvm.ComponentModel
+﻿Imports System.IO
+Imports CommunityToolkit.Mvvm.ComponentModel
 Imports CommunityToolkit.Mvvm.Input
 
 Public Class Section_VM
 	Inherits ObservableObject
-	Implements IPrintScreenResult
 
 	Private __entity As Section_E
 	Public Property Entity As Section_E
@@ -68,7 +68,7 @@ Public Class Section_VM
 	End Property
 
 	Private _imagePath As String
-	Public Property ImagePath As String Implements IPrintScreenResult.ImagePath
+	Public Property ImagePath As String
 		Get
 			Return _imagePath
 		End Get
@@ -76,13 +76,32 @@ Public Class Section_VM
 			If SetProperty(_imagePath, value) Then
 				Entity.ImagePath = value
 				OnPropertyChanged(NameOf(HasImage))
+				OnPropertyChanged(NameOf(IsVisibleEmptyIcon))
 			End If
 		End Set
 	End Property
 
 	Public ReadOnly Property HasImage As Boolean
 		Get
-			Return Not String.IsNullOrEmpty(ImagePath)
+			Return File.Exists(ImagePath)
+		End Get
+	End Property
+
+	Private _inPrintScreenMode As Boolean
+	Public Property InPrintScreenMode As Boolean
+		Get
+			Return _inPrintScreenMode
+		End Get
+		Set(value As Boolean)
+			If SetProperty(_inPrintScreenMode, value) Then
+				OnPropertyChanged(NameOf(IsVisibleEmptyIcon))
+			End If
+		End Set
+	End Property
+
+	Public ReadOnly Property IsVisibleEmptyIcon As Boolean
+		Get
+			Return (Not HasImage) AndAlso (Not InPrintScreenMode)
 		End Get
 	End Property
 
@@ -100,16 +119,16 @@ Public Class Section_VM
 
 	Public Property RemoveCommand As RelayCommand
 
-	Public ReadOnly Property SelectImageCommand As RelayCommand
+	Public ReadOnly Property SwitchPrintingScreenModeCommand As RelayCommand
 
 	Public Sub New()
 		Entity = New Section_E()
-		SelectImageCommand = New RelayCommand(AddressOf SelectImage)
+		SwitchPrintingScreenModeCommand = New RelayCommand(AddressOf SwitchPrintingScreenMode)
 	End Sub
 
 	Public Sub New(entity As Section_E)
 		Me.Entity = entity
-		SelectImageCommand = New RelayCommand(AddressOf SelectImage)
+		SwitchPrintingScreenModeCommand = New RelayCommand(AddressOf SwitchPrintingScreenMode)
 	End Sub
 
 	Private _isLastItem As Boolean
@@ -122,8 +141,38 @@ Public Class Section_VM
 		End Set
 	End Property
 
-	Private Sub SelectImage()
-		PrintScreenManager.StartPrintScreen(Me)
+	Private Sub SwitchPrintingScreenMode()
+		If InPrintScreenMode Then
+			StopPrintingScreen()
+			InPrintScreenMode = False
+		Else
+			StartPrintScreen()
+			InPrintScreenMode = True
+		End If
+	End Sub
+
+	Private Sub StartPrintScreen()
+		PrintScreenManager.StartPrintScreen()
+
+		AddHandler PrintScreenManager.ChangedImage,
+			AddressOf ChangedImage
+
+		AddHandler PrintScreenManager.Stopped,
+			AddressOf StoppedPrintScreen
+	End Sub
+
+	Private Sub StopPrintingScreen()
+		PrintScreenManager.StopPrintScreen()
+	End Sub
+
+	Private Sub ChangedImage(path As String)
+		ImagePath = path
+	End Sub
+
+	Private Sub StoppedPrintScreen()
+		RemoveHandler PrintScreenManager.ChangedImage, AddressOf ChangedImage
+		RemoveHandler PrintScreenManager.Stopped, AddressOf StoppedPrintScreen
+		InPrintScreenMode = False
 	End Sub
 
 End Class

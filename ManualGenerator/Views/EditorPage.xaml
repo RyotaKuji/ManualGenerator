@@ -48,7 +48,8 @@
 				         BorderThickness="0"
 				         FontFamily="Noto Sans JP"
 				         local:TextBoxHelper.Placeholder="無題のドキュメント"
-				         Margin="16,0"/>
+				         Margin="16,0"
+						 Background="White"/>
 
 				<ListBox ItemsSource="{Binding Sections}"
 				         ScrollViewer.HorizontalScrollBarVisibility="Disabled"

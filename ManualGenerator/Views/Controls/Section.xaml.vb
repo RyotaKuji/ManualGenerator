@@ -118,7 +118,7 @@ Public Class Section
 			targetParagraph = newParagraph
 		End If
 
-		' Start
+		' StartPrintScreen
 
 		' 選択開始位置の Run
 		Dim borderRun_start As Run = TryCast(selection.Start.Parent, Run)
