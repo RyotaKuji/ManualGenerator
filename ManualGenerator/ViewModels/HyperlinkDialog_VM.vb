@@ -1,4 +1,5 @@
-﻿Imports CommunityToolkit.Mvvm.ComponentModel
+﻿Imports System.Collections.ObjectModel
+Imports CommunityToolkit.Mvvm.ComponentModel
 
 Public Class HyperlinkDialog_VM : Inherits ObservableObject
 
@@ -42,18 +43,36 @@ Public Class HyperlinkDialog_VM : Inherits ObservableObject
 		End Set
 	End Property
 
+	Public ReadOnly Property Sections As New ObservableCollection(Of Section_E)
+
 	Public Sub New(defaultText As String)
+
 		If IsValidUri(defaultText) Then
 			Uri = defaultText
 		End If
+
 		DisplayText = defaultText
+
+		If EditorPage_VM.Entity IsNot Nothing Then
+			For Each section In EditorPage_VM.Entity.Sections
+				Sections.Add(section)
+			Next
+		End If
 	End Sub
 
 	Public Sub New(defaultUri As String, defaultText As String)
+
 		If IsValidUri(defaultUri) Then
 			Uri = defaultUri
 		End If
+
 		DisplayText = defaultText
+
+		If EditorPage_VM.Entity IsNot Nothing Then
+			For Each section In EditorPage_VM.Entity.Sections
+				Sections.Add(section)
+			Next
+		End If
 	End Sub
 
 	Public Function Validate() As Boolean

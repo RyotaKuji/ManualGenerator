@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ManualGenerator"
         mc:Ignorable="d"
+        xmlns:sf="http://schemas.syncfusion.com/wpf"
         Title="HyperLinkDialog"
         SizeToContent="WidthAndHeight"
         WindowStyle="None"
@@ -106,10 +107,12 @@
 		           Grid.Row="3"
 		           Grid.Column="1"
 		           Style="{StaticResource ErrorMessageStyle}"/>
-		<TextBox Text="{Binding Uri}"
-		         Grid.Row="4"
-		         Grid.Column="1"
-		         Style="{StaticResource TextBoxStyle}"/>
+		<sf:SfTextBoxExt Text="{Binding Uri}"
+		                 AutoCompleteSource="{Binding Sections}"
+		                 SearchItemPath="Heading"
+		                 AutoCompleteMode="Suggest"
+		                 Grid.Row="4"
+		                 Grid.Column="1"/>
 
 		<StackPanel Orientation="Horizontal"
 		            HorizontalAlignment="Right"
