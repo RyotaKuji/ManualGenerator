@@ -37,9 +37,6 @@ Public Class Document_E
 	End Property
 
 	Public Function Clone(pubStatus As Definitions.PubStatus) As Document_E
-		If Me.PubStatus = pubStatus Then
-			Return Me
-		End If
 
 		Dim newEntity As New Document_E With {
 			.BaseId = BaseId,

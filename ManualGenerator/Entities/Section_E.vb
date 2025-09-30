@@ -41,9 +41,6 @@ Public Class Section_E
 	End Property
 
 	Public Function Clone(pubStatus As Definitions.PubStatus) As Section_E
-		If Me.PubStatus = pubStatus Then
-			Return Me
-		End If
 
 		Dim newEntity As New Section_E With {
 			.BaseId = BaseId,
@@ -57,7 +54,6 @@ Public Class Section_E
 			.IsHeadline = IsHeadline,
 			.OrderIndex = OrderIndex
 		}
-
 		Return newEntity
 	End Function
 

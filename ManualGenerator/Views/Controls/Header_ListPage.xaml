@@ -31,6 +31,15 @@
 							<Trigger Property="IsChecked" Value="False">
 								<Setter TargetName="border" Property="BorderBrush" Value="Transparent"/>
 							</Trigger>
+							<MultiTrigger>
+								<MultiTrigger.Conditions>
+									<Condition Property="IsMouseOver" Value="True"/>
+									<Condition Property="IsChecked" Value="False"/>
+								</MultiTrigger.Conditions>
+								<MultiTrigger.Setters>
+									<Setter TargetName="border" Property="BorderBrush" Value="#507894eb"/>
+								</MultiTrigger.Setters>
+							</MultiTrigger>
 						</ControlTemplate.Triggers>
 					</ControlTemplate>
 				</Setter.Value>
