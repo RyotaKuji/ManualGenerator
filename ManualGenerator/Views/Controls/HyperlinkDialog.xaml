@@ -49,7 +49,7 @@
 				<Setter Property="VerticalAlignment" Value="Center"/>
 				<Setter Property="Margin" Value="0,0,12,0"/>
 			</Style>
-			<Style x:Key="ErrorTextStyle"
+			<Style x:Key="ErrorMessageStyle"
 			       TargetType="{x:Type TextBlock}">
 				<Setter Property="FontSize" Value="12"/>
 				<Setter Property="FontFamily" Value="Noto Sans JP"/>
@@ -77,6 +77,7 @@
 				</Setter>
 			</Style>
 		</Grid.Resources>
+
 		<TextBlock Text="リンクの挿入"
 		           Grid.Row="0"
 		           Grid.Column="0"
@@ -88,11 +89,11 @@
 		           Grid.Row="2"
 		           Grid.Column="0"
 		           Style="{StaticResource TextStyle}"/>
-		<TextBlock x:Name="ErrorMessage_DisplayText"
+		<TextBlock Text="{Binding ErrorMessage_DisplayText}"
 		           Grid.Row="1"
 		           Grid.Column="1"
-		           Style="{StaticResource ErrorTextStyle}"/>
-		<TextBox x:Name="TextBox_DisplayText"
+		           Style="{StaticResource ErrorMessageStyle}"/>
+		<TextBox Text="{Binding DisplayText}"
 		         Grid.Row="2"
 		         Grid.Column="1"
 		         Style="{StaticResource TextBoxStyle}"/>
@@ -101,11 +102,11 @@
 		           Grid.Row="4"
 		           Grid.Column="0"
 		           Style="{StaticResource TextStyle}"/>
-		<TextBlock x:Name="ErrorMessage_Uri"
+		<TextBlock Text="{Binding ErrorMessage_Uri}"
 		           Grid.Row="3"
 		           Grid.Column="1"
-		           Style="{StaticResource ErrorTextStyle}"/>
-		<TextBox x:Name="TextBox_Uri"
+		           Style="{StaticResource ErrorMessageStyle}"/>
+		<TextBox Text="{Binding Uri}"
 		         Grid.Row="4"
 		         Grid.Column="1"
 		         Style="{StaticResource TextBoxStyle}"/>

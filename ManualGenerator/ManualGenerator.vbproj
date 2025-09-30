@@ -171,6 +171,7 @@
     <Compile Include="Shareds\UserSettings.vb" />
     <Compile Include="Shareds\WebDocManager.vb" />
     <Compile Include="ViewModels\EditorPage_VM.vb" />
+    <Compile Include="ViewModels\HyperlinkDialog_VM.vb" />
     <Compile Include="ViewModels\ListPage_VM.vb" />
     <Compile Include="ViewModels\MainWindow_VM.vb" />
     <Compile Include="ViewModels\Section_VM.vb" />

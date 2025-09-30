@@ -6,7 +6,8 @@ Imports CommunityToolkit.Mvvm.Input
 Public Class EditorPage_VM
 	Inherits ObservableObject
 
-	Private Entity As Document_E
+	' HyperlinkDialog で Current を参照するために Shared
+	Public Shared Entity As Document_E
 
 	Public ReadOnly Property Id As String
 		Get
@@ -38,6 +39,7 @@ Public Class EditorPage_VM
 	Private publicDocManager As New WebDocManager()
 
 	Public Sub New(Optional id As String = Nothing)
+
 		' Command の初期化
 		SaveDraftCommand = New AsyncRelayCommand(AddressOf SaveDraftAsync)
 		PublishDocCommand = New AsyncRelayCommand(AddressOf PublishDocAsync)
@@ -53,7 +55,7 @@ Public Class EditorPage_VM
 				' UI スレッドでプロパティ/コレクション更新
 				Await Application.Current.Dispatcher.InvokeAsync(
 					Sub()
-						Me.Entity = entity
+						EditorPage_VM.Entity = entity
 						Title = entity.Title
 						SetSections() ' 内部で Sections を更新（Clear/Add）
 					End Sub,
