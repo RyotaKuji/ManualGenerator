@@ -66,6 +66,7 @@
 						<ControlTemplate TargetType="{x:Type TextBox}">
 							<Border x:Name="border"
 							        Width="250"
+							        Height="30"
 							        Background="Transparent"
 							        CornerRadius="2"
 							        Padding="2,4"
@@ -76,6 +77,14 @@
 						</ControlTemplate>
 					</Setter.Value>
 				</Setter>
+			</Style>
+			<Style x:Key="InputOuterStyle"
+			       TargetType="{x:Type Border}">
+				<Setter Property="Width" Value="250"/>
+				<Setter Property="Height" Value="30"/>
+				<Setter Property="BorderThickness" Value="1"/>
+				<Setter Property="CornerRadius" Value="2"/>
+				<Setter Property="BorderBrush" Value="DarkGray"/>
 			</Style>
 		</Grid.Resources>
 
@@ -94,11 +103,16 @@
 		           Grid.Row="1"
 		           Grid.Column="1"
 		           Style="{StaticResource ErrorMessageStyle}"/>
-		<TextBox Text="{Binding DisplayText}"
-		         Grid.Row="2"
-		         Grid.Column="1"
-		         Style="{StaticResource TextBoxStyle}"/>
-
+		<Border Grid.Row="2"
+		        Grid.Column="1"
+		        Style="{StaticResource InputOuterStyle}">
+			<sf:SfTextBoxExt Text="{Binding DisplayText}"
+			                 VerticalContentAlignment="Center"
+			                 BorderThickness="0"
+			                 xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+			                 xmlns:syncfusionskin="clr-namespace:Syncfusion.SfSkinManager;assembly=Syncfusion.SfSkinManager.WPF"
+			                 syncfusionskin:SfSkinManager.Theme="{syncfusionskin:SkinManagerExtension ThemeName=MaterialLight}"/>
+		</Border>
 		<TextBlock Text="リンク"
 		           Grid.Row="4"
 		           Grid.Column="0"
@@ -107,13 +121,18 @@
 		           Grid.Row="3"
 		           Grid.Column="1"
 		           Style="{StaticResource ErrorMessageStyle}"/>
-		<sf:SfTextBoxExt Text="{Binding Uri}"
-		                 AutoCompleteSource="{Binding Sections}"
-		                 SearchItemPath="Heading"
-		                 AutoCompleteMode="Suggest"
-		                 Grid.Row="4"
-		                 Grid.Column="1"/>
-
+		<Border Grid.Row="4"
+		        Grid.Column="1"
+		        Style="{StaticResource InputOuterStyle}">
+			<sf:ComboBoxAdv BorderThickness="0"
+			                ItemsSource="{Binding Sections}"
+			                DisplayMemberPath="Heading"
+			                SelectedValuePath="{Binding}"
+			                SelectedItem="{Binding SelectedSection}"
+			                xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+			                xmlns:syncfusionskin="clr-namespace:Syncfusion.SfSkinManager;assembly=Syncfusion.SfSkinManager.WPF"
+			                syncfusionskin:SfSkinManager.Theme="{syncfusionskin:SkinManagerExtension ThemeName=MaterialLight}"/>
+		</Border>
 		<StackPanel Orientation="Horizontal"
 		            HorizontalAlignment="Right"
 		            Grid.Row="5"

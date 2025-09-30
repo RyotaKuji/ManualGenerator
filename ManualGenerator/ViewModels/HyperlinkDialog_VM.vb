@@ -45,6 +45,8 @@ Public Class HyperlinkDialog_VM : Inherits ObservableObject
 
 	Public ReadOnly Property Sections As New ObservableCollection(Of Section_E)
 
+	Public Property SelectedSection As Section_E
+
 	Public Sub New(defaultText As String)
 
 		If IsValidUri(defaultText) Then
