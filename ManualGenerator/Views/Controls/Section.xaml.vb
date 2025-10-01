@@ -179,7 +179,7 @@ Public Class Section
 	Private Function CreateHyperlink(uri As String, text As String) As Hyperlink
 
 		Dim hyperlink As New Hyperlink(New Run(text)) With {
-			.NavigateUri = New Uri(uri)
+			.NavigateUri = New Uri(uri, UriKind.RelativeOrAbsolute)
 		}
 		AddHandler hyperlink.RequestNavigate, AddressOf OpenLink
 		Return hyperlink
@@ -275,7 +275,14 @@ Public Class Section
 	Private Sub OpenLink(sender As Object, e As RequestNavigateEventArgs)
 		Dim hyperlink As Hyperlink = TryCast(e.OriginalSource, Hyperlink)
 		If hyperlink IsNot Nothing AndAlso hyperlink.NavigateUri IsNot Nothing Then
-			Process.Start(New ProcessStartInfo(hyperlink.NavigateUri.AbsoluteUri) With {.UseShellExecute = True})
+
+			Dim uri As Uri = hyperlink.NavigateUri
+
+			If uri.IsAbsoluteUri Then
+				Process.Start(New ProcessStartInfo(hyperlink.NavigateUri.AbsoluteUri) With {.UseShellExecute = True})
+			Else
+				Console.WriteLine(uri.OriginalString)
+			End If
 			e.Handled = True
 		End If
 	End Sub

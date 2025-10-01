@@ -1,7 +1,6 @@
 ﻿Imports System.Globalization
 
-Public Class EnumToBooleanConverter
-	Implements IValueConverter
+Public Class EnumToBooleanConverter : Implements IValueConverter
 
 	Public Function Convert(value As Object, targetType As Type, parameter As Object, culture As CultureInfo) As Object Implements IValueConverter.Convert
 		Return value IsNot Nothing AndAlso value.Equals([Enum].Parse(value.GetType(), parameter.ToString()))

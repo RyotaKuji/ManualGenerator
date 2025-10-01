@@ -3,16 +3,6 @@ Imports CommunityToolkit.Mvvm.ComponentModel
 
 Public Class HyperlinkDialog_VM : Inherits ObservableObject
 
-	Private _uri As String
-	Public Property Uri As String
-		Get
-			Return _uri
-		End Get
-		Set(value As String)
-			SetProperty(_uri, value)
-		End Set
-	End Property
-
 	Private _displayText As String
 	Public Property DisplayText As String
 		Get
@@ -21,6 +11,19 @@ Public Class HyperlinkDialog_VM : Inherits ObservableObject
 		Set(value As String)
 			SetProperty(_displayText, value)
 		End Set
+	End Property
+
+	Public ReadOnly Property Uri As String
+		Get
+			Select Case Mode
+				Case UriMode.ExternalUri
+					Return ExternalUri
+				Case UriMode.SectionUri
+					Return SectionUri
+				Case Else
+					Throw New NotImplementedException("未実装のモード")
+			End Select
+		End Get
 	End Property
 
 	Private _ErrorMessage_DisplayText As String
@@ -43,38 +46,87 @@ Public Class HyperlinkDialog_VM : Inherits ObservableObject
 		End Set
 	End Property
 
+	' 外部リンク
+	Public Property _externalUri As String
+	Public Property ExternalUri As String
+		Get
+			Return _externalUri
+		End Get
+		Set(value As String)
+			SetProperty(_externalUri, value)
+		End Set
+	End Property
+
+	' セクションリンク
+	Public SectionUri As String
+
+	Private _selectedSection As Section_E
+	Public Property SelectedSection As Section_E
+		Get
+			Return _selectedSection
+		End Get
+		Set(value As Section_E)
+			If SetProperty(_selectedSection, value) Then
+				SectionUri = ConvertSectionToUri(value)
+			End If
+		End Set
+	End Property
+
 	Public ReadOnly Property Sections As New ObservableCollection(Of Section_E)
 
-	Public Property SelectedSection As Section_E
+	Private _mode As UriMode
+	Public Property Mode As UriMode
+		Get
+			Return _mode
+		End Get
+		Set(value As UriMode)
+			SetProperty(_mode, value)
+		End Set
+	End Property
+
+	Public Enum UriMode
+		ExternalUri
+		SectionUri
+	End Enum
 
 	Public Sub New(defaultText As String)
 
-		If IsValidUri(defaultText) Then
-			Uri = defaultText
+		If EditorPage_VM.Entity IsNot Nothing Then
+			For Each Section In EditorPage_VM.Entity.Sections
+				Sections.Add(Section)
+			Next
+		End If
+
+		If IsValidExternalUri(defaultText) Then
+			ExternalUri = defaultText
+			Mode = UriMode.ExternalUri
+		ElseIf IsValidSectionUri(defaultText, Sections) Then
+			SectionUri = defaultText
+			SelectedSection = Sections.First(Function(s) ConvertSectionToUri(s) = SectionUri)
+			Mode = UriMode.SectionUri
 		End If
 
 		DisplayText = defaultText
-
-		If EditorPage_VM.Entity IsNot Nothing Then
-			For Each section In EditorPage_VM.Entity.Sections
-				Sections.Add(section)
-			Next
-		End If
 	End Sub
 
 	Public Sub New(defaultUri As String, defaultText As String)
 
-		If IsValidUri(defaultUri) Then
-			Uri = defaultUri
+		If EditorPage_VM.Entity IsNot Nothing Then
+			For Each Section In EditorPage_VM.Entity.Sections
+				Sections.Add(Section)
+			Next
+		End If
+
+		If IsValidExternalUri(defaultUri) Then
+			ExternalUri = defaultUri
+			Mode = UriMode.ExternalUri
+		ElseIf IsValidSectionUri(defaultUri, Sections) Then
+			SectionUri = defaultUri
+			SelectedSection = Sections.First(Function(s) ConvertSectionToUri(s) = SectionUri)
+			Mode = UriMode.SectionUri
 		End If
 
 		DisplayText = defaultText
-
-		If EditorPage_VM.Entity IsNot Nothing Then
-			For Each section In EditorPage_VM.Entity.Sections
-				Sections.Add(section)
-			Next
-		End If
 	End Sub
 
 	Public Function Validate() As Boolean
@@ -88,8 +140,9 @@ Public Class HyperlinkDialog_VM : Inherits ObservableObject
 		If String.IsNullOrWhiteSpace(Uri) Then
 			ErrorMessage_Uri = "入力されていません。"
 			isValid = False
-		ElseIf IsValidUri(Uri) = False Then
-			ErrorMessage_Uri = "URLの形式が正しくありません。"
+		ElseIf IsValidExternalUri(Uri) = False And
+				IsValidSectionUri(Uri, Sections) = False Then
+			ErrorMessage_Uri = "リンクの形式が正しくありません。"
 			isValid = False
 		End If
 
@@ -97,7 +150,15 @@ Public Class HyperlinkDialog_VM : Inherits ObservableObject
 
 	End Function
 
-	Private Shared Function IsValidUri(link As String) As Boolean
-		Return System.Uri.IsWellFormedUriString(link, UriKind.Absolute)
+	Private Shared Function ConvertSectionToUri(section As Section_E) As String
+		Return $"#{Section_E.GetBaseId(section.Id)}"
+	End Function
+
+	Private Shared Function IsValidExternalUri(uri As String) As Boolean
+		Return System.Uri.IsWellFormedUriString(uri, UriKind.Absolute)
+	End Function
+
+	Private Shared Function IsValidSectionUri(uri As String, sections As IEnumerable(Of Section_E)) As Boolean
+		Return sections.Any(Function(s) ConvertSectionToUri(s) = uri)
 	End Function
 End Class

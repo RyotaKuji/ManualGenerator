@@ -25,7 +25,7 @@ Public Class FlowDocumentToHtmlConverter
 				Dim text As String = node.Value
 				Return $"<span{MakeStyle(node)}>{Net.WebUtility.HtmlEncode(text)}</span>"
 
-			Case "Hyperlink"
+			Case "Uri"
 				Dim href As String = node.Attribute("NavigateUri")?.Value
 				Return $"<a href=""{href}""{MakeStyle(node)}>{ConvertChildren(node)}</a>"
 
@@ -81,8 +81,8 @@ Public Class FlowDocumentToHtmlConverter
 		Select Case node.Name.LocalName
 			Case "Run"
 				textDecorationsElement = node.Element(ns + "Run.TextDecorations")
-			Case "Hyperlink"
-				textDecorationsElement = node.Element(ns + "Hyperlink.TextDecorations")
+			Case "Uri"
+				textDecorationsElement = node.Element(ns + "Uri.TextDecorations")
 		End Select
 		If textDecorationsElement IsNot Nothing Then
 			For Each deco In textDecorationsElement.Elements(ns + "TextDecoration")
