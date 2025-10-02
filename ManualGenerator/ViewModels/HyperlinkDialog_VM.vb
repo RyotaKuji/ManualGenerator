@@ -72,6 +72,7 @@ Public Class HyperlinkDialog_VM : Inherits ObservableObject
 		End Set
 	End Property
 
+	Private editorManager As CurrentEditorManager = CurrentEditorManager.GetInstance()
 	Public ReadOnly Property Sections As New ObservableCollection(Of Section_E)
 
 	Private _mode As UriMode
@@ -91,8 +92,8 @@ Public Class HyperlinkDialog_VM : Inherits ObservableObject
 
 	Public Sub New(defaultText As String)
 
-		If EditorPage_VM.Entity IsNot Nothing Then
-			For Each Section In EditorPage_VM.Entity.Sections
+		If editorManager.Sections IsNot Nothing Then
+			For Each Section In editorManager.Sections
 				Sections.Add(Section)
 			Next
 		End If
@@ -111,8 +112,8 @@ Public Class HyperlinkDialog_VM : Inherits ObservableObject
 
 	Public Sub New(defaultUri As String, defaultText As String)
 
-		If EditorPage_VM.Entity IsNot Nothing Then
-			For Each Section In EditorPage_VM.Entity.Sections
+		If editorManager.Sections IsNot Nothing Then
+			For Each Section In editorManager.Sections
 				Sections.Add(Section)
 			Next
 		End If

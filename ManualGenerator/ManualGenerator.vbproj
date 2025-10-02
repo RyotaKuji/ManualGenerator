@@ -168,6 +168,7 @@
     <Compile Include="Entities\Document_E.vb" />
     <Compile Include="Entities\Section_E.vb" />
     <Compile Include="Repositories\Document_R.vb" />
+    <Compile Include="Shareds\CurrentEditorManager.vb" />
     <Compile Include="Shareds\FlowDocumentToHtmlConverter.vb" />
     <Compile Include="Shareds\FileManager.vb" />
     <Compile Include="Shareds\PrintScreenManager.vb" />

@@ -6,12 +6,9 @@ Imports CommunityToolkit.Mvvm.Input
 Public Class EditorPage_VM
 	Inherits ObservableObject
 
-	' HyperlinkDialog で Current を参照するために Shared
-	Public Shared Entity As Document_E
-
 	Public ReadOnly Property Id As String
 		Get
-			Return Entity.Id
+			Return entity.Id
 		End Get
 	End Property
 
@@ -22,7 +19,7 @@ Public Class EditorPage_VM
 		End Get
 		Set(value As String)
 			If SetProperty(_title, value) Then
-				Entity.Title = value
+				entity.Title = value
 			End If
 		End Set
 	End Property
@@ -35,8 +32,11 @@ Public Class EditorPage_VM
 
 	Public ReadOnly Property AddSectionCommand As RelayCommand(Of Section_VM)
 
+	Private entity As Document_E
+
 	Private repo As Document_R
 	Private publicDocManager As New WebDocManager()
+	Private currentEditorManager As CurrentEditorManager = CurrentEditorManager.GetInstance()
 
 	Public Sub New(Optional id As String = Nothing)
 
@@ -55,9 +55,10 @@ Public Class EditorPage_VM
 				' UI スレッドでプロパティ/コレクション更新
 				Await Application.Current.Dispatcher.InvokeAsync(
 					Sub()
-						EditorPage_VM.Entity = entity
+						Me.entity = entity
 						Title = entity.Title
 						SetSections() ' 内部で Sections を更新（Clear/Add）
+						currentEditorManager.Sections = entity.Sections
 					End Sub,
 					DispatcherPriority.DataBind)
 			End Function
@@ -91,7 +92,7 @@ Public Class EditorPage_VM
 	Private Sub SetSections()
 		' 要素を追加
 		Sections.Clear()
-		For Each item As Section_E In Entity.Sections
+		For Each item As Section_E In entity.Sections
 			Dim sectionVM = New Section_VM(item)
 			SetCommands(sectionVM)
 			Sections.Add(sectionVM)
@@ -115,9 +116,9 @@ Public Class EditorPage_VM
 		For i As Integer = 0 To sectionEntities.Count() - 1
 			sectionEntities(i).OrderIndex = i
 		Next
-		Entity.Sections = sectionEntities
+		entity.Sections = sectionEntities
 
-		Await repo.CreateOrUpdateAsync(Entity, pubStatus)
+		Await repo.CreateOrUpdateAsync(entity, pubStatus)
 	End Function
 
 	''' <summary>
@@ -132,7 +133,7 @@ Public Class EditorPage_VM
 	''' </summary>
 	Private Async Function PublishDocAsync() As Task
 		Await SaveAsync(Definitions.PubStatus.Published)
-		Await publicDocManager.PublishAsync(Document_E.GetIdWithPubStatus(Entity.Id, Definitions.PubStatus.Published))
+		Await publicDocManager.PublishAsync(Document_E.GetIdWithPubStatus(entity.Id, Definitions.PubStatus.Published))
 	End Function
 
 	''' <summary>
