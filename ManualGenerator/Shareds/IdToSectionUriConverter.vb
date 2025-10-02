@@ -12,7 +12,9 @@
 		If uri Is Nothing Then
 			Return Nothing
 		End If
-		Dim baseId As String = Section_E.GetBaseId(uri.Fragment.TrimStart("#"c))
+		Dim uriStr As String = uri.OriginalString
+		Dim id As String = uriStr.TrimStart("#"c)
+		Dim baseId As String = Section_E.GetBaseId(id)
 		Return baseId
 	End Function
 

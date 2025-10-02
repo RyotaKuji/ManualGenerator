@@ -1,6 +1,5 @@
 ﻿Public Class CurrentSectionsManager
 
-	Public Property Entities As IEnumerable(Of Section_E)
 	Public Property VMs As IEnumerable(Of Section_VM)
 
 	Private Shared instance As New CurrentSectionsManager()

@@ -19,6 +19,12 @@ Public Class Section_VM
 		End Set
 	End Property
 
+	Public ReadOnly Property Id As String
+		Get
+			Return Entity.Id
+		End Get
+	End Property
+
 	Private _heading As String
 	Public Property Heading As String
 		Get

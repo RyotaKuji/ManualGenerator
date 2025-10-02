@@ -60,19 +60,19 @@ Public Class HyperlinkDialog_VM : Inherits ObservableObject
 	' セクションリンク
 	Public SectionUri As String
 
-	Private _selectedSection As Section_E
-	Public Property SelectedSection As Section_E
+	Private _selectedSection As Section_VM
+	Public Property SelectedSection As Section_VM
 		Get
 			Return _selectedSection
 		End Get
-		Set(value As Section_E)
+		Set(value As Section_VM)
 			If SetProperty(_selectedSection, value) Then
 				SectionUri = ConvertSectionToUri(value)
 			End If
 		End Set
 	End Property
 
-	Public ReadOnly Property Sections As New ObservableCollection(Of Section_E)
+	Public ReadOnly Property Sections As New ObservableCollection(Of Section_VM)
 	Private ReadOnly sectionsManager As CurrentSectionsManager = CurrentSectionsManager.GetInstance()
 
 	Private _mode As UriMode
@@ -92,8 +92,8 @@ Public Class HyperlinkDialog_VM : Inherits ObservableObject
 
 	Public Sub New(defaultText As String)
 
-		If sectionsManager.Entities IsNot Nothing Then
-			For Each Section In sectionsManager.Entities
+		If sectionsManager.VMs IsNot Nothing Then
+			For Each Section In sectionsManager.VMs
 				Sections.Add(Section)
 			Next
 		End If
@@ -112,8 +112,8 @@ Public Class HyperlinkDialog_VM : Inherits ObservableObject
 
 	Public Sub New(defaultUri As String, defaultText As String)
 
-		If sectionsManager.Entities IsNot Nothing Then
-			For Each Section In sectionsManager.Entities
+		If sectionsManager.VMs IsNot Nothing Then
+			For Each Section In sectionsManager.VMs
 				Sections.Add(Section)
 			Next
 		End If
@@ -151,7 +151,7 @@ Public Class HyperlinkDialog_VM : Inherits ObservableObject
 
 	End Function
 
-	Private Shared Function ConvertSectionToUri(section As Section_E) As String
+	Private Shared Function ConvertSectionToUri(section As Section_VM) As String
 		Return IdToSectionUriConverter.Convert(section.Id).OriginalString
 	End Function
 
@@ -159,7 +159,7 @@ Public Class HyperlinkDialog_VM : Inherits ObservableObject
 		Return System.Uri.IsWellFormedUriString(uri, UriKind.Absolute)
 	End Function
 
-	Private Shared Function IsValidSectionUri(uri As String, sections As IEnumerable(Of Section_E)) As Boolean
+	Private Shared Function IsValidSectionUri(uri As String, sections As IEnumerable(Of Section_VM)) As Boolean
 		Return sections.Any(Function(s) ConvertSectionToUri(s) = uri)
 	End Function
 End Class

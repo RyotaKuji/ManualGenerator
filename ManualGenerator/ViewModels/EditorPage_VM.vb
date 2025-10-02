@@ -32,11 +32,11 @@ Public Class EditorPage_VM
 
 	Public ReadOnly Property AddSectionCommand As RelayCommand(Of Section_VM)
 
-	Private Property entity As Document_E
+	Private entity As Document_E
 
 	Private repo As Document_R
-	Private publicDocManager As New WebDocManager()
-	Private sectionsManager As CurrentSectionsManager = CurrentSectionsManager.GetInstance()
+	Private ReadOnly publicDocManager As New WebDocManager()
+	Private ReadOnly sectionsManager As CurrentSectionsManager = CurrentSectionsManager.GetInstance()
 
 	Public Sub New(Optional id As String = Nothing)
 
@@ -53,13 +53,11 @@ Public Class EditorPage_VM
 				Await Initialize()
 
 				Dim entity = Await GetEntityAsync(id)
-
-				sectionsManager.Entities = entity.Sections
+				Me.entity = entity
 
 				' UI スレッドでプロパティ/コレクション更新
 				Await Application.Current.Dispatcher.InvokeAsync(
 					Sub()
-						Me.entity = entity
 						Title = entity.Title
 						SetSections()
 					End Sub,

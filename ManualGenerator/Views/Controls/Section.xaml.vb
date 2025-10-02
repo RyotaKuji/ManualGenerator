@@ -2,7 +2,7 @@
 Imports System.Text
 Imports System.Windows.Markup
 
-Public Class Section : Implements IDisposable
+Public Class Section
 
 	Private ReadOnly Property VM As Section_VM
 		Get
@@ -199,7 +199,7 @@ Public Class Section : Implements IDisposable
 
 		Dim text As String = GetInlineText(hyperLink.Inlines)
 
-		Dim dialog As New HyperlinkDialog(hyperLink.NavigateUri.AbsoluteUri, text) With {
+		Dim dialog As New HyperlinkDialog(hyperLink.NavigateUri.OriginalString, text) With {
 			.Owner = Window.GetWindow(Me),
 			.WindowStartupLocation = WindowStartupLocation.CenterOwner
 		}
@@ -211,7 +211,7 @@ Public Class Section : Implements IDisposable
 			Return
 		End If
 
-		hyperLink.NavigateUri = New Uri(dialog.Uri)
+		hyperLink.NavigateUri = New Uri(dialog.Uri, UriKind.RelativeOrAbsolute)
 		hyperLink.Inlines.Clear()
 		hyperLink.Inlines.Add(New Run(dialog.DisplayText))
 	End Sub
@@ -298,22 +298,5 @@ Public Class Section : Implements IDisposable
 
 	Private Sub ScrollToSelf()
 		BringIntoView()
-	End Sub
-
-	Private isDisposed As Boolean
-
-	Protected Overridable Sub Dispose(disposing As Boolean)
-		If Not isDisposed Then
-			If disposing Then
-				RemoveHandler VM.ScrollToSelfEvent, AddressOf ScrollToSelf
-			End If
-
-			isDisposed = True
-		End If
-	End Sub
-
-	Public Sub Dispose() Implements IDisposable.Dispose
-		Dispose(disposing:=True)
-		GC.SuppressFinalize(Me)
 	End Sub
 End Class
