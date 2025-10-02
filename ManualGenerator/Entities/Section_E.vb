@@ -1,6 +1,6 @@
 ﻿Imports SQLite
 
-<Table("Sections")>
+<Table("Entities")>
 Public Class Section_E
 	<PrimaryKey, NotNull>
 	Public Property Id As String

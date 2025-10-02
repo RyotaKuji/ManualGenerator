@@ -78,7 +78,7 @@ Public Class Document_R
 
 					conn.Update(doc)
 
-					' Sections 差分更新
+					' Entities 差分更新
 					If doc.Sections IsNot Nothing Then
 						Dim existingSections = conn.Table(Of Section_E)().
 							Where(Function(s) s.DocumentId = doc.Id).

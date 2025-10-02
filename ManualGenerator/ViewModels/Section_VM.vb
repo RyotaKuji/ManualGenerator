@@ -118,17 +118,21 @@ Public Class Section_VM
 	End Property
 
 	Public Property RemoveCommand As RelayCommand
+	Public Event ScrollToSelfEvent()
 
 	Public ReadOnly Property SwitchPrintingScreenModeCommand As RelayCommand
+	Public ReadOnly Property RequestScrollCommand As RelayCommand(Of Uri)
 
 	Public Sub New()
 		Entity = New Section_E()
 		SwitchPrintingScreenModeCommand = New RelayCommand(AddressOf SwitchPrintingScreenMode)
+		RequestScrollCommand = New RelayCommand(Of Uri)(AddressOf RequestScroll)
 	End Sub
 
 	Public Sub New(entity As Section_E)
 		Me.Entity = entity
 		SwitchPrintingScreenModeCommand = New RelayCommand(AddressOf SwitchPrintingScreenMode)
+		RequestScrollCommand = New RelayCommand(Of Uri)(AddressOf RequestScroll)
 	End Sub
 
 	Private _isLastItem As Boolean
@@ -173,6 +177,15 @@ Public Class Section_VM
 		RemoveHandler PrintScreenManager.ChangedImage, AddressOf ChangedImage
 		RemoveHandler PrintScreenManager.Stopped, AddressOf StoppedPrintScreen
 		InPrintScreenMode = False
+	End Sub
+
+	Private Sub RequestScroll(uri As Uri)
+		Dim manager As CurrentSectionsManager = CurrentSectionsManager.GetInstance()
+		manager.RequestScroll(uri)
+	End Sub
+
+	Public Sub ScrollToSelf()
+		RaiseEvent ScrollToSelfEvent()
 	End Sub
 
 End Class

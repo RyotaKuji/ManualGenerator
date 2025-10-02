@@ -72,8 +72,8 @@ Public Class HyperlinkDialog_VM : Inherits ObservableObject
 		End Set
 	End Property
 
-	Private editorManager As CurrentEditorManager = CurrentEditorManager.GetInstance()
 	Public ReadOnly Property Sections As New ObservableCollection(Of Section_E)
+	Private ReadOnly sectionsManager As CurrentSectionsManager = CurrentSectionsManager.GetInstance()
 
 	Private _mode As UriMode
 	Public Property Mode As UriMode
@@ -92,8 +92,8 @@ Public Class HyperlinkDialog_VM : Inherits ObservableObject
 
 	Public Sub New(defaultText As String)
 
-		If editorManager.Sections IsNot Nothing Then
-			For Each Section In editorManager.Sections
+		If sectionsManager.Entities IsNot Nothing Then
+			For Each Section In sectionsManager.Entities
 				Sections.Add(Section)
 			Next
 		End If
@@ -112,8 +112,8 @@ Public Class HyperlinkDialog_VM : Inherits ObservableObject
 
 	Public Sub New(defaultUri As String, defaultText As String)
 
-		If editorManager.Sections IsNot Nothing Then
-			For Each Section In editorManager.Sections
+		If sectionsManager.Entities IsNot Nothing Then
+			For Each Section In sectionsManager.Entities
 				Sections.Add(Section)
 			Next
 		End If
@@ -152,7 +152,7 @@ Public Class HyperlinkDialog_VM : Inherits ObservableObject
 	End Function
 
 	Private Shared Function ConvertSectionToUri(section As Section_E) As String
-		Return $"#{Section_E.GetBaseId(section.Id)}"
+		Return IdToSectionUriConverter.Convert(section.Id).OriginalString
 	End Function
 
 	Private Shared Function IsValidExternalUri(uri As String) As Boolean

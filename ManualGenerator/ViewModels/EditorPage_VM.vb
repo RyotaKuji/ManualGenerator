@@ -32,11 +32,11 @@ Public Class EditorPage_VM
 
 	Public ReadOnly Property AddSectionCommand As RelayCommand(Of Section_VM)
 
-	Private entity As Document_E
+	Private Property entity As Document_E
 
 	Private repo As Document_R
 	Private publicDocManager As New WebDocManager()
-	Private currentEditorManager As CurrentEditorManager = CurrentEditorManager.GetInstance()
+	Private sectionsManager As CurrentSectionsManager = CurrentSectionsManager.GetInstance()
 
 	Public Sub New(Optional id As String = Nothing)
 
@@ -45,20 +45,23 @@ Public Class EditorPage_VM
 		PublishDocCommand = New AsyncRelayCommand(AddressOf PublishDocAsync)
 		AddSectionCommand = New RelayCommand(Of Section_VM)(AddressOf AddSection)
 
+		sectionsManager.VMs = Sections
+
 		Task.Run(
 			Async Function()
 
 				Await Initialize()
 
-				Dim entity = Await GetEntityAsync(id) ' 完了を待つ
+				Dim entity = Await GetEntityAsync(id)
+
+				sectionsManager.Entities = entity.Sections
 
 				' UI スレッドでプロパティ/コレクション更新
 				Await Application.Current.Dispatcher.InvokeAsync(
 					Sub()
 						Me.entity = entity
 						Title = entity.Title
-						SetSections() ' 内部で Sections を更新（Clear/Add）
-						currentEditorManager.Sections = entity.Sections
+						SetSections()
 					End Sub,
 					DispatcherPriority.DataBind)
 			End Function
@@ -111,7 +114,7 @@ Public Class EditorPage_VM
 	''' </summary>
 	Private Async Function SaveAsync(pubStatus As Definitions.PubStatus) As Task
 
-		' Sections の内容を Entity に反映
+		' Entities の内容を Entity に反映
 		Dim sectionEntities = Sections.Select(Function(x) x.Entity)
 		For i As Integer = 0 To sectionEntities.Count() - 1
 			sectionEntities(i).OrderIndex = i

@@ -2,13 +2,22 @@
 Imports System.Text
 Imports System.Windows.Markup
 
-Public Class Section
+Public Class Section : Implements IDisposable
 
 	Private ReadOnly Property VM As Section_VM
 		Get
 			Return TryCast(DataContext, Section_VM)
 		End Get
 	End Property
+
+	Public Sub New()
+		InitializeComponent()
+		AddHandler Loaded, AddressOf OnLoaded
+	End Sub
+
+	Private Sub OnLoaded(sender As Object, e As RoutedEventArgs)
+		AddHandler VM.ScrollToSelfEvent, AddressOf ScrollToSelf
+	End Sub
 
 	Private Sub SetDescription(sender As Object, e As RoutedEventArgs)
 		Dim xaml As String = VM?.DescriptionXaml
@@ -281,10 +290,30 @@ Public Class Section
 			If uri.IsAbsoluteUri Then
 				Process.Start(New ProcessStartInfo(hyperlink.NavigateUri.AbsoluteUri) With {.UseShellExecute = True})
 			Else
-				Console.WriteLine(uri.OriginalString)
+				VM.RequestScrollCommand.Execute(uri)
 			End If
 			e.Handled = True
 		End If
 	End Sub
 
+	Private Sub ScrollToSelf()
+		BringIntoView()
+	End Sub
+
+	Private isDisposed As Boolean
+
+	Protected Overridable Sub Dispose(disposing As Boolean)
+		If Not isDisposed Then
+			If disposing Then
+				RemoveHandler VM.ScrollToSelfEvent, AddressOf ScrollToSelf
+			End If
+
+			isDisposed = True
+		End If
+	End Sub
+
+	Public Sub Dispose() Implements IDisposable.Dispose
+		Dispose(disposing:=True)
+		GC.SuppressFinalize(Me)
+	End Sub
 End Class
