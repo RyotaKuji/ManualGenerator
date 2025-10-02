@@ -187,6 +187,9 @@ Public Class Section
 
 	Private Function CreateHyperlink(uri As String, text As String) As Hyperlink
 
+
+		Dim a As Uri = New Uri(uri, UriKind.RelativeOrAbsolute)
+
 		Dim hyperlink As New Hyperlink(New Run(text)) With {
 			.NavigateUri = New Uri(uri, UriKind.RelativeOrAbsolute)
 		}
@@ -211,6 +214,7 @@ Public Class Section
 			Return
 		End If
 
+		Dim a As Uri = New Uri(dialog.Uri, UriKind.RelativeOrAbsolute)
 		hyperLink.NavigateUri = New Uri(dialog.Uri, UriKind.RelativeOrAbsolute)
 		hyperLink.Inlines.Clear()
 		hyperLink.Inlines.Add(New Run(dialog.DisplayText))
