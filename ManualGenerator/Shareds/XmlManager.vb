@@ -23,6 +23,28 @@ Public Class XmlManager
 		Next
 	End Sub
 
+	Public Sub RemovedSection(id As String)
+		If String.IsNullOrEmpty(id) Then
+			Return
+		End If
+		id = Section_E.GetBaseId(id)
+
+		For Each section As Section_VM In Sections
+			Dim xml As String = section.DescriptionXml
+			If xml Is Nothing Then
+				Continue For
+			End If
+
+			' Hyperlink を見つけて、Foreground="Red" を付加する
+			Dim pattern As String = $"(<Hyperlink[^>]*NavigateUri=""#{Regex.Escape(id)}""[^>]*)(>)"
+			Dim replaced As String = Regex.Replace(xml, pattern, "$1 Foreground=""Red""$2", RegexOptions.IgnoreCase Or RegexOptions.Singleline)
+
+			If xml <> replaced Then
+				section.DescriptionXml = replaced
+			End If
+		Next
+	End Sub
+
 	Private Shared instance As New XmlManager()
 
 	Public Shared Function GetInstance() As XmlManager

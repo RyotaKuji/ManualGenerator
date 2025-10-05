@@ -189,6 +189,7 @@ Public Class EditorPage_VM
 		If Sections.Count > 1 Then
 			Sections.Remove(item)
 		End If
+		XmlManager.GetInstance().RemovedSection(item.Id)
 		MarkLastSection()
 	End Sub
 

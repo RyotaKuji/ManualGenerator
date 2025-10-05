@@ -166,6 +166,7 @@ Public Class Section
 			CopyProperties(hyperlink, borderRun_end)
 			targetParagraph.Inlines.InsertBefore(borderRun_end, hyperlink)
 		Else
+			CopyProperties(hyperlink, DescriptionEditor.Document)
 			targetParagraph.Inlines.Add(hyperlink)
 		End If
 
@@ -227,6 +228,17 @@ Public Class Section
 				.Foreground = source.Foreground
 				.TextDecorations = source.TextDecorations
 			End If
+		End With
+	End Sub
+
+	Private Shared Sub CopyProperties(destination As Inline, source As FlowDocument)
+		With destination
+			.FontFamily = source.FontFamily
+			.FontSize = source.FontSize
+			.FontStretch = source.FontStretch
+			.FontStyle = source.FontStyle
+			.FontWeight = source.FontWeight
+			.Background = source.Background
 		End With
 	End Sub
 
