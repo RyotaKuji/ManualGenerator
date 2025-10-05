@@ -13,9 +13,11 @@ Public Class Section_VM
 		Set(value As Section_E)
 			__entity = value
 			Heading = value.Heading
-			DescriptionXaml = value.DescriptionXaml
+			DescriptionXml = value.DescriptionXml
 			ImagePath = value.ImagePath
 			IsHeadline = value.IsHeadline
+
+			XmlManager.GetInstance().IdToXml(Entity.Id) = DescriptionXml
 		End Set
 	End Property
 
@@ -37,14 +39,14 @@ Public Class Section_VM
 		End Set
 	End Property
 
-	Private _descriptionXaml As String
-	Public Property DescriptionXaml As String
+	Private _descriptionXml As String
+	Public Property DescriptionXml As String
 		Get
-			Return _descriptionXaml
+			Return _descriptionXml
 		End Get
 		Set(value As String)
-			If SetProperty(_descriptionXaml, value) Then
-				Entity.DescriptionXaml = value
+			If SetProperty(_descriptionXml, value) Then
+				Entity.DescriptionXml = value
 			End If
 		End Set
 	End Property

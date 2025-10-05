@@ -1,5 +1,4 @@
-﻿Imports System.IO
-Imports System.Text
+﻿Imports System.Text
 Imports System.Windows.Markup
 
 Public Class Section
@@ -19,51 +18,44 @@ Public Class Section
 		AddHandler VM.ScrollToSelfEvent, AddressOf ScrollToSelf
 	End Sub
 
-	Private Sub SetDescription(sender As Object, e As RoutedEventArgs)
-		Dim xaml As String = VM?.DescriptionXaml
-
-		If String.IsNullOrEmpty(xaml) Then
-			FlowDocument.Blocks.Add(New Paragraph())
-			ConfirmDescription(Nothing, Nothing)
-			Return
-		End If
-
-		Dim doc = XamlReader.Parse(xaml)
-		FlowDocument.Blocks.Clear()
-
-		Dim blocks As BlockCollection = TryCast(doc, FlowDocument)?.Blocks
-		If blocks Is Nothing Then
-			Return
-		End If
-
-		For Each a In blocks
-			Dim clone As Block = CType(XamlReader.Parse(XamlWriter.Save(a)), Block)
-			FlowDocument.Blocks.Add(clone)
-		Next
+	Private Sub DescriptionEditor_Loaded(sender As Object, e As RoutedEventArgs)
+		AddHandler DescriptionEditor.LostFocus, AddressOf ConfirmDescription
+		AddEventToHyperlinks()
 	End Sub
 
 	Private Sub ConfirmDescription(sender As Object, e As RoutedEventArgs)
-		If FlowDocument Is Nothing Then
+		Dim range As New TextRange(DescriptionEditor.Document.ContentStart, DescriptionEditor.Document.ContentEnd)
+		RichTextBoxHelper.SetBindableDocument(DescriptionEditor, XamlWriter.Save(DescriptionEditor.Document))
+		AddEventToHyperlinks()
+	End Sub
+
+	Private Sub AddEventToHyperlinks()
+		If DescriptionEditor Is Nothing Then Return
+		Dim doc As FlowDocument = DescriptionEditor.Document
+		Dim hyperlinks As List(Of Hyperlink) = GetAllHyperlinks(doc)
+		For Each link As Hyperlink In hyperlinks
+			RemoveHandler link.RequestNavigate, AddressOf OpenLink
+			AddHandler link.RequestNavigate, AddressOf OpenLink
+		Next
+	End Sub
+
+	Private Function GetAllHyperlinks(doc As FlowDocument) As List(Of Hyperlink)
+		Dim list As New List(Of Hyperlink)
+		FindHyperLinkFromLogicalTree(doc, list)
+		Return list
+	End Function
+
+	Private Sub FindHyperLinkFromLogicalTree(obj As Object, list As List(Of Hyperlink))
+		If TypeOf obj IsNot DependencyObject Then
 			Return
 		End If
-		' FlowDocument を XAML 文字列に変換
-		Dim xaml As String
-		Using ms As New MemoryStream()
-			XamlWriter.Save(FlowDocument, ms)
-			ms.Position = 0
-			Using sr As New StreamReader(ms)
-				xaml = sr.ReadToEnd()
-			End Using
-		End Using
 
-		Dim html As String = FlowDocumentToHtmlConverter.Convert(xaml)
-		Dim plainText As String = New TextRange(FlowDocument.ContentStart, FlowDocument.ContentEnd).Text
-
-		If VM IsNot Nothing Then
-			VM.DescriptionXaml = xaml
-			VM.DescriptionHtml = html
-			VM.DescriptionText = plainText
-		End If
+		For Each child As Object In LogicalTreeHelper.GetChildren(CType(obj, DependencyObject))
+			If TypeOf child Is Hyperlink Then
+				list.Add(DirectCast(child, Hyperlink))
+			End If
+			FindHyperLinkFromLogicalTree(child, list)
+		Next
 	End Sub
 
 	Private Sub Command_Hyperlink(sender As Object, e As RoutedEventArgs)
@@ -127,16 +119,14 @@ Public Class Section
 			targetParagraph = newParagraph
 		End If
 
-		' StartPrintScreen
-
 		' 選択開始位置の Run
 		Dim borderRun_start As Run = TryCast(selection.Start.Parent, Run)
-		' 選択開始位置の Run
+		' 選択終了位置の Run
 		Dim borderRun_end As Run = TryCast(selection.End.Parent, Run)
 
 		' 選択開始位置以前のテキスト
 		Dim previousText As String = selection.Start.GetTextInRun(LogicalDirection.Backward)
-		' 選択開始位置以前のテキスト
+		' 選択終了位置以降のテキスト
 		Dim nextText As String = selection.End.GetTextInRun(LogicalDirection.Forward)
 
 		If borderRun_start Is borderRun_end And borderRun_start IsNot Nothing Then
@@ -187,8 +177,7 @@ Public Class Section
 
 	Private Function CreateHyperlink(uri As String, text As String) As Hyperlink
 
-
-		Dim a As Uri = New Uri(uri, UriKind.RelativeOrAbsolute)
+		Dim a As New Uri(uri, UriKind.RelativeOrAbsolute)
 
 		Dim hyperlink As New Hyperlink(New Run(text)) With {
 			.NavigateUri = New Uri(uri, UriKind.RelativeOrAbsolute)
@@ -303,4 +292,5 @@ Public Class Section
 	Private Sub ScrollToSelf()
 		BringIntoView()
 	End Sub
+
 End Class

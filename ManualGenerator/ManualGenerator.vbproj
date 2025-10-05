@@ -167,9 +167,10 @@
     <Compile Include="Definitions.vb" />
     <Compile Include="Entities\Document_E.vb" />
     <Compile Include="Entities\Section_E.vb" />
+    <Compile Include="Helpers\RichTextBoxHelper.vb" />
     <Compile Include="Repositories\Document_R.vb" />
     <Compile Include="Shareds\CurrentSectionsManager.vb" />
-    <Compile Include="Shareds\FlowDocumentToHtmlConverter.vb" />
+    <Compile Include="Shareds\XmlToHtmlConverter.vb" />
     <Compile Include="Shareds\FileManager.vb" />
     <Compile Include="Shareds\IdToSectionUriConverter.vb" />
     <Compile Include="Shareds\PrintScreenManager.vb" />
@@ -179,6 +180,7 @@
     <Compile Include="ViewModels\HyperlinkDialog_VM.vb" />
     <Compile Include="ViewModels\ListPage_VM.vb" />
     <Compile Include="ViewModels\MainWindow_VM.vb" />
+    <Compile Include="Shareds\XmlManager.vb" />
     <Compile Include="ViewModels\Section_VM.vb" />
     <Compile Include="Views\Controls\AddCommandBar.xaml.vb">
       <DependentUpon>AddCommandBar.xaml</DependentUpon>
@@ -298,6 +300,7 @@
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="My Project\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

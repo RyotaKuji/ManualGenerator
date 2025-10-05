@@ -19,7 +19,7 @@ Public Class Section_E
 	Public Property DocumentId As String
 
 	Public Property Heading As String
-	Public Property DescriptionXaml As String
+	Public Property DescriptionXml As String
 	Public Property DescriptionHtml As String
 	Public Property DescriptionText As String
 	Public Property ImagePath As String
@@ -47,7 +47,7 @@ Public Class Section_E
 			.PubStatus = pubStatus,
 			.DocumentId = Document_E.GetIdWithPubStatus(DocumentId, pubStatus),
 			.Heading = Heading,
-			.DescriptionXaml = DescriptionXaml,
+			.DescriptionXml = DescriptionXml,
 			.DescriptionHtml = DescriptionHtml,
 			.DescriptionText = DescriptionText,
 			.ImagePath = ImagePath,

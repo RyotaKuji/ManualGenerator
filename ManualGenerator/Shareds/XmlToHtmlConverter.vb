@@ -1,6 +1,6 @@
 ﻿Imports System.Text
 
-Public Class FlowDocumentToHtmlConverter
+Public Class XmlToHtmlConverter
 
 	Private Shared ReadOnly ns As XNamespace = "http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 

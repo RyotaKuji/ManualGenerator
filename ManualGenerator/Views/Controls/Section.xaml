@@ -174,18 +174,12 @@
 			           Margin="{StaticResource VerticalMargin}"/>
 
 			<!-- 説明 RichTextBox -->
-			<RichTextBox Name="DescriptionEditor"
+			<RichTextBox x:Name="DescriptionEditor"
 			             MinHeight="40"
 			             BorderThickness="0"
-			             LostFocus="ConfirmDescription"
-			             IsDocumentEnabled="True">
-				<FlowDocument x:Name="FlowDocument"
-				              Loaded="SetDescription"
-				              PageWidth="{Binding ElementName=DescriptionEditor, Path=Width}"
-				              LineHeight="1"
-				              FontSize="16"
-				              FontFamily="Noto Sans JP"
-				              PagePadding="10"/>
+			             IsDocumentEnabled="True"
+			             local:RichTextBoxHelper.BindableDocument="{Binding DescriptionXml}"
+			             Loaded="DescriptionEditor_Loaded">
 				<!-- 右クリックメニュー -->
 				<RichTextBox.ContextMenu>
 					<ContextMenu>
