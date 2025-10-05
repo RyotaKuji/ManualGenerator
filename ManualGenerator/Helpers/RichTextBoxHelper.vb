@@ -23,12 +23,11 @@ Public Class RichTextBoxHelper
 	Private Shared Sub OnBindableDocumentChanged(d As DependencyObject, e As DependencyPropertyChangedEventArgs)
 		Dim rtb = TryCast(d, RichTextBox)
 		If rtb Is Nothing Then Return
-
 		Dim xml As String = TryCast(e.NewValue, String)
-		rtb.Document = ConvertXmlToFlowDocument(xml)
+		SetFlowDocument(xml, rtb.Document)
 	End Sub
 
-	Private Shared Function ConvertXmlToFlowDocument(xml As String) As FlowDocument
+	Private Shared Function SetFlowDocument(xml As String, doc As FlowDocument) As FlowDocument
 		' 空の場合は最低1つの Paragraph を入れた空ドキュメントを返す
 		If String.IsNullOrWhiteSpace(xml) Then
 			Dim emptyDoc As New FlowDocument()
@@ -43,8 +42,7 @@ Public Class RichTextBoxHelper
 				Return New FlowDocument(New Paragraph(New Run("[FlowDocument パース失敗]")))
 			End If
 
-			' 新しい FlowDocument を作り、Blocks を複製して追加
-			Dim doc As New FlowDocument()
+			doc.Blocks.Clear()
 			For Each block As Block In parsed.Blocks
 				Dim clone As Block = CType(XamlReader.Parse(XamlWriter.Save(block)), Block)
 				doc.Blocks.Add(clone)

@@ -16,8 +16,6 @@ Public Class Section_VM
 			DescriptionXml = value.DescriptionXml
 			ImagePath = value.ImagePath
 			IsHeadline = value.IsHeadline
-
-			XmlManager.GetInstance().IdToXml(Entity.Id) = DescriptionXml
 		End Set
 	End Property
 
@@ -33,6 +31,9 @@ Public Class Section_VM
 			Return _heading
 		End Get
 		Set(value As String)
+			' リンクのテキストを更新
+			xmlManager.ChangeSectionHeading(Id, _heading, value)
+
 			If SetProperty(_heading, value) Then
 				Entity.Heading = value
 			End If
@@ -131,16 +132,20 @@ Public Class Section_VM
 	Public ReadOnly Property SwitchPrintingScreenModeCommand As RelayCommand
 	Public ReadOnly Property RequestScrollCommand As RelayCommand(Of Uri)
 
+	Private xmlManager As XmlManager = XmlManager.GetInstance()
+
 	Public Sub New()
 		Entity = New Section_E()
 		SwitchPrintingScreenModeCommand = New RelayCommand(AddressOf SwitchPrintingScreenMode)
 		RequestScrollCommand = New RelayCommand(Of Uri)(AddressOf RequestScroll)
+		xmlManager.Sections.Add(Me)
 	End Sub
 
 	Public Sub New(entity As Section_E)
 		Me.Entity = entity
 		SwitchPrintingScreenModeCommand = New RelayCommand(AddressOf SwitchPrintingScreenMode)
 		RequestScrollCommand = New RelayCommand(Of Uri)(AddressOf RequestScroll)
+		xmlManager.Sections.Add(Me)
 	End Sub
 
 	Private _isLastItem As Boolean

@@ -11,14 +11,20 @@ Public Class Section
 
 	Public Sub New()
 		InitializeComponent()
-		AddHandler Loaded, AddressOf OnLoaded
+		AddHandler Loaded, AddressOf Section_Loaded
+		AddHandler DescriptionEditor.Loaded, AddressOf DescriptionEditor_Loaded
 	End Sub
 
-	Private Sub OnLoaded(sender As Object, e As RoutedEventArgs)
+	Private Sub Section_Loaded(sender As Object, e As RoutedEventArgs)
 		AddHandler VM.ScrollToSelfEvent, AddressOf ScrollToSelf
 	End Sub
 
 	Private Sub DescriptionEditor_Loaded(sender As Object, e As RoutedEventArgs)
+		With DescriptionEditor.Document
+			.FontSize = 16
+			.LineHeight = 1
+			.FontFamily = New FontFamily("Noto Sans JP")
+		End With
 		AddHandler DescriptionEditor.LostFocus, AddressOf ConfirmDescription
 		AddEventToHyperlinks()
 	End Sub

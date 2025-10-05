@@ -175,11 +175,11 @@
 
 			<!-- 説明 RichTextBox -->
 			<RichTextBox x:Name="DescriptionEditor"
+			             local:RichTextBoxHelper.BindableDocument="{Binding DescriptionXml}"
 			             MinHeight="40"
 			             BorderThickness="0"
 			             IsDocumentEnabled="True"
-			             local:RichTextBoxHelper.BindableDocument="{Binding DescriptionXml}"
-			             Loaded="DescriptionEditor_Loaded">
+			             FontFamily="Noto Serif JP">
 				<!-- 右クリックメニュー -->
 				<RichTextBox.ContextMenu>
 					<ContextMenu>
