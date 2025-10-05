@@ -20,11 +20,29 @@ Public Class Section_E
 
 	Public Property Heading As String
 	Public Property DescriptionXml As String
-	Public Property DescriptionHtml As String
-	Public Property DescriptionText As String
 	Public Property ImagePath As String
 	Public Property IsHeadline As Boolean
 	Public Property OrderIndex As Integer
+
+	Public Property DescriptionHtml As String
+		Get
+			Return XmlToHtmlConverter.Convert(DescriptionXml)
+		End Get
+		' SQLite.Net で有効にするため、ReadOnly にしない
+		Set(value As String)
+		End Set
+	End Property
+
+	Public Property DescriptionText As String
+		Get
+			Dim xDoc As XDocument = XDocument.Parse(DescriptionXml)
+			Dim text = String.Concat(xDoc.DescendantNodes().OfType(Of XText)().Select(Function(t) t.Value))
+			Return text
+		End Get
+		' SQLite.Net で有効にするため、ReadOnly にしない
+		Set(value As String)
+		End Set
+	End Property
 
 	' SQLite.NET では Enum を直接保存できないため、整数値として保存する
 	<NotNull>
@@ -48,8 +66,6 @@ Public Class Section_E
 			.DocumentId = Document_E.GetIdWithPubStatus(DocumentId, pubStatus),
 			.Heading = Heading,
 			.DescriptionXml = DescriptionXml,
-			.DescriptionHtml = DescriptionHtml,
-			.DescriptionText = DescriptionText,
 			.ImagePath = ImagePath,
 			.IsHeadline = IsHeadline,
 			.OrderIndex = OrderIndex

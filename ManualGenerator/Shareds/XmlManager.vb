@@ -27,6 +27,7 @@ Public Class XmlManager
 		If String.IsNullOrEmpty(id) Then
 			Return
 		End If
+
 		id = Section_E.GetBaseId(id)
 
 		For Each section As Section_VM In Sections
