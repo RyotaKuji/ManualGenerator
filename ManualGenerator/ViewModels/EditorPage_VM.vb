@@ -104,7 +104,7 @@ Public Class EditorPage_VM
 			SetDefaultItems()
 		End If
 
-		MarkLastSection()
+		MarkSectionInfo()
 	End Sub
 
 	''' <summary>
@@ -155,7 +155,7 @@ Public Class EditorPage_VM
 		Sections.Add(headingItem)
 		Sections.Add(processItem)
 
-		MarkLastSection()
+		MarkSectionInfo()
 	End Sub
 
 	''' <summary>
@@ -178,7 +178,7 @@ Public Class EditorPage_VM
 			Sections.Add(addedItem)
 		End If
 
-		MarkLastSection()
+		MarkSectionInfo()
 	End Sub
 
 	''' <summary>
@@ -186,11 +186,26 @@ Public Class EditorPage_VM
 	''' </summary>
 	''' <param name="item"></param>
 	Private Sub RemoveItem(item As Section_VM)
-		If Sections.Count > 1 Then
-			Sections.Remove(item)
+
+		If Sections.Count <= 1 Then
+			Return
 		End If
+
+		Dim message As String = If(String.IsNullOrWhiteSpace(item.Heading), "セクション", item.Heading & " ") & "を削除しますか？"
+		Dim result As MessageBoxResult = StyledMessageBox.Show(message, "削除", MessageBoxButton.YesNo, MessageBoxResult.No)
+
+		If result <> MessageBoxResult.Yes Then
+			Return
+		End If
+
+		Sections.Remove(item)
 		XmlManager.GetInstance().RemovedSection(item.Id)
+		MarkSectionInfo()
+	End Sub
+
+	Private Sub MarkSectionInfo()
 		MarkLastSection()
+		MarkRemovable()
 	End Sub
 
 	''' <summary>
@@ -202,6 +217,19 @@ Public Class EditorPage_VM
 			item.IsLastItem = False
 		Next
 		Sections.Last().IsLastItem = True
+	End Sub
+
+	''' <summary>
+	''' 要素が1つだけの場合に IsRemovable を設定
+	''' RemoveButton が非表示になる
+	''' </summary>
+	Private Sub MarkRemovable()
+		For Each item In Sections
+			item.IsRemovable = True
+		Next
+		If Sections.Count = 1 Then
+			Sections.First().IsRemovable = False
+		End If
 	End Sub
 
 	''' <summary>

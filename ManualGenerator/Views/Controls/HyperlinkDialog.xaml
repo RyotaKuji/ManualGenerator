@@ -11,6 +11,7 @@
         WindowStyle="None"
         ResizeMode="NoResize"
         Deactivated="Window_Deactivated"
+        ContentRendered="Window_ContentRendered"
         Style="{DynamicResource DefaultWindowStyle}">
 	<Window.Resources>
 		<local:EnumToBooleanConverter x:Key="EnumToBooleanConverter"/>

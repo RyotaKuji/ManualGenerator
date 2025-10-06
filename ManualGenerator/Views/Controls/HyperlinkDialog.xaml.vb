@@ -42,7 +42,7 @@
 	End Sub
 
 	' 画面表示後にサイズを調整
-	Private Sub Window_ContentRendered(sender As Object, e As EventArgs) Handles Me.ContentRendered
+	Private Sub Window_ContentRendered(sender As Object, e As EventArgs)
 		InvalidateMeasure()
 	End Sub
 

@@ -334,6 +334,7 @@
 		        Content="✕"
 		        Command="{Binding RemoveCommand}"
 		        CommandParameter="{Binding}"
+		        Visibility="{Binding IsRemovable, Converter={StaticResource BoolToVis}}"
 		        Width="35"
 		        Height="35"
 		        VerticalAlignment="Top"

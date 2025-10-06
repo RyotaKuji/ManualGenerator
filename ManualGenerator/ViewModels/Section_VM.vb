@@ -102,6 +102,26 @@ Public Class Section_VM
 		End Set
 	End Property
 
+	Private _isLastItem As Boolean
+	Public Property IsLastItem As Boolean
+		Get
+			Return _isLastItem
+		End Get
+		Set(value As Boolean)
+			SetProperty(_isLastItem, value)
+		End Set
+	End Property
+
+	Private _isRemovable As Boolean
+	Public Property IsRemovable As Boolean
+		Get
+			Return _isRemovable
+		End Get
+		Set(value As Boolean)
+			SetProperty(_isRemovable, value)
+		End Set
+	End Property
+
 	Public Property RemoveCommand As RelayCommand
 	Public Event ScrollToSelfEvent()
 
@@ -123,16 +143,6 @@ Public Class Section_VM
 		RequestScrollCommand = New RelayCommand(Of Uri)(AddressOf RequestScroll)
 		xmlManager.Sections.Add(Me)
 	End Sub
-
-	Private _isLastItem As Boolean
-	Public Property IsLastItem As Boolean
-		Get
-			Return _isLastItem
-		End Get
-		Set(value As Boolean)
-			SetProperty(_isLastItem, value)
-		End Set
-	End Property
 
 	Private Sub SwitchPrintingScreenMode()
 		If InPrintScreenMode Then
