@@ -68,6 +68,7 @@ Public Class HyperlinkDialog_VM : Inherits ObservableObject
 		Set(value As Section_VM)
 			If SetProperty(_selectedSection, value) Then
 				SectionUri = ConvertSectionToUri(value)
+				DisplayText = value.Heading
 			End If
 		End Set
 	End Property
