@@ -9,46 +9,60 @@ Public Class Document_R
 
 	' 非同期ファクトリ（テーブル作成もここでAwait）
 	Public Shared Async Function CreateAsync() As Task(Of Document_R)
-		Dim inst = New Document_R(My.Resources.DBPath)
+		Try
+			Dim inst = New Document_R(My.Resources.DBPath)
 
-		Await inst.db.CreateTableAsync(Of Document_E)()
-		Await inst.db.CreateTableAsync(Of Section_E)()
+			Await inst.db.CreateTableAsync(Of Document_E)()
+			Await inst.db.CreateTableAsync(Of Section_E)()
 
-		Return inst
+			Return inst
+
+		Catch ex As Exception
+			Throw New AppException(ex)
+		End Try
 	End Function
 
 	' READ by Id
 	Public Async Function ReadAsync(id As String) As Task(Of Document_E)
-		Dim doc = Await db.FindAsync(Of Document_E)(id)
+		Try
+			Dim doc = Await db.FindAsync(Of Document_E)(id)
 
-		If doc IsNot Nothing Then
-			doc.Sections = Await db.Table(Of Section_E)().
-				Where(Function(sect) sect.DocumentId = id).
-				OrderBy(Function(section) section.OrderIndex).
-				ToListAsync()
-		End If
+			If doc IsNot Nothing Then
+				doc.Sections = Await db.Table(Of Section_E)().
+					Where(Function(sect) sect.DocumentId = id).
+					OrderBy(Function(section) section.OrderIndex).
+					ToListAsync()
+			End If
 
-		Return doc
+			Return doc
+		Catch ex As Exception
+			Throw New AppException(ex)
+		End Try
 	End Function
 
 	' READ by Title
 	Public Async Function ReadAllAsync(pubStatus As Definitions.PubStatus) As Task(Of List(Of Document_E))
-		Dim statusValue As Integer = pubStatus
+		Try
+			Dim statusValue As Integer = pubStatus
 
-		Dim docs As List(Of Document_E) =
-		Await db.Table(Of Document_E)().
-				Where(Function(d) d.PubStatusValue = statusValue).
-				ToListAsync()
+			Dim docs As List(Of Document_E) =
+			Await db.Table(Of Document_E)().
+					Where(Function(d) d.PubStatusValue = statusValue).
+					ToListAsync()
 
-		' 各 Document に対応する Section を読み込む（逐次）
-		For Each doc In docs
-			doc.Sections = Await db.Table(Of Section_E)().
-				Where(Function(s) s.DocumentId = doc.Id).
-				OrderBy(Function(s) s.OrderIndex).
-				ToListAsync()
-		Next
+			' 各 Document に対応する Section を読み込む（逐次）
+			For Each doc In docs
+				doc.Sections = Await db.Table(Of Section_E)().
+					Where(Function(s) s.DocumentId = doc.Id).
+					OrderBy(Function(s) s.OrderIndex).
+					ToListAsync()
+			Next
 
-		Return docs
+			Return docs
+
+		Catch ex As Exception
+			Throw New AppException(ex)
+		End Try
 	End Function
 
 	' CREATE or UPDATE (セクションは差分更新)
@@ -65,73 +79,81 @@ Public Class Document_R
 		' 1トランザクションで実行（同期APIはコールバック内のSQLiteConnectionで使用可）
 		Await db.RunInTransactionAsync(
 			Sub(conn As SQLiteConnection)
+				Try
+					' --- Document 保存 ---
+					Dim existingDoc = conn.Find(Of Document_E)(doc.Id)
+					If existingDoc Is Nothing Then
 
-				' --- Document 保存 ---
-				Dim existingDoc = conn.Find(Of Document_E)(doc.Id)
-				If existingDoc Is Nothing Then
-
-					conn.Insert(doc)
-					For Each sec In doc.Sections
-						conn.Insert(sec)
-					Next
-				Else
-
-					conn.Update(doc)
-
-					' Entities 差分更新
-					If doc.Sections IsNot Nothing Then
-						Dim existingSections = conn.Table(Of Section_E)().
-							Where(Function(s) s.DocumentId = doc.Id).
-							ToList()
-
-						Dim existingDict = existingSections.ToDictionary(Function(sec) sec.Id, StringComparer.OrdinalIgnoreCase)
-
+						conn.Insert(doc)
 						For Each sec In doc.Sections
-							If existingDict.ContainsKey(sec.Id) Then
-								' 更新
-								conn.Update(sec)
-								existingDict.Remove(sec.Id)
-							Else
-								' 新規追加
-								conn.Insert(sec)
-							End If
+							conn.Insert(sec)
 						Next
+					Else
 
-						' 残っているものは削除対象
-						For Each toDelete In existingDict.Values
-							conn.Delete(toDelete)
-						Next
+						conn.Update(doc)
+
+						' Entities 差分更新
+						If doc.Sections IsNot Nothing Then
+							Dim existingSections = conn.Table(Of Section_E)().
+								Where(Function(s) s.DocumentId = doc.Id).
+								ToList()
+
+							Dim existingDict = existingSections.ToDictionary(Function(sec) sec.Id, StringComparer.OrdinalIgnoreCase)
+
+							For Each sec In doc.Sections
+								If existingDict.ContainsKey(sec.Id) Then
+									' 更新
+									conn.Update(sec)
+									existingDict.Remove(sec.Id)
+								Else
+									' 新規追加
+									conn.Insert(sec)
+								End If
+							Next
+
+							' 残っているものは削除対象
+							For Each toDelete In existingDict.Values
+								conn.Delete(toDelete)
+							Next
+						End If
 					End If
-				End If
 
-				If pubStatus = Definitions.PubStatus.Published Then
+					If pubStatus = Definitions.PubStatus.Published Then
 
-					Dim deletedId = Document_E.GetIdWithPubStatus(doc.Id, Definitions.PubStatus.Draft)
+						Dim deletedId = Document_E.GetIdWithPubStatus(doc.Id, Definitions.PubStatus.Draft)
 
-					Dim deleteSections = conn.Table(Of Section_E)().
+						Dim deleteSections = conn.Table(Of Section_E)().
 							Where(Function(s) s.DocumentId = deletedId).
 							ToList()
-					For Each sec In deleteSections
-						conn.Delete(sec)
-					Next
+						For Each sec In deleteSections
+							conn.Delete(sec)
+						Next
 
-					conn.Delete(Of Document_E)(deletedId)
+						conn.Delete(Of Document_E)(deletedId)
 
-				End If
+					End If
+				Catch ex As Exception
+					Throw New AppException(ex)
+				End Try
 			End Sub
 		)
 	End Function
 
 	' DELETE
 	Public Async Function DeleteAsync(id As String) As Task
-		Dim sections = Await db.Table(Of Section_E)().
+		Try
+			Dim sections = Await db.Table(Of Section_E)().
 			Where(Function(sec) sec.DocumentId = id).
 			ToListAsync()
 
-		For Each sec In sections
-			Await db.DeleteAsync(sec)
-		Next
+			For Each sec In sections
+				Await db.DeleteAsync(sec)
+			Next
 
-		Await db.DeleteAsync(Of Document_E)(id)
+			Await db.DeleteAsync(Of Document_E)(id)
+
+		Catch ex As Exception
+			Throw New AppException(ex)
+		End Try
 	End Function
 End Class

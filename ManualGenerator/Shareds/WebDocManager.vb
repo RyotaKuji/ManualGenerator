@@ -34,7 +34,7 @@ Public Class WebDocManager
 			Return documentPath
 
 		Catch ex As Exception
-			Return ""
+			Throw New AppException(ex)
 		End Try
 	End Function
 

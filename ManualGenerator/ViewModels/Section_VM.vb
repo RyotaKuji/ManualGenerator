@@ -128,8 +128,8 @@ Public Class Section_VM
 	Public ReadOnly Property SwitchPrintingScreenModeCommand As RelayCommand
 	Public ReadOnly Property RequestScrollCommand As RelayCommand(Of Uri)
 
-	Private xmlManager As XmlManager = XmlManager.GetInstance()
-	Private printScreen As PrintScreen = PrintScreen.GetInstance()
+	Private ReadOnly xmlManager As XmlManager = XmlManager.GetInstance()
+	Private ReadOnly printScreen As PrintScreen = PrintScreen.GetInstance()
 
 	Public Sub New()
 		Entity = New Section_E()
@@ -147,7 +147,7 @@ Public Class Section_VM
 
 	Private Sub SwitchPrintingScreenMode()
 		If InPrintScreenMode Then
-			EndPrintingScreen()
+			StopPrintingScreen()
 			InPrintScreenMode = False
 		Else
 			StartPrintScreen()
@@ -165,8 +165,8 @@ Public Class Section_VM
 			AddressOf StoppedPrintScreen
 	End Sub
 
-	Private Sub EndPrintingScreen()
-		printScreen.End()
+	Private Sub StopPrintingScreen()
+		printScreen.Stop()
 	End Sub
 
 	Private Sub ChangedImage(path As String)
@@ -177,7 +177,28 @@ Public Class Section_VM
 		RemoveHandler printScreen.ChangedImage, AddressOf ChangedImage
 		RemoveHandler printScreen.Stopped, AddressOf StoppedPrintScreen
 		InPrintScreenMode = False
+
+		Task.Run(Async Function()
+					 Await SaveImageAsync()
+				 End Function)
 	End Sub
+
+	Private Async Function SaveImageAsync() As Task
+
+		Dim sourcePath As String = ImagePath
+		Dim fileName As String = Path.GetFileName(sourcePath)
+		Dim destPath As String = Path.Combine(My.Resources.ImageDir, fileName)
+		Try
+			Using sourceStream As New FileStream(sourcePath, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, useAsync:=True),
+			  destStream As New FileStream(destPath, FileMode.Create, FileAccess.Write, FileShare.None, 4096, useAsync:=True)
+
+				Await sourceStream.CopyToAsync(destStream)
+			End Using
+		Catch ex As Exception
+			Throw New AppException(ex)
+		End Try
+		ImagePath = destPath
+	End Function
 
 	Private Sub RequestScroll(uri As Uri)
 		Dim manager As CurrentSectionsManager = CurrentSectionsManager.GetInstance()

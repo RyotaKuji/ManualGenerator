@@ -170,8 +170,8 @@
     <Compile Include="Helpers\RichTextBoxHelper.vb" />
     <Compile Include="Repositories\Document_R.vb" />
     <Compile Include="Shareds\CurrentSectionsManager.vb" />
+    <Compile Include="Shareds\AppException.vb" />
     <Compile Include="Shareds\XmlToHtmlConverter.vb" />
-    <Compile Include="Shareds\FileManager.vb" />
     <Compile Include="Shareds\IdToSectionUriConverter.vb" />
     <Compile Include="Shareds\PrintScreen.vb" />
     <Compile Include="Shareds\UserSettings.vb" />

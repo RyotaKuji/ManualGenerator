@@ -16,18 +16,11 @@ Public Class PrintScreen
 	End Function
 
 	Public Sub Start()
-		If clipboardTimer IsNot Nothing Then
-			clipboardTimer.Stop()
-			RemoveHandler clipboardTimer.Tick, AddressOf CheckClipboard
-			clipboardTimer = Nothing
-		End If
+		Me.Stop()
 
-		If StoppedEvent IsNot Nothing Then
-			RaiseEvent Stopped()
-		End If
-
-		clipboardTimer = New DispatcherTimer()
-		clipboardTimer.Interval = TimeSpan.FromMilliseconds(500)
+		clipboardTimer = New DispatcherTimer With {
+			.Interval = TimeSpan.FromMilliseconds(500)
+		}
 		AddHandler clipboardTimer.Tick, AddressOf CheckClipboard
 		clipboardTimer.Start()
 
@@ -41,7 +34,7 @@ Public Class PrintScreen
 		End Try
 	End Sub
 
-	Public Sub [End]()
+	Public Sub [Stop]()
 		If clipboardTimer IsNot Nothing Then
 			clipboardTimer.Stop()
 			RemoveHandler clipboardTimer.Tick, AddressOf CheckClipboard
@@ -58,7 +51,7 @@ Public Class PrintScreen
 		' 取得した画像が開始時と異なる場合のみ処理
 		If img IsNot Nothing AndAlso (lastClipboardImage Is Nothing OrElse Not IsSameImage(img, lastClipboardImage)) Then
 			lastClipboardImage = img
-			Dim path As String = $"C:\WorkSpace\Prog\ManualGenerator\{Guid.NewGuid()}.png"
+			Dim path As String = IO.Path.Combine(IO.Path.GetTempPath(), $"{Guid.NewGuid()}.png")
 			Using fileStream As New FileStream(path, FileMode.Create)
 				Dim encoder As New PngBitmapEncoder()
 				encoder.Frames.Add(BitmapFrame.Create(img))
