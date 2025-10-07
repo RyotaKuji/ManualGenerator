@@ -4,6 +4,12 @@ Public Class XmlManager
 
 	Public Sections As New HashSet(Of Section_VM)
 
+	Private Shared ReadOnly instance As New XmlManager()
+
+	Public Shared Function GetInstance() As XmlManager
+		Return instance
+	End Function
+
 	Public Sub ChangeSectionHeading(id As String, oldText As String, newText As String)
 		If String.IsNullOrEmpty(id) Or
 			String.IsNullOrEmpty(oldText) Or
@@ -45,11 +51,5 @@ Public Class XmlManager
 			End If
 		Next
 	End Sub
-
-	Private Shared instance As New XmlManager()
-
-	Public Shared Function GetInstance() As XmlManager
-		Return instance
-	End Function
 
 End Class

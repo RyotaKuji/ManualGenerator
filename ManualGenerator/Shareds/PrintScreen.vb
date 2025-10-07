@@ -1,15 +1,21 @@
 ﻿Imports System.IO
 Imports System.Windows.Threading
 
-Public Class PrintScreenManager
+Public Class PrintScreen
 
-	Private Shared clipboardTimer As DispatcherTimer
-	Private Shared lastClipboardImage As BitmapSource
+	Private clipboardTimer As DispatcherTimer
+	Private lastClipboardImage As BitmapSource
 
-	Public Shared Event ChangedImage(path As String)
-	Public Shared Event Stopped()
+	Public Event ChangedImage(path As String)
+	Public Event Stopped()
 
-	Public Shared Sub StartPrintScreen()
+	Private Shared ReadOnly instance As New PrintScreen()
+
+	Public Shared Function GetInstance() As PrintScreen
+		Return instance
+	End Function
+
+	Public Sub Start()
 		If clipboardTimer IsNot Nothing Then
 			clipboardTimer.Stop()
 			RemoveHandler clipboardTimer.Tick, AddressOf CheckClipboard
@@ -35,7 +41,7 @@ Public Class PrintScreenManager
 		End Try
 	End Sub
 
-	Public Shared Sub StopPrintScreen()
+	Public Sub [End]()
 		If clipboardTimer IsNot Nothing Then
 			clipboardTimer.Stop()
 			RemoveHandler clipboardTimer.Tick, AddressOf CheckClipboard
@@ -47,13 +53,12 @@ Public Class PrintScreenManager
 		End If
 	End Sub
 
-	Private Shared Sub CheckClipboard(sender As Object, e As EventArgs)
+	Private Sub CheckClipboard(sender As Object, e As EventArgs)
 		Dim img = Clipboard.GetImage()
 		' 取得した画像が開始時と異なる場合のみ処理
 		If img IsNot Nothing AndAlso (lastClipboardImage Is Nothing OrElse Not IsSameImage(img, lastClipboardImage)) Then
 			lastClipboardImage = img
-
-			Dim path As String = "C:\WorkSpace\Prog\ManualGenerator\snip_" & DateTime.Now.ToString("yyyyMMdd_HHmmss") & ".png"
+			Dim path As String = $"C:\WorkSpace\Prog\ManualGenerator\{Guid.NewGuid()}.png"
 			Using fileStream As New FileStream(path, FileMode.Create)
 				Dim encoder As New PngBitmapEncoder()
 				encoder.Frames.Add(BitmapFrame.Create(img))

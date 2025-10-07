@@ -129,6 +129,7 @@ Public Class Section_VM
 	Public ReadOnly Property RequestScrollCommand As RelayCommand(Of Uri)
 
 	Private xmlManager As XmlManager = XmlManager.GetInstance()
+	Private printScreen As PrintScreen = PrintScreen.GetInstance()
 
 	Public Sub New()
 		Entity = New Section_E()
@@ -146,7 +147,7 @@ Public Class Section_VM
 
 	Private Sub SwitchPrintingScreenMode()
 		If InPrintScreenMode Then
-			StopPrintingScreen()
+			EndPrintingScreen()
 			InPrintScreenMode = False
 		Else
 			StartPrintScreen()
@@ -155,17 +156,17 @@ Public Class Section_VM
 	End Sub
 
 	Private Sub StartPrintScreen()
-		PrintScreenManager.StartPrintScreen()
+		printScreen.Start()
 
-		AddHandler PrintScreenManager.ChangedImage,
+		AddHandler printScreen.ChangedImage,
 			AddressOf ChangedImage
 
-		AddHandler PrintScreenManager.Stopped,
+		AddHandler printScreen.Stopped,
 			AddressOf StoppedPrintScreen
 	End Sub
 
-	Private Sub StopPrintingScreen()
-		PrintScreenManager.StopPrintScreen()
+	Private Sub EndPrintingScreen()
+		printScreen.End()
 	End Sub
 
 	Private Sub ChangedImage(path As String)
@@ -173,8 +174,8 @@ Public Class Section_VM
 	End Sub
 
 	Private Sub StoppedPrintScreen()
-		RemoveHandler PrintScreenManager.ChangedImage, AddressOf ChangedImage
-		RemoveHandler PrintScreenManager.Stopped, AddressOf StoppedPrintScreen
+		RemoveHandler printScreen.ChangedImage, AddressOf ChangedImage
+		RemoveHandler printScreen.Stopped, AddressOf StoppedPrintScreen
 		InPrintScreenMode = False
 	End Sub
 

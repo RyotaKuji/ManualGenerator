@@ -2,7 +2,7 @@
 
 	Public Property VMs As IEnumerable(Of Section_VM)
 
-	Private Shared instance As New CurrentSectionsManager()
+	Private Shared ReadOnly instance As New CurrentSectionsManager()
 
 	Public Shared Function GetInstance() As CurrentSectionsManager
 		Return instance

@@ -123,6 +123,9 @@
   <data name="DraftSuffix" xml:space="preserve">
     <value>_Draft</value>
   </data>
+  <data name="ImageDir" xml:space="preserve">
+    <value>C:\WorkSpace\Prog\ManualGenerator\WebDoc\Images</value>
+  </data>
   <data name="PHPExePath" xml:space="preserve">
     <value>C:\WorkSpace\Prog\ManualGenerator\WebDoc\System\PHP\php.exe</value>
   </data>

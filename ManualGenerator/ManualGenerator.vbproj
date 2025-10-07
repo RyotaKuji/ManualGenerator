@@ -173,7 +173,7 @@
     <Compile Include="Shareds\XmlToHtmlConverter.vb" />
     <Compile Include="Shareds\FileManager.vb" />
     <Compile Include="Shareds\IdToSectionUriConverter.vb" />
-    <Compile Include="Shareds\PrintScreenManager.vb" />
+    <Compile Include="Shareds\PrintScreen.vb" />
     <Compile Include="Shareds\UserSettings.vb" />
     <Compile Include="Shareds\WebDocManager.vb" />
     <Compile Include="ViewModels\EditorPage_VM.vb" />

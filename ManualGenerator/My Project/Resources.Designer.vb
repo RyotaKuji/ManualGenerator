@@ -79,6 +79,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  C:\WorkSpace\Prog\ManualGenerator\WebDoc\Images に類似しているローカライズされた文字列を検索します。
+        '''</summary>
+        Friend ReadOnly Property ImageDir() As String
+            Get
+                Return ResourceManager.GetString("ImageDir", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  C:\WorkSpace\Prog\ManualGenerator\WebDoc\System\PHP\php.exe に類似しているローカライズされた文字列を検索します。
         '''</summary>
         Friend ReadOnly Property PHPExePath() As String
