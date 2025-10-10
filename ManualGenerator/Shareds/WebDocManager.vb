@@ -39,7 +39,7 @@ Public Class WebDocManager
 	End Function
 
 	Public Shared Function GetDocumentPath(id As String) As String
-		Return Path.Combine(My.Resources.PublicDocDir, $"{id}.html")
+		Return Path.Combine(My.Resources.PublicDocDir, $"{Document_E.GetBaseId(id)}.html")
 	End Function
 
 End Class

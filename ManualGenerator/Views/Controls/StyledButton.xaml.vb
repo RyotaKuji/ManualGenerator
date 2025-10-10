@@ -27,5 +27,6 @@
 		BorderThickness_BoldRate = 1.5
 		FilterColor = "LightGray"
 		BorderThickness = New Thickness(1)
+		FontFamily = New FontFamily(My.Resources.DefaultFontFamily)
 	End Sub
 End Class

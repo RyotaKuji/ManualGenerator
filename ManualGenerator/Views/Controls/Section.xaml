@@ -102,7 +102,6 @@
 			         Padding="8,4"
 			         VerticalContentAlignment="Center"
 			         BorderThickness="0"
-			         FontFamily="Noto Sans JP"
 			         Margin="{StaticResource VerticalMargin}">
 				<TextBox.Style>
 					<Style TargetType="{x:Type TextBox}">
@@ -179,7 +178,7 @@
 			             MinHeight="40"
 			             BorderThickness="0"
 			             IsDocumentEnabled="True"
-			             FontFamily="Noto Serif JP">
+			             FontFamily="{StaticResource DefaultFontFamily}">
 				<!-- 右クリックメニュー -->
 				<RichTextBox.ContextMenu>
 					<ContextMenu>

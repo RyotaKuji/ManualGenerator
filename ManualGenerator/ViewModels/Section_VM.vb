@@ -195,7 +195,7 @@ Public Class Section_VM
 				Await sourceStream.CopyToAsync(destStream)
 			End Using
 		Catch ex As Exception
-			Throw New AppException(ex)
+			Return
 		End Try
 		ImagePath = destPath
 	End Function

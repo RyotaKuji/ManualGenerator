@@ -22,7 +22,8 @@
 	<syncfusion:SplitButtonAdv Label="保存"
 	                           ToolTip="保存 (Ctrl+S)"
 	                           Command="{Binding SaveDraftCommand}"
-	                           FontSize="13"
+	                           FontFamily="{StaticResource DefaultFontFamily}"
+	                           FontSize="14"
 	                           SmallIcon="/Images/Save.png"
 	                           IconWidth="30"
 	                           DropDirection="Left"
@@ -52,7 +53,7 @@
 									<Label Content="{Binding Header, RelativeSource={RelativeSource AncestorType=syncfusion:DropDownMenuItem}}"
 									       Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=syncfusion:DropDownMenuItem}}"
 									       FontSize="13"
-									       FontFamily="Noto Sans JP"
+									       FontFamily="{StaticResource DefaultFontFamily}"
 									       Grid.Column="1"/>
 								</Grid>
 								<ControlTemplate.Triggers>

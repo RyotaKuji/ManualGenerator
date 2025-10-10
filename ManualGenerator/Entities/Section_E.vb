@@ -12,8 +12,7 @@ Public Class Section_E
 		End Set
 	End Property
 
-	<Ignore>
-	Private Property BaseId As String = Guid.NewGuid().ToString()
+	Public Property BaseId As String = Guid.NewGuid().ToString()
 
 	<Indexed, NotNull>
 	Public Property DocumentId As String

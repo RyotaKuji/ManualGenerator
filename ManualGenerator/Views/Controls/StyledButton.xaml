@@ -19,8 +19,12 @@
 							        BorderBrush="{Binding BorderBrush, RelativeSource={RelativeSource AncestorType=Button}}"
 							        Background="{Binding Background, RelativeSource={RelativeSource AncestorType=Button}}"
 							        CornerRadius="{Binding CornerRadius, RelativeSource={RelativeSource AncestorType=Button}}">
-								<ContentPresenter HorizontalAlignment="Center"
-								                  VerticalAlignment="Center"/>
+								<Label HorizontalAlignment="Center"
+								       VerticalAlignment="Center"
+								       FontFamily="{TemplateBinding FontFamily}"
+								       FontSize="{TemplateBinding FontSize}">
+									<ContentPresenter/>
+								</Label>
 							</Border>
 							<Border x:Name="filter"
 							        Background="{Binding FilterColor, RelativeSource={RelativeSource AncestorType=Button}}"

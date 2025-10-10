@@ -9,7 +9,6 @@
              d:DesignHeight="450"
              d:DesignWidth="800"
              Background="White">
-
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*"/>
@@ -20,12 +19,14 @@
 			<ListBox.ItemTemplate>
 				<DataTemplate>
 					<StackPanel>
-						<TextBlock Text="{Binding Title}"
-						           FontSize="16"
-						           Padding="10,5"/>
-						<TextBlock Text="{Binding Id}"
-						           FontSize="14"
-						           Padding="10,5"/>
+						<Label Content="{Binding Title}"
+						       FontSize="16"
+						       Padding="10,5"
+						       FontFamily="{StaticResource DefaultFontFamily}"/>
+						<Label Content="{Binding BaseId}"
+						       FontSize="14"
+						       Padding="10,5"
+						       FontFamily="{StaticResource DefaultFontFamily}"/>
 					</StackPanel>
 				</DataTemplate>
 			</ListBox.ItemTemplate>
@@ -36,5 +37,4 @@
 			</i:Interaction.Triggers>
 		</ListBox>
 	</Grid>
-
 </UserControl>

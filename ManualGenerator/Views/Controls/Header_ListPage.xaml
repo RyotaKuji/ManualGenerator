@@ -21,8 +21,11 @@
 						        VerticalAlignment="Stretch"
 						        HorizontalAlignment="Stretch"
 						        Background="Transparent">
-							<ContentPresenter HorizontalAlignment="Center"
-							                  VerticalAlignment="Center"/>
+							<Label HorizontalAlignment="Center"
+							       VerticalAlignment="Center"
+							       FontFamily="{StaticResource DefaultFontFamily}">
+								<ContentPresenter/>
+							</Label>
 						</Border>
 						<ControlTemplate.Triggers>
 							<Trigger Property="IsChecked" Value="True">
@@ -76,7 +79,8 @@
 			       FontSize="16"
 			       Padding="0"
 			       Foreground="WhiteSmoke"
-			       VerticalAlignment="Center"/>
+			       VerticalAlignment="Center"
+			       FontFamily="{StaticResource DefaultFontFamily}"/>
 		</StackPanel>
 	</local:StyledButton>
 

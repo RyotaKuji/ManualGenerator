@@ -12,23 +12,12 @@
         ResizeMode="NoResize"
         Deactivated="Window_Deactivated"
         ContentRendered="Window_ContentRendered"
-        Style="{DynamicResource DefaultWindowStyle}">
+        Style="{StaticResource DefaultWindowStyle}"
+        xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+        xmlns:syncfusionskin="clr-namespace:Syncfusion.SfSkinManager;assembly=Syncfusion.SfSkinManager.WPF">
 	<Window.Resources>
 		<local:EnumToBooleanConverter x:Key="EnumToBooleanConverter"/>
 		<local:EnumToVisibilityConverter x:Key="EnumToVisibilityConverter"/>
-		<Style TargetType="{x:Type Window}"
-		       x:Key="DefaultWindowStyle">
-			<Setter Property="WindowChrome.WindowChrome">
-				<Setter.Value>
-					<WindowChrome GlassFrameThickness="0"
-					              ResizeBorderThickness="0"
-					              UseAeroCaptionButtons="False"
-					              CaptionHeight="0"/>
-				</Setter.Value>
-			</Setter>
-			<Setter Property="SnapsToDevicePixels" Value="True"/>
-			<Setter Property="UseLayoutRounding" Value="True"/>
-		</Style>
 	</Window.Resources>
 	<Grid Margin="40,30,40,25">
 		<Grid.RowDefinitions>
@@ -47,7 +36,6 @@
 		<Grid.Resources>
 			<Style x:Key="TextStyle"
 			       TargetType="{x:Type TextBlock}">
-				<Setter Property="FontFamily" Value="Noto Sans JP"/>
 				<Setter Property="FontSize" Value="13"/>
 				<Setter Property="FontWeight" Value="Normal"/>
 				<Setter Property="TextAlignment" Value="Right"/>
@@ -57,7 +45,6 @@
 			<Style x:Key="ErrorMessageStyle"
 			       TargetType="{x:Type TextBlock}">
 				<Setter Property="FontSize" Value="12"/>
-				<Setter Property="FontFamily" Value="Noto Sans JP"/>
 				<Setter Property="FontWeight" Value="Light"/>
 				<Setter Property="Foreground" Value="Red"/>
 				<Setter Property="VerticalAlignment" Value="Bottom"/>
@@ -66,13 +53,15 @@
 			<Style x:Key="InputOuterStyle"
 			       TargetType="{x:Type Border}">
 				<Setter Property="Width" Value="250"/>
-				<Setter Property="Height" Value="30"/>
+				<Setter Property="Height" Value="33"/>
+				<Setter Property="VerticalAlignment" Value="Center"/>
 				<Setter Property="BorderThickness" Value="1"/>
 				<Setter Property="CornerRadius" Value="2"/>
 				<Setter Property="BorderBrush" Value="DarkGray"/>
 			</Style>
 		</Grid.Resources>
 
+		<!-- ウィンドウタイトル -->
 		<TextBlock Text="リンクの挿入"
 		           Grid.Row="0"
 		           Grid.Column="0"
@@ -81,18 +70,26 @@
 		           FontWeight="Bold"
 		           Margin="0,0,0,5"/>
 
+		<!-- 表示文字列 -->
+
+		<!-- 見出し -->
 		<TextBlock Text="表示文字列"
 		           Grid.Row="2"
 		           Grid.Column="0"
 		           Style="{StaticResource TextStyle}"/>
+		<!-- エラーメッセージ -->
 		<TextBlock Text="{Binding ErrorMessage_DisplayText}"
 		           Grid.Row="1"
 		           Grid.Column="1"
 		           Style="{StaticResource ErrorMessageStyle}"/>
+		<!-- 入力 -->
 		<Border Grid.Row="2"
 		        Grid.Column="1"
 		        Style="{StaticResource InputOuterStyle}">
 			<sf:SfTextBoxExt Text="{Binding DisplayText}"
+			                 FontFamily="{StaticResource DefaultFontFamily}"
+			                 FontSize="15"
+			                 Padding="5,0"
 			                 VerticalContentAlignment="Center"
 			                 BorderThickness="0"
 			                 xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
@@ -100,14 +97,19 @@
 			                 syncfusionskin:SfSkinManager.Theme="{syncfusionskin:SkinManagerExtension ThemeName=MaterialLight}"/>
 		</Border>
 
+		<!-- リンク -->
+
+		<!-- 見出し -->
 		<TextBlock Text="リンク"
 		           Grid.Row="5"
 		           Grid.Column="0"
 		           Style="{StaticResource TextStyle}"/>
+		<!-- エラーメッセージ -->
 		<TextBlock Text="{Binding ErrorMessage_Uri}"
 		           Grid.Row="3"
 		           Grid.Column="1"
 		           Style="{StaticResource ErrorMessageStyle}"/>
+		<!-- ラジオボタン -->
 		<StackPanel Grid.Row="4"
 		            Grid.Column="1"
 		            Margin="0,0,0,4"
@@ -117,28 +119,28 @@
 		            syncfusionskin:SfSkinManager.Theme="{syncfusionskin:SkinManagerExtension ThemeName=MaterialLight}">
 			<RadioButton Content="外部"
 			             IsChecked="{Binding Mode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:HyperlinkDialog_VM+UriMode.ExternalUri}, Mode=TwoWay}"
-			             xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
-			             xmlns:syncfusionskin="clr-namespace:Syncfusion.SfSkinManager;assembly=Syncfusion.SfSkinManager.WPF"
-			             syncfusionskin:SfSkinManager.Theme="{syncfusionskin:SkinManagerExtension ThemeName=MaterialLight}"/>
+			             FontFamily="{StaticResource DefaultFontFamily}"/>
 			<RadioButton Content="ページ内"
 			             IsChecked="{Binding Mode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:HyperlinkDialog_VM+UriMode.SectionUri}, Mode=TwoWay}"
 			             Margin="15,0,0,0"
-			             xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
-			             xmlns:syncfusionskin="clr-namespace:Syncfusion.SfSkinManager;assembly=Syncfusion.SfSkinManager.WPF"
-			             syncfusionskin:SfSkinManager.Theme="{syncfusionskin:SkinManagerExtension ThemeName=MaterialLight}"/>
+			             FontFamily="{StaticResource DefaultFontFamily}"/>
 		</StackPanel>
+		<!-- 入力（外部） -->
 		<Border Visibility="{Binding Mode, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter={x:Static local:HyperlinkDialog_VM+UriMode.ExternalUri}}"
 		        Grid.Row="5"
 		        Grid.Column="1"
 		        Style="{StaticResource InputOuterStyle}">
 			<TextBox Text="{Binding ExternalUri}"
+			         FontFamily="{StaticResource DefaultFontFamily}"
+			         FontSize="15"
+			         Padding="5,0"
 			         VerticalContentAlignment="Center"
 			         BorderThickness="0"
-			         FontSize="12"
 			         xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
 			         xmlns:syncfusionskin="clr-namespace:Syncfusion.SfSkinManager;assembly=Syncfusion.SfSkinManager.WPF"
 			         syncfusionskin:SfSkinManager.Theme="{syncfusionskin:SkinManagerExtension ThemeName=MaterialLight}"/>
 		</Border>
+		<!-- 入力（ページ内） -->
 		<Border Visibility="{Binding Mode, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter={x:Static local:HyperlinkDialog_VM+UriMode.SectionUri}}"
 		        Grid.Row="5"
 		        Grid.Column="1"
@@ -147,13 +149,15 @@
 			                DisplayMemberPath="Heading"
 			                SelectedValuePath="{Binding}"
 			                SelectedItem="{Binding SelectedSection}"
+			                FontFamily="{StaticResource DefaultFontFamily}"
+			                FontSize="15"
+			                Padding="5,0"
 			                VerticalContentAlignment="Center"
 			                BorderThickness="0"
-			                FontSize="12"
-			                xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
-			                xmlns:syncfusionskin="clr-namespace:Syncfusion.SfSkinManager;assembly=Syncfusion.SfSkinManager.WPF"
 			                syncfusionskin:SfSkinManager.Theme="{syncfusionskin:SkinManagerExtension ThemeName=MaterialLight}"/>
 		</Border>
+
+		<!-- ボタン -->
 		<StackPanel Orientation="Horizontal"
 		            HorizontalAlignment="Right"
 		            Grid.Row="6"

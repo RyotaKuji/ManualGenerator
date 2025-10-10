@@ -9,7 +9,12 @@ Public Class HyperlinkDialog_VM : Inherits ObservableObject
 			Return _displayText
 		End Get
 		Set(value As String)
-			SetProperty(_displayText, value)
+			value = value?.Trim()
+			If SetProperty(_displayText, value) Then
+				If IsValidExternalUri(value) Then
+					ExternalUri = value
+				End If
+			End If
 		End Set
 	End Property
 
@@ -47,12 +52,13 @@ Public Class HyperlinkDialog_VM : Inherits ObservableObject
 	End Property
 
 	' 外部リンク
-	Public Property _externalUri As String
+	Public _externalUri As String
 	Public Property ExternalUri As String
 		Get
 			Return _externalUri
 		End Get
 		Set(value As String)
+			value = value?.Trim()
 			SetProperty(_externalUri, value)
 		End Set
 	End Property

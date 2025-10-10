@@ -120,6 +120,9 @@
   <data name="DBPath" xml:space="preserve">
     <value>C:\WorkSpace\Prog\ManualGenerator\Db\app.db</value>
   </data>
+  <data name="DefaultFontFamily" xml:space="preserve">
+    <value>Noto Sans JP</value>
+  </data>
   <data name="DraftSuffix" xml:space="preserve">
     <value>_Draft</value>
   </data>

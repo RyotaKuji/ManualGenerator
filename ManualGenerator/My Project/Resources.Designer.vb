@@ -70,6 +70,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Noto Sans JP に類似しているローカライズされた文字列を検索します。
+        '''</summary>
+        Friend ReadOnly Property DefaultFontFamily() As String
+            Get
+                Return ResourceManager.GetString("DefaultFontFamily", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  _Draft に類似しているローカライズされた文字列を検索します。
         '''</summary>
         Friend ReadOnly Property DraftSuffix() As String

@@ -13,8 +13,7 @@ Public Class Document_E
 		End Set
 	End Property
 
-	<Ignore>
-	Private Property BaseId As String = Guid.NewGuid().ToString()
+	Public Property BaseId As String = Guid.NewGuid().ToString()
 
 	<NotNull>
 	Public Property Title As String = ""
@@ -53,7 +52,7 @@ Public Class Document_E
 		Return baseId & suffix
 	End Function
 
-	Private Shared Function GetBaseId(id As String) As String
+	Public Shared Function GetBaseId(id As String) As String
 		Dim delimiterIndex As Integer = id.IndexOf(My.Resources.SuffixDelimiter)
 		If delimiterIndex = -1 Then
 			Return id
@@ -63,7 +62,6 @@ Public Class Document_E
 	End Function
 
 	Private Shared Function GetSuffix(pubStatus As Definitions.PubStatus) As String
-		Dim a As String = pubStatus.ToString()
 		Return My.Resources.SuffixDelimiter & pubStatus.ToString()
 	End Function
 

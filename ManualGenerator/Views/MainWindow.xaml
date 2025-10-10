@@ -11,9 +11,9 @@
         Title="MainWindow"
         x:Name="Root"
         IsTabStop="False"
-        FontFamily="Noto Sans JP"
         FontWeight="Normal"
-        Background="Transparent">
+        Background="Transparent"
+        Style="{StaticResource DefaultWindowStyle}">
 
 	<WindowChrome.WindowChrome>
 		<WindowChrome CaptionHeight="55"

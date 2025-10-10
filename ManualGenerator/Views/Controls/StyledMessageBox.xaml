@@ -8,24 +8,9 @@
         SizeToContent="WidthAndHeight"
         WindowStyle="None"
         ResizeMode="NoResize"
-        MaxWidth="350"
-        Style="{DynamicResource DefaultWindowStyle}">
-	<Window.Resources>
-		<Style TargetType="{x:Type Window}"
-		       x:Key="DefaultWindowStyle">
-			<Setter Property="WindowChrome.WindowChrome">
-				<Setter.Value>
-					<WindowChrome GlassFrameThickness="0"
-					              ResizeBorderThickness="0"
-					              UseAeroCaptionButtons="False"
-					              CaptionHeight="0"/>
-				</Setter.Value>
-			</Setter>
-			<Setter Property="SnapsToDevicePixels" Value="True"/>
-			<Setter Property="UseLayoutRounding" Value="True"/>
-		</Style>
-	</Window.Resources>
-	<Grid Margin="12,0">
+        Style="{StaticResource DefaultWindowStyle}">
+	<Grid Margin="12,0"
+	      MaxWidth="350">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto"/>
 			<RowDefinition Height="Auto"/>
@@ -37,7 +22,7 @@
 		       Padding="7,10"
 		       BorderBrush="Gainsboro"
 		       BorderThickness="0,0,0,1"
-		       FontSize="14"/>
+		       FontSize="18"/>
 
 		<TextBlock x:Name="Message"
 		           Grid.Row="1"
@@ -66,8 +51,8 @@
 								</Border>
 								<ControlTemplate.Triggers>
 									<Trigger Property="IsFocused" Value="True">
-										<Setter TargetName="border" Property="Background" Value="WhiteSmoke"/>
-										<Setter TargetName="border" Property="BorderBrush" Value="#a7bfeb"/>
+										<Setter TargetName="border" Property="Background" Value="Transparent"/>
+										<Setter TargetName="border" Property="BorderBrush" Value="Dimgray"/>
 									</Trigger>
 									<Trigger Property="IsPressed" Value="True">
 										<Setter TargetName="border" Property="Background" Value="#ededed"/>
