@@ -38,19 +38,36 @@
 					<RowDefinition Height="*"/>
 				</Grid.RowDefinitions>
 
-				<TextBox x:Name="Title"
-				         Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}"
-				         Grid.Column="0"
-				         FontSize="25"
-				         FontWeight="Bold"
-				         Padding="8,6,8,2"
-				         TextAlignment="Center"
-				         VerticalContentAlignment="Center"
-				         BorderThickness="0"
-				         FontFamily="{StaticResource DefaultFontFamily}"
-				         local:TextBoxHelper.Placeholder="無題のドキュメント"
-				         Margin="16,0"
-				         Background="White"/>
+				<Border Grid.Column="0"
+				        Margin="16,0">
+					<TextBox x:Name="Title"
+					         Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}"
+					         FontSize="25"
+					         FontWeight="Bold"
+					         Padding="8,6,8,2"
+					         TextAlignment="Center"
+					         VerticalContentAlignment="Center"
+					         BorderThickness="0"
+					         FontFamily="{StaticResource DefaultFontFamily}"
+					         local:TextBoxHelper.Placeholder="無題のドキュメント"
+					         Background="White"/>
+					<Border.Style>
+						<Style TargetType="{x:Type Border}">
+							<Style.Triggers>
+								<DataTrigger Binding="{Binding HasTitleError}"
+								             Value="True">
+									<Setter Property="Effect">
+										<Setter.Value>
+											<DropShadowEffect Color="#f08271"
+											                  BlurRadius="12"
+											                  ShadowDepth="0"/>
+										</Setter.Value>
+									</Setter>
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</Border.Style>
+				</Border>
 
 				<ListBox ItemsSource="{Binding Sections}"
 				         ScrollViewer.HorizontalScrollBarVisibility="Disabled"

@@ -12,11 +12,16 @@ Public Class Section
 	Public Sub New()
 		InitializeComponent()
 		AddHandler Loaded, AddressOf Section_Loaded
+		AddHandler Heading.Loaded, AddressOf Heading_Loaded
 		AddHandler DescriptionEditor.Loaded, AddressOf DescriptionEditor_Loaded
 	End Sub
 
 	Private Sub Section_Loaded(sender As Object, e As RoutedEventArgs)
 		AddHandler VM.ScrollToSelfEvent, AddressOf ScrollToSelf
+	End Sub
+
+	Private Sub Heading_Loaded(sender As Object, e As RoutedEventArgs)
+		AddHandler VM.RequestHeadingInputEvent, AddressOf ScrollToSelf
 	End Sub
 
 	Private Sub DescriptionEditor_Loaded(sender As Object, e As RoutedEventArgs)
@@ -26,11 +31,13 @@ Public Class Section
 			.FontFamily = New FontFamily(My.Resources.DefaultFontFamily)
 		End With
 		AddHandler DescriptionEditor.LostFocus, AddressOf ConfirmDescription
+
+		RichTextBoxHelper.SetBindableDocument(DescriptionEditor, XamlWriter.Save(DescriptionEditor.Document))
 		AddEventToHyperlinks()
+
 	End Sub
 
 	Private Sub ConfirmDescription(sender As Object, e As RoutedEventArgs)
-		Dim range As New TextRange(DescriptionEditor.Document.ContentStart, DescriptionEditor.Document.ContentEnd)
 		RichTextBoxHelper.SetBindableDocument(DescriptionEditor, XamlWriter.Save(DescriptionEditor.Document))
 		AddEventToHyperlinks()
 	End Sub
@@ -308,6 +315,11 @@ Public Class Section
 
 	Private Sub ScrollToSelf()
 		BringIntoView()
+	End Sub
+
+	Private Sub RequestHeadingInputEvent()
+		ScrollToSelf()
+		Heading.Focus()
 	End Sub
 
 End Class

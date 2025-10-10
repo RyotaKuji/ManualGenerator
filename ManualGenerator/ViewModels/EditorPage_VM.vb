@@ -20,7 +20,20 @@ Public Class EditorPage_VM
 		Set(value As String)
 			If SetProperty(_title, value) Then
 				entity.Title = value
+				If Not String.IsNullOrWhiteSpace(value) Then
+					HasTitleError = False
+				End If
 			End If
+		End Set
+	End Property
+
+	Private _hasTitleError As Boolean
+	Public Property HasTitleError As Boolean
+		Get
+			Return _hasTitleError
+		End Get
+		Set(value As Boolean)
+			SetProperty(_hasTitleError, value)
 		End Set
 	End Property
 
@@ -31,6 +44,7 @@ Public Class EditorPage_VM
 	Public ReadOnly Property DeleteDocCommand As RelayCommand
 
 	Public ReadOnly Property AddSectionCommand As RelayCommand(Of Section_VM)
+	Public Event RequestTitleInputEvent()
 
 	Private entity As Document_E
 
@@ -111,6 +125,22 @@ Public Class EditorPage_VM
 	''' 保存
 	''' </summary>
 	Private Async Function SaveAsync(pubStatus As Definitions.PubStatus) As Task
+
+		If String.IsNullOrWhiteSpace(Title) Then
+			RequestTitleInput()
+			StyledMessageBox.Show("タイトルを入力してください", "エラー", MessageBoxButton.OK)
+			Return
+		End If
+
+		If pubStatus = Definitions.PubStatus.Published Then
+			For Each section In Sections
+				If String.IsNullOrWhiteSpace(section.Heading) Then
+					section.RequestHeadingInput()
+					StyledMessageBox.Show("見出しを入力してください", "エラー", MessageBoxButton.OK)
+					Return
+				End If
+			Next
+		End If
 
 		' Entities の内容を Entity に反映
 		Dim sectionEntities = Sections.Select(Function(x) x.Entity)
@@ -243,5 +273,13 @@ Public Class EditorPage_VM
 				RemoveItem(item)
 			End Sub)
 
+	End Sub
+
+	''' <summary>
+	''' タイトル入力を要求
+	''' </summary>
+	Private Sub RequestTitleInput()
+		HasTitleError = True
+		RaiseEvent RequestTitleInputEvent()
 	End Sub
 End Class

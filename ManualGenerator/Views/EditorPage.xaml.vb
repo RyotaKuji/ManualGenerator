@@ -16,6 +16,12 @@ Class EditorPage
 		SaveCommand = New RelayCommand(AddressOf Save)
 
 		InitializeComponent()
+
+		AddHandler Loaded, AddressOf Page_Loaded
+	End Sub
+
+	Private Sub Page_Loaded(sender As Object, e As RoutedEventArgs)
+		AddHandler VM.RequestTitleInputEvent, AddressOf RequestTitleInput
 	End Sub
 
 	''' <summary>
@@ -48,5 +54,10 @@ Class EditorPage
 		eventArg.RoutedEvent = UIElement.MouseWheelEvent
 		eventArg.Source = sender
 		ScrollViewer.RaiseEvent(eventArg)
+	End Sub
+
+	Private Sub RequestTitleInput()
+		ScrollViewer.ScrollToTop()
+		Title.Focus()
 	End Sub
 End Class

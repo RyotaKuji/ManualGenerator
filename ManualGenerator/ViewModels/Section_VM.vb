@@ -31,11 +31,15 @@ Public Class Section_VM
 			Return _heading
 		End Get
 		Set(value As String)
-			' リンクのテキストを更新
-			xmlManager.ChangeSectionHeading(Id, _heading, value)
-
 			If SetProperty(_heading, value) Then
 				Entity.Heading = value
+
+				If Not String.IsNullOrWhiteSpace(value) Then
+					' 自身を参照しているリンクのテキストを更新
+					xmlManager.ChangeSectionHeading(Id, _heading, value)
+					' エラー状態を解除
+					HasHeadingError = False
+				End If
 			End If
 		End Set
 	End Property
@@ -122,8 +126,19 @@ Public Class Section_VM
 		End Set
 	End Property
 
+	Private _hasHeadingError As Boolean
+	Public Property HasHeadingError As Boolean
+		Get
+			Return _hasHeadingError
+		End Get
+		Set(value As Boolean)
+			SetProperty(_hasHeadingError, value)
+		End Set
+	End Property
+
 	Public Property RemoveCommand As RelayCommand
 	Public Event ScrollToSelfEvent()
+	Public Event RequestHeadingInputEvent()
 
 	Public ReadOnly Property SwitchPrintingScreenModeCommand As RelayCommand
 	Public ReadOnly Property RequestScrollCommand As RelayCommand(Of Uri)
@@ -207,6 +222,11 @@ Public Class Section_VM
 
 	Public Sub ScrollToSelf()
 		RaiseEvent ScrollToSelfEvent()
+	End Sub
+
+	Public Sub RequestHeadingInput()
+		HasHeadingError = True
+		RaiseEvent RequestHeadingInputEvent()
 	End Sub
 
 End Class
