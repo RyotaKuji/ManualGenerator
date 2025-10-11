@@ -17,11 +17,11 @@ Public Class Section
 	End Sub
 
 	Private Sub Section_Loaded(sender As Object, e As RoutedEventArgs)
-		AddHandler VM.ScrollToSelfEvent, AddressOf ScrollToSelf
+		AddHandler VM.OnScrollToSelf, AddressOf ScrollToSelf
 	End Sub
 
 	Private Sub Heading_Loaded(sender As Object, e As RoutedEventArgs)
-		AddHandler VM.RequestHeadingInputEvent, AddressOf ScrollToSelf
+		AddHandler VM.OnRequestedHeadingInput, AddressOf ScrollToSelf
 	End Sub
 
 	Private Sub DescriptionEditor_Loaded(sender As Object, e As RoutedEventArgs)

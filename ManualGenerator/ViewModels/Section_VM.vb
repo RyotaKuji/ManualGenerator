@@ -141,8 +141,8 @@ Public Class Section_VM
 	End Property
 
 	Public Property RemoveCommand As RelayCommand
-	Public Event ScrollToSelfEvent()
-	Public Event RequestHeadingInputEvent()
+	Public Event OnScrollToSelf()
+	Public Event OnRequestedHeadingInput()
 
 	Public ReadOnly Property SwitchPrintingScreenModeCommand As New RelayCommand(AddressOf SwitchPrintingScreenMode)
 	Public ReadOnly Property RequestScrollCommand As New RelayCommand(Of Uri)(AddressOf RequestScroll)
@@ -174,10 +174,10 @@ Public Class Section_VM
 	Private Sub StartPrintScreen()
 		printScreen.Start()
 
-		AddHandler printScreen.ChangedImage,
+		AddHandler printScreen.OnChangedImage,
 			AddressOf ChangedImage
 
-		AddHandler printScreen.Stopped,
+		AddHandler printScreen.OnStopped,
 			AddressOf StoppedPrintScreen
 	End Sub
 
@@ -190,8 +190,8 @@ Public Class Section_VM
 	End Sub
 
 	Private Sub StoppedPrintScreen()
-		RemoveHandler printScreen.ChangedImage, AddressOf ChangedImage
-		RemoveHandler printScreen.Stopped, AddressOf StoppedPrintScreen
+		RemoveHandler printScreen.OnChangedImage, AddressOf ChangedImage
+		RemoveHandler printScreen.OnStopped, AddressOf StoppedPrintScreen
 		InPrintScreenMode = False
 
 		Task.Run(Async Function()
@@ -222,12 +222,12 @@ Public Class Section_VM
 	End Sub
 
 	Public Sub ScrollToSelf()
-		RaiseEvent ScrollToSelfEvent()
+		RaiseEvent OnScrollToSelf()
 	End Sub
 
 	Public Sub RequestHeadingInput()
 		HasHeadingError = True
-		RaiseEvent RequestHeadingInputEvent()
+		RaiseEvent OnRequestedHeadingInput()
 	End Sub
 
 End Class

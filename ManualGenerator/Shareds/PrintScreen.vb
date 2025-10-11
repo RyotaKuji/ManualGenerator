@@ -6,8 +6,8 @@ Public Class PrintScreen
 	Private clipboardTimer As DispatcherTimer
 	Private lastClipboardImage As BitmapSource
 
-	Public Event ChangedImage(path As String)
-	Public Event Stopped()
+	Public Event OnChangedImage(path As String)
+	Public Event OnStopped()
 
 	Private Shared ReadOnly instance As New PrintScreen()
 
@@ -41,8 +41,8 @@ Public Class PrintScreen
 			clipboardTimer = Nothing
 		End If
 
-		If StoppedEvent IsNot Nothing Then
-			RaiseEvent Stopped()
+		If OnStoppedEvent IsNot Nothing Then
+			RaiseEvent OnStopped()
 		End If
 	End Sub
 
@@ -58,7 +58,7 @@ Public Class PrintScreen
 				encoder.Save(fileStream)
 			End Using
 
-			RaiseEvent ChangedImage(path)
+			RaiseEvent OnChangedImage(path)
 		End If
 	End Sub
 
