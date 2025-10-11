@@ -12,7 +12,8 @@
 	<Border x:Name="AddSeparator_Line"
 	        HorizontalAlignment="Stretch"
 	        Background="DodgerBlue"
-	        Height="3">
+	        Height="3"
+	        CornerRadius="3">
 		<Border.Style>
 			<Style TargetType="{x:Type Border}">
 				<Style.Triggers>
@@ -28,15 +29,25 @@
 			</Style>
 		</Border.Style>
 	</Border>
-	<Border x:Name="PlusChip"
-	        Height="16"
-	        CornerRadius="{Binding Path=ActualHeight, ElementName=PlusChip}"
-	        Width="{Binding Path=ActualHeight, ElementName=PlusChip}"
+	<Canvas Height="16"
+	        Width="16"
 	        HorizontalAlignment="Left"
-	        VerticalAlignment="Center"
-	        Background="DodgerBlue">
-		<Border.Style>
-			<Style TargetType="{x:Type Border}">
+	        VerticalAlignment="Center">
+		<Ellipse Fill="DodgerBlue"
+		         Height="16"
+		         Width="16"/>
+		<Rectangle Height="2"
+		           Width="10"
+		           Canvas.Left="3"
+		           Canvas.Top="7"
+		           Fill="White"/>
+		<Rectangle Height="10"
+		           Width="2"
+		           Canvas.Left="7"
+		           Canvas.Top="3"
+		           Fill="White"/>
+		<Canvas.Style>
+			<Style TargetType="{x:Type Canvas}">
 				<Style.Triggers>
 					<DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Grid}}"
 					             Value="False">
@@ -48,11 +59,6 @@
 					</DataTrigger>
 				</Style.Triggers>
 			</Style>
-		</Border.Style>
-		<TextBlock Text="＋"
-		           FontSize="12"
-		           Foreground="White"
-		           VerticalAlignment="Center"
-		           HorizontalAlignment="Center"/>
-	</Border>
+		</Canvas.Style>
+	</Canvas>
 </Grid>

@@ -77,6 +77,7 @@
 				         PreviewMouseWheel="ListBox_PreviewMouseWheel"
 				         Grid.Row="1"
 				         BorderThickness="0"
+				         Padding="0,8"
 				         Background="Transparent">
 
 					<ListBox.ItemsPanel>
