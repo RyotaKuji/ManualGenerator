@@ -227,7 +227,8 @@ Public Class EditorPage_VM
 		End If
 
 		Dim message As String = If(String.IsNullOrWhiteSpace(item.Heading), "セクション", item.Heading & vbCrLf) & "を削除しますか？"
-		Dim result As MessageBoxResult = StyledMessageBox.Show(message, "削除", MessageBoxButton.YesNo, MessageBoxResult.No)
+		Dim result As MessageBoxResult = StyledMessageBox.Show(
+			message, "削除", MessageBoxButton.YesNo, MessageBoxResult.No)
 
 		If result <> MessageBoxResult.Yes Then
 			Return
@@ -306,7 +307,8 @@ Public Class EditorPage_VM
 			"変更を保存しますか？",
 			"保存確認",
 			MessageBoxButton.YesNoCancel,
-			MessageBoxResult.Yes)
+			MessageBoxResult.Yes,
+			{"保存", "保存しない", "キャンセル"})
 
 			Select Case result
 				Case MessageBoxResult.Yes

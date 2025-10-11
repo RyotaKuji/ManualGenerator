@@ -10,7 +10,7 @@
 		End Set
 	End Property
 
-	Private Sub New(messageBoxText As String, caption As String, button As MessageBoxButton, defaultResult As MessageBoxResult)
+	Private Sub New(messageBoxText As String, caption As String, button As MessageBoxButton, defaultResult As MessageBoxResult, buttonTexts As String())
 
 		InitializeComponent()
 
@@ -18,24 +18,32 @@
 		Me.Title.Content = caption
 		Owner = Application.Current.MainWindow
 		WindowStartupLocation = WindowStartupLocation.CenterOwner
-
 		InvalidateMeasure()
 
 		Select Case button
 			Case MessageBoxButton.OK
 				Button_OK.Visibility = Visibility.Visible
+				If buttonTexts IsNot Nothing AndAlso buttonTexts.Length > 0 Then Button_OK.Content = buttonTexts(0)
 			Case MessageBoxButton.OKCancel
 				Button_OK.Visibility = Visibility.Visible
 				Button_Cancel.Visibility = Visibility.Visible
+				If buttonTexts IsNot Nothing AndAlso buttonTexts.Length > 0 Then Button_OK.Content = buttonTexts(0)
+				If buttonTexts IsNot Nothing AndAlso buttonTexts.Length > 1 Then Button_Cancel.Content = buttonTexts(1)
 			Case MessageBoxButton.YesNo
 				Button_Yes.Visibility = Visibility.Visible
 				Button_No.Visibility = Visibility.Visible
+				If buttonTexts IsNot Nothing AndAlso buttonTexts.Length > 0 Then Button_Yes.Content = buttonTexts(0)
+				If buttonTexts IsNot Nothing AndAlso buttonTexts.Length > 1 Then Button_No.Content = buttonTexts(1)
 			Case MessageBoxButton.YesNoCancel
 				Button_Yes.Visibility = Visibility.Visible
 				Button_No.Visibility = Visibility.Visible
 				Button_Cancel.Visibility = Visibility.Visible
+				If buttonTexts IsNot Nothing AndAlso buttonTexts.Length > 0 Then Button_Yes.Content = buttonTexts(0)
+				If buttonTexts IsNot Nothing AndAlso buttonTexts.Length > 1 Then Button_No.Content = buttonTexts(1)
+				If buttonTexts IsNot Nothing AndAlso buttonTexts.Length > 2 Then Button_Cancel.Content = buttonTexts(2)
 			Case Else
 				Button_OK.Visibility = Visibility.Visible
+				If buttonTexts IsNot Nothing AndAlso buttonTexts.Length > 0 Then Button_OK.Content = buttonTexts(0)
 		End Select
 
 		Select Case defaultResult
@@ -55,8 +63,13 @@
 
 	End Sub
 
-	Public Overloads Shared Function Show(messageBoxText As String, caption As String, button As MessageBoxButton, defaultResult As MessageBoxResult) As MessageBoxResult
-		Dim msgBox As New StyledMessageBox(messageBoxText, caption, button, defaultResult)
+	Public Overloads Shared Function Show(messageBoxText As String,
+										  caption As String,
+										  button As MessageBoxButton,
+										  defaultResult As MessageBoxResult,
+										  buttonTexts As String()) As MessageBoxResult
+
+		Dim msgBox As New StyledMessageBox(messageBoxText, caption, button, defaultResult, buttonTexts)
 
 		Application.Current.MainWindow.Opacity = 0.7
 		msgBox.ShowDialog()
@@ -65,24 +78,68 @@
 		Return msgBox.Result
 	End Function
 
-	Public Overloads Shared Function Show(messageBoxText As String, caption As String, button As MessageBoxButton, icon As MessageBoxImage, defaultResult As MessageBoxResult) As MessageBoxResult
-		Return Show(messageBoxText, caption, button, defaultResult)
+	Public Overloads Shared Function Show(messageBoxText As String,
+										  caption As String,
+										  button As MessageBoxButton,
+										  defaultResult As MessageBoxResult) As MessageBoxResult
+		Return Show(messageBoxText, caption, button, defaultResult, Nothing)
 	End Function
 
-	Public Overloads Shared Function Show(messageBoxText As String, caption As String, button As MessageBoxButton, icon As MessageBoxImage) As MessageBoxResult
-		Return Show(messageBoxText, caption, button, MessageBoxResult.OK)
+	Public Overloads Shared Function Show(messageBoxText As String,
+										  caption As String,
+										  button As MessageBoxButton,
+										  icon As MessageBoxImage,
+										  defaultResult As MessageBoxResult,
+										  buttonTexts As String()) As MessageBoxResult
+		Return Show(messageBoxText, caption, button, defaultResult, buttonTexts)
 	End Function
 
-	Public Overloads Shared Function Show(messageBoxText As String, caption As String, button As MessageBoxButton) As MessageBoxResult
-		Return Show(messageBoxText, caption, button, MessageBoxResult.OK)
+	Public Overloads Shared Function Show(messageBoxText As String,
+										  caption As String,
+										  button As MessageBoxButton,
+										  icon As MessageBoxImage,
+										  buttonTexts As String()) As MessageBoxResult
+		Return Show(messageBoxText, caption, button, MessageBoxResult.OK, buttonTexts)
 	End Function
 
-	Public Overloads Shared Function Show(messageBoxText As String, caption As String) As MessageBoxResult
-		Return Show(messageBoxText, caption, MessageBoxButton.OK, MessageBoxResult.OK)
+	Public Overloads Shared Function Show(messageBoxText As String,
+										  caption As String,
+										  button As MessageBoxButton,
+										  icon As MessageBoxImage) As MessageBoxResult
+		Return Show(messageBoxText, caption, button, MessageBoxResult.OK, Nothing)
+	End Function
+
+	Public Overloads Shared Function Show(messageBoxText As String,
+										  caption As String,
+										  button As MessageBoxButton,
+										  buttonTexts As String()) As MessageBoxResult
+		Return Show(messageBoxText, caption, button, MessageBoxResult.OK, buttonTexts)
+	End Function
+
+	Public Overloads Shared Function Show(messageBoxText As String,
+										  caption As String,
+										  button As MessageBoxButton) As MessageBoxResult
+		Return Show(messageBoxText, caption, button, MessageBoxResult.OK, Nothing)
+	End Function
+
+	Public Overloads Shared Function Show(messageBoxText As String,
+										  caption As String,
+										  buttonTexts As String()) As MessageBoxResult
+		Return Show(messageBoxText, caption, MessageBoxButton.OK, MessageBoxResult.OK, buttonTexts)
+	End Function
+
+	Public Overloads Shared Function Show(messageBoxText As String,
+										  caption As String) As MessageBoxResult
+		Return Show(messageBoxText, caption, MessageBoxButton.OK, MessageBoxResult.OK, Nothing)
+	End Function
+
+	Public Overloads Shared Function Show(messageBoxText As String,
+										  buttonTexts As String()) As MessageBoxResult
+		Return Show(messageBoxText, String.Empty, MessageBoxButton.OK, MessageBoxResult.OK, buttonTexts)
 	End Function
 
 	Public Overloads Shared Function Show(messageBoxText As String) As MessageBoxResult
-		Return Show(messageBoxText, String.Empty, MessageBoxButton.OK, MessageBoxResult.OK)
+		Return Show(messageBoxText, String.Empty, MessageBoxButton.OK, MessageBoxResult.OK, Nothing)
 	End Function
 
 	Protected Overrides Sub OnClosed(e As EventArgs)
