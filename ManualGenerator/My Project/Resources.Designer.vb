@@ -79,15 +79,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  _Draft に類似しているローカライズされた文字列を検索します。
-        '''</summary>
-        Friend ReadOnly Property DraftSuffix() As String
-            Get
-                Return ResourceManager.GetString("DraftSuffix", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  C:\WorkSpace\Prog\ManualGenerator\WebDoc\Images に類似しているローカライズされた文字列を検索します。
         '''</summary>
         Friend ReadOnly Property ImageDir() As String
@@ -120,15 +111,6 @@ Namespace My.Resources
         Friend ReadOnly Property PublicDocDir() As String
             Get
                 Return ResourceManager.GetString("PublicDocDir", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  _Public に類似しているローカライズされた文字列を検索します。
-        '''</summary>
-        Friend ReadOnly Property PublicSuffix() As String
-            Get
-                Return ResourceManager.GetString("PublicSuffix", resourceCulture)
             End Get
         End Property
         

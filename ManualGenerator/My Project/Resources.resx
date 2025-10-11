@@ -123,9 +123,6 @@
   <data name="DefaultFontFamily" xml:space="preserve">
     <value>Noto Sans JP</value>
   </data>
-  <data name="DraftSuffix" xml:space="preserve">
-    <value>_Draft</value>
-  </data>
   <data name="ImageDir" xml:space="preserve">
     <value>C:\WorkSpace\Prog\ManualGenerator\WebDoc\Images</value>
   </data>
@@ -137,9 +134,6 @@
   </data>
   <data name="PublicDocDir" xml:space="preserve">
     <value>C:\WorkSpace\Prog\ManualGenerator\WebDoc\Docs\</value>
-  </data>
-  <data name="PublicSuffix" xml:space="preserve">
-    <value>_Public</value>
   </data>
   <data name="SuffixDelimiter" xml:space="preserve">
     <value>_</value>
