@@ -9,7 +9,8 @@
         WindowStyle="None"
         ResizeMode="NoResize"
         Style="{StaticResource DefaultWindowStyle}">
-	<Grid Margin="12,0"
+	<Grid Margin="12,5"
+	      MinWidth="300"
 	      MaxWidth="350">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto"/>
@@ -22,7 +23,7 @@
 		       Padding="7,10"
 		       BorderBrush="Gainsboro"
 		       BorderThickness="0,0,0,1"
-		       FontSize="18"/>
+		       FontSize="16"/>
 
 		<TextBlock x:Name="Message"
 		           Grid.Row="1"
@@ -33,7 +34,7 @@
 		<StackPanel Orientation="Horizontal"
 		            HorizontalAlignment="Right"
 		            Grid.Row="2"
-		            Margin="0,0,10,10">
+		            Margin="0,0,7,10">
 			<StackPanel.Resources>
 				<Style TargetType="{x:Type Button}">
 					<Setter Property="FontSize" Value="12"/>
@@ -46,8 +47,13 @@
 								        Padding="10,5"
 								        BorderThickness="1"
 								        BorderBrush="Transparent">
-									<ContentPresenter HorizontalAlignment="Center"
-									                  VerticalAlignment="Center"/>
+									<Label x:Name="label"
+									       Padding="0"
+									       HorizontalAlignment="Center"
+									       VerticalAlignment="Center">
+										<ContentPresenter HorizontalAlignment="Center"
+										                  VerticalAlignment="Center"/>
+									</Label>
 								</Border>
 								<ControlTemplate.Triggers>
 									<Trigger Property="IsFocused" Value="True">
@@ -57,12 +63,17 @@
 									<Trigger Property="IsPressed" Value="True">
 										<Setter TargetName="border" Property="Background" Value="#ededed"/>
 									</Trigger>
+									<Trigger Property="IsDefault" Value="True">
+										<Setter TargetName="border" Property="Background" Value="RoyalBlue"/>
+										<Setter TargetName="label" Property="Foreground" Value="White"/>
+									</Trigger>
 								</ControlTemplate.Triggers>
 							</ControlTemplate>
 						</Setter.Value>
 					</Setter>
 				</Style>
 			</StackPanel.Resources>
+
 			<Button x:Name="Button_Yes"
 			        Content="はい"
 			        Click="Yes_Clicked"

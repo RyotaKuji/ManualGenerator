@@ -226,7 +226,7 @@ Public Class EditorPage_VM
 			Return
 		End If
 
-		Dim message As String = If(String.IsNullOrWhiteSpace(item.Heading), "セクション", item.Heading & " ") & "を削除しますか？"
+		Dim message As String = If(String.IsNullOrWhiteSpace(item.Heading), "セクション", item.Heading & vbCrLf) & "を削除しますか？"
 		Dim result As MessageBoxResult = StyledMessageBox.Show(message, "削除", MessageBoxButton.YesNo, MessageBoxResult.No)
 
 		If result <> MessageBoxResult.Yes Then
