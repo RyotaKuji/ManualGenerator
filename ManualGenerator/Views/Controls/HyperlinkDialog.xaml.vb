@@ -60,7 +60,7 @@
 	End Sub
 
 	Private Sub Window_Deactivated(sender As Object, e As EventArgs)
-		'TrySetResult(False)
+		TrySetResult(False)
 	End Sub
 
 	' 多重クローズ防止

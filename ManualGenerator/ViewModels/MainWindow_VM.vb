@@ -53,6 +53,8 @@ Public Class MainWindow_VM : Inherits ObservableObject
 
 			Case GetType(EditorPage)
 				Dim page = TryCast(CurrentPage, EditorPage)
+				page.ConfirmEditingTextBox()
+
 				Dim vm = TryCast(page.DataContext, EditorPage_VM)
 				If vm IsNot Nothing Then
 					Return Await vm.CheckClosing()

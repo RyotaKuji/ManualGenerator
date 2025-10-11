@@ -21,7 +21,7 @@ Class EditorPage
 	End Sub
 
 	Private Sub Page_Loaded(sender As Object, e As RoutedEventArgs)
-		AddHandler VM.RequestTitleInputEvent, AddressOf RequestTitleInput
+		AddHandler VM.OnRequestedTitleInput, AddressOf RequestTitleInput
 	End Sub
 
 	''' <summary>
@@ -33,7 +33,7 @@ Class EditorPage
 		VM.SaveDraftCommand.Execute(Nothing)
 	End Sub
 
-	Private Sub ConfirmEditingTextBox()
+	Public Sub ConfirmEditingTextBox()
 		' フォーカス要素が TextBox/RichTextBox なら、編集中の内容を確定
 		Dim rtb As TextBoxBase = TryCast(Keyboard.FocusedElement, TextBoxBase)
 		If rtb IsNot Nothing Then

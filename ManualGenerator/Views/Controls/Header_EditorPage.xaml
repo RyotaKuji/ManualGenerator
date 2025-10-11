@@ -3,6 +3,7 @@
             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
             xmlns:local="clr-namespace:ManualGenerator"
             mc:Ignorable="d"
             xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
@@ -19,11 +20,13 @@
 	                    BorderThickness="0"
 	                    WindowChrome.IsHitTestVisibleInChrome="True"/>
 
-	<syncfusion:SplitButtonAdv Label="保存"
+	<syncfusion:SplitButtonAdv x:Name="splitButton"
+	                           Label="保存"
 	                           ToolTip="保存 (Ctrl+S)"
 	                           Command="{Binding SaveDraftCommand}"
 	                           FontFamily="{StaticResource DefaultFontFamily}"
 	                           FontSize="14"
+	                           Foreground="Black"
 	                           SmallIcon="/Images/Save.png"
 	                           IconWidth="30"
 	                           DropDirection="Left"
@@ -78,4 +81,31 @@
 		</syncfusion:DropDownMenuGroup>
 	</syncfusion:SplitButtonAdv>
 
+	<Border x:Name="savedSign"
+	        Width="20"
+	        Height="20"
+	        Margin="10,0"
+	        CornerRadius="10"
+	        Background="RoyalBlue"
+	        Opacity="0">
+		<TextBlock Text="&#xE73E;"
+		           FontFamily="Segoe MDL2 Assets"
+		           Foreground="White"
+		           FontSize="14"
+		           FontWeight="Bold"
+		           HorizontalAlignment="Center"
+		           VerticalAlignment="Center"/>
+		<Border.Resources>
+			<Storyboard x:Key="savedAnimation"
+			            Storyboard.TargetName="savedSign">
+				<DoubleAnimation Storyboard.TargetProperty="Opacity"
+				                 To="1"
+				                 Duration="0:0:0"/>
+				<DoubleAnimation Storyboard.TargetProperty="Opacity"
+				                 To="0"
+				                 BeginTime="0:0:3"
+				                 Duration="0:0:0.3"/>
+			</Storyboard>
+		</Border.Resources>
+	</Border>
 </StackPanel>

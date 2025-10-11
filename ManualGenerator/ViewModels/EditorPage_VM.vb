@@ -45,7 +45,8 @@ Public Class EditorPage_VM
 	Public ReadOnly Property BackCommand As AsyncRelayCommand = New AsyncRelayCommand(AddressOf Back)
 
 	Public ReadOnly Property AddSectionCommand As New RelayCommand(Of Section_VM)(AddressOf AddSection)
-	Public Event RequestTitleInputEvent()
+	Public Event OnRequestedTitleInput()
+	Public Event OnSaved()
 
 	Private entity As Document_E
 
@@ -151,6 +152,8 @@ Public Class EditorPage_VM
 		entity.Sections = sectionEntities
 
 		Await repo.CreateOrUpdateAsync(entity, pubStatus)
+
+		RaiseEvent OnSaved()
 
 		closingManager.HasChange = False
 	End Function
@@ -289,7 +292,7 @@ Public Class EditorPage_VM
 	''' </summary>
 	Private Sub RequestTitleInput()
 		HasTitleError = True
-		RaiseEvent RequestTitleInputEvent()
+		RaiseEvent OnRequestedTitleInput()
 	End Sub
 
 	Private Async Function Back() As Task

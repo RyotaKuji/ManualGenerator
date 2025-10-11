@@ -28,15 +28,6 @@
 
 	Private Async Sub Window_Closing(sender As Object, e As ComponentModel.CancelEventArgs)
 
-		' フォーカスを移動して編集中の内容を確定
-		Dim request = New TraversalRequest(FocusNavigationDirection.Next)
-		Dim focusedElement = Keyboard.FocusedElement
-		Dim frameworkElement As FrameworkElement = TryCast(focusedElement, FrameworkElement)
-		If frameworkElement IsNot Nothing Then
-			frameworkElement.MoveFocus(request)
-			Keyboard.Focus(frameworkElement)
-		End If
-
 		Dim result = Await VM.CheckClosing()
 		If result Then
 			RemoveHandler Closing, AddressOf Window_Closing
