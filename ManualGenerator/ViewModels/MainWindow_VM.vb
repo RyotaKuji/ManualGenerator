@@ -43,4 +43,25 @@ Public Class MainWindow_VM : Inherits ObservableObject
 			.DataContext = vm
 		}
 	End Sub
+
+	Public Async Function CheckClosing() As Task(Of Boolean)
+		If CurrentPage Is Nothing Then Return True
+
+		Select Case CurrentPage.GetType()
+			Case GetType(ListPage)
+				Return True
+
+			Case GetType(EditorPage)
+				Dim page = TryCast(CurrentPage, EditorPage)
+				Dim vm = TryCast(page.DataContext, EditorPage_VM)
+				If vm IsNot Nothing Then
+					Return Await vm.CheckClosing()
+				Else
+					Return True
+				End If
+
+			Case Else
+				Return True
+		End Select
+	End Function
 End Class

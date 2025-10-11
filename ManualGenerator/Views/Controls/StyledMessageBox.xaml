@@ -63,14 +63,6 @@
 					</Setter>
 				</Style>
 			</StackPanel.Resources>
-			<Button x:Name="Button_OK"
-			        Content="OK"
-			        Click="OK_Clicked"
-			        Visibility="Collapsed"/>
-			<Button x:Name="Button_Cancel"
-			        Content="キャンセル"
-			        Click="Cancel_Clicked"
-			        Visibility="Collapsed"/>
 			<Button x:Name="Button_Yes"
 			        Content="はい"
 			        Click="Yes_Clicked"
@@ -78,6 +70,14 @@
 			<Button x:Name="Button_No"
 			        Content="いいえ"
 			        Click="No_Clicked"
+			        Visibility="Collapsed"/>
+			<Button x:Name="Button_OK"
+			        Content="OK"
+			        Click="OK_Clicked"
+			        Visibility="Collapsed"/>
+			<Button x:Name="Button_Cancel"
+			        Content="キャンセル"
+			        Click="Cancel_Clicked"
 			        Visibility="Collapsed"/>
 		</StackPanel>
 	</Grid>

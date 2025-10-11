@@ -33,6 +33,7 @@ Public Class Section_VM
 		Set(value As String)
 			If SetProperty(_heading, value) Then
 				Entity.Heading = value
+				closingManager.HasChange = True
 
 				If Not String.IsNullOrWhiteSpace(value) Then
 					' 自身を参照しているリンクのテキストを更新
@@ -52,6 +53,7 @@ Public Class Section_VM
 		Set(value As String)
 			If SetProperty(_descriptionXml, value) Then
 				Entity.DescriptionXml = value
+				closingManager.HasChange = True
 			End If
 		End Set
 	End Property
@@ -64,6 +66,7 @@ Public Class Section_VM
 		Set(value As String)
 			If SetProperty(_imagePath, value) Then
 				Entity.ImagePath = value
+				closingManager.HasChange = True
 				OnPropertyChanged(NameOf(HasImage))
 				OnPropertyChanged(NameOf(IsVisibleEmptyIcon))
 			End If
@@ -102,6 +105,7 @@ Public Class Section_VM
 		Set(value As Boolean)
 			If SetProperty(_isHeadline, value) Then
 				Entity.IsHeadline = value
+				closingManager.HasChange = True
 			End If
 		End Set
 	End Property
@@ -140,23 +144,20 @@ Public Class Section_VM
 	Public Event ScrollToSelfEvent()
 	Public Event RequestHeadingInputEvent()
 
-	Public ReadOnly Property SwitchPrintingScreenModeCommand As RelayCommand
-	Public ReadOnly Property RequestScrollCommand As RelayCommand(Of Uri)
+	Public ReadOnly Property SwitchPrintingScreenModeCommand As New RelayCommand(AddressOf SwitchPrintingScreenMode)
+	Public ReadOnly Property RequestScrollCommand As New RelayCommand(Of Uri)(AddressOf RequestScroll)
 
+	Private ReadOnly closingManager As EditorClosingManager = EditorClosingManager.GetInstance()
 	Private ReadOnly xmlManager As XmlManager = XmlManager.GetInstance()
 	Private ReadOnly printScreen As PrintScreen = PrintScreen.GetInstance()
 
 	Public Sub New()
 		Entity = New Section_E()
-		SwitchPrintingScreenModeCommand = New RelayCommand(AddressOf SwitchPrintingScreenMode)
-		RequestScrollCommand = New RelayCommand(Of Uri)(AddressOf RequestScroll)
 		xmlManager.Sections.Add(Me)
 	End Sub
 
 	Public Sub New(entity As Section_E)
 		Me.Entity = entity
-		SwitchPrintingScreenModeCommand = New RelayCommand(AddressOf SwitchPrintingScreenMode)
-		RequestScrollCommand = New RelayCommand(Of Uri)(AddressOf RequestScroll)
 		xmlManager.Sections.Add(Me)
 	End Sub
 

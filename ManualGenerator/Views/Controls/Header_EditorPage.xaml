@@ -12,11 +12,11 @@
 
 	<local:StyledButton Content="&#xEC52;"
 	                    FontFamily="Segoe MDL2 Assets"
+	                    Command="{Binding BackCommand}"
 	                    FontSize="18"
 	                    Width="50"
 	                    FilterColor="Black"
 	                    BorderThickness="0"
-	                    Click="Back"
 	                    WindowChrome.IsHitTestVisibleInChrome="True"/>
 
 	<syncfusion:SplitButtonAdv Label="保存"

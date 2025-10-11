@@ -1,5 +1,15 @@
 ﻿Public Class StyledMessageBox
 
+	Private _result As MessageBoxResult = MessageBoxResult.None
+	Public Property Result As MessageBoxResult
+		Get
+			Return _result
+		End Get
+		Private Set(value As MessageBoxResult)
+			_result = value
+		End Set
+	End Property
+
 	Private Sub New(messageBoxText As String, caption As String, button As MessageBoxButton, defaultResult As MessageBoxResult)
 
 		InitializeComponent()
@@ -49,39 +59,10 @@
 		Dim msgBox As New StyledMessageBox(messageBoxText, caption, button, defaultResult)
 
 		Application.Current.MainWindow.Opacity = 0.7
-
-		Dim result As Boolean? = msgBox.ShowDialog()
-
-		If result.HasValue Then
-			Select Case button
-				Case MessageBoxButton.OK
-					Return MessageBoxResult.OK
-				Case MessageBoxButton.OKCancel
-					If result.Value Then
-						Return MessageBoxResult.OK
-					Else
-						Return MessageBoxResult.Cancel
-					End If
-				Case MessageBoxButton.YesNo
-					If result.Value Then
-						Return MessageBoxResult.Yes
-					Else
-						Return MessageBoxResult.No
-					End If
-				Case MessageBoxButton.YesNoCancel
-					If result.Value Then
-						Return MessageBoxResult.Yes
-					Else
-						Return MessageBoxResult.Cancel
-					End If
-				Case Else
-					Return MessageBoxResult.None
-			End Select
-		Else
-			Return MessageBoxResult.None
-		End If
-
+		msgBox.ShowDialog()
 		Application.Current.MainWindow.Opacity = 1.0
+
+		Return msgBox.Result
 	End Function
 
 	Public Overloads Shared Function Show(messageBoxText As String, caption As String, button As MessageBoxButton, icon As MessageBoxImage, defaultResult As MessageBoxResult) As MessageBoxResult
@@ -111,18 +92,22 @@
 	End Sub
 
 	Private Sub OK_Clicked(sender As Object, e As RoutedEventArgs)
+		Result = MessageBoxResult.OK
 		DialogResult = True
 	End Sub
 
 	Private Sub Cancel_Clicked(sender As Object, e As RoutedEventArgs)
+		Result = MessageBoxResult.Cancel
 		DialogResult = False
 	End Sub
 
 	Private Sub Yes_Clicked(sender As Object, e As RoutedEventArgs)
+		Result = MessageBoxResult.Yes
 		DialogResult = True
 	End Sub
 
 	Private Sub No_Clicked(sender As Object, e As RoutedEventArgs)
+		Result = MessageBoxResult.No
 		DialogResult = False
 	End Sub
 End Class

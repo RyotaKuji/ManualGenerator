@@ -20,6 +20,7 @@ Public Class EditorPage_VM
 		Set(value As String)
 			If SetProperty(_title, value) Then
 				entity.Title = value
+				closingManager.HasChange = True
 				If Not String.IsNullOrWhiteSpace(value) Then
 					HasTitleError = False
 				End If
@@ -39,25 +40,21 @@ Public Class EditorPage_VM
 
 	Public ReadOnly Property Sections As New ObservableCollection(Of Section_VM)
 
-	Public ReadOnly Property SaveDraftCommand As AsyncRelayCommand
-	Public ReadOnly Property PublishDocCommand As AsyncRelayCommand
-	Public ReadOnly Property DeleteDocCommand As RelayCommand
+	Public ReadOnly Property SaveDraftCommand As New AsyncRelayCommand(AddressOf SaveDraftAsync)
+	Public ReadOnly Property PublishDocCommand As New AsyncRelayCommand(AddressOf PublishDocAsync)
+	Public ReadOnly Property BackCommand As AsyncRelayCommand = New AsyncRelayCommand(AddressOf Back)
 
-	Public ReadOnly Property AddSectionCommand As RelayCommand(Of Section_VM)
+	Public ReadOnly Property AddSectionCommand As New RelayCommand(Of Section_VM)(AddressOf AddSection)
 	Public Event RequestTitleInputEvent()
 
 	Private entity As Document_E
 
 	Private repo As Document_R
+	Private ReadOnly closingManager As EditorClosingManager = EditorClosingManager.GetInstance()
 	Private ReadOnly publicDocManager As New WebDocManager()
 	Private ReadOnly sectionsManager As CurrentSectionsManager = CurrentSectionsManager.GetInstance()
 
 	Public Sub New(Optional id As String = Nothing)
-
-		' Command の初期化
-		SaveDraftCommand = New AsyncRelayCommand(AddressOf SaveDraftAsync)
-		PublishDocCommand = New AsyncRelayCommand(AddressOf PublishDocAsync)
-		AddSectionCommand = New RelayCommand(Of Section_VM)(AddressOf AddSection)
 
 		sectionsManager.VMs = Sections
 
@@ -72,8 +69,12 @@ Public Class EditorPage_VM
 				' UI スレッドでプロパティ/コレクション更新
 				Await Application.Current.Dispatcher.InvokeAsync(
 					Sub()
+
 						Title = entity.Title
 						SetSections()
+
+						' closingManager を初期化
+						closingManager.HasChange = False
 					End Sub,
 					DispatcherPriority.DataBind)
 			End Function
@@ -150,6 +151,8 @@ Public Class EditorPage_VM
 		entity.Sections = sectionEntities
 
 		Await repo.CreateOrUpdateAsync(entity, pubStatus)
+
+		closingManager.HasChange = False
 	End Function
 
 	''' <summary>
@@ -209,6 +212,8 @@ Public Class EditorPage_VM
 		End If
 
 		MarkSectionInfo()
+
+		closingManager.HasChange = True
 	End Sub
 
 	''' <summary>
@@ -230,7 +235,10 @@ Public Class EditorPage_VM
 
 		Sections.Remove(item)
 		XmlManager.GetInstance().RemovedSection(item.Id)
+
 		MarkSectionInfo()
+
+		closingManager.HasChange = True
 	End Sub
 
 	Private Sub MarkSectionInfo()
@@ -282,4 +290,33 @@ Public Class EditorPage_VM
 		HasTitleError = True
 		RaiseEvent RequestTitleInputEvent()
 	End Sub
+
+	Private Async Function Back() As Task
+		Dim result = Await CheckClosing()
+
+		If result Then
+			Dim mainWindow = CType(Application.Current.MainWindow, MainWindow)
+			mainWindow.NavigateToListPage()
+		End If
+	End Function
+
+	Public Async Function CheckClosing() As Task(Of Boolean)
+		If closingManager.HasChange Then
+			Dim result As MessageBoxResult = StyledMessageBox.Show(
+			"変更を保存しますか？",
+			"保存確認",
+			MessageBoxButton.YesNoCancel,
+			MessageBoxResult.Yes)
+
+			Select Case result
+				Case MessageBoxResult.Yes
+					' 保存に成功したら、closingManager.HasChange = False になる
+					Await SaveDraftAsync()
+				Case MessageBoxResult.No
+					closingManager.HasChange = False
+			End Select
+		End If
+
+		Return closingManager.HasChange = False
+	End Function
 End Class

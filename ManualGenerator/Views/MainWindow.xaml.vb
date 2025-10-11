@@ -12,6 +12,8 @@
 		DataContext = New MainWindow_VM()
 
 		NavigateToListPage()
+
+		AddHandler Closing, AddressOf Window_Closing
 	End Sub
 
 	' ListPage へ移動
@@ -22,6 +24,15 @@
 	' EditorPage へ移動
 	Public Sub NavigateToEditorPage(Optional id As String = Nothing)
 		VM.NavigateToEditorPage(id)
+	End Sub
+
+	Private Async Sub Window_Closing(sender As Object, e As ComponentModel.CancelEventArgs)
+		Dim result = Await VM.CheckClosing()
+		If result Then
+			RemoveHandler Closing, AddressOf Window_Closing
+		Else
+			e.Cancel = True
+		End If
 	End Sub
 
 End Class

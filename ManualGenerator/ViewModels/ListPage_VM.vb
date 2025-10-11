@@ -21,19 +21,15 @@ Public Class ListPage_VM : Inherits ObservableObject
 		End Set
 	End Property
 
-	Public Property SelectedCommand As RelayCommand
-	Public Property CreateNewCommand As RelayCommand
-	Public Property SwitchPubStatusCommand As RelayCommand(Of Definitions.PubStatus)
+	Public Property SelectedCommand As New RelayCommand(AddressOf Selected)
+	Public Property CreateNewCommand As New RelayCommand(AddressOf CreateNew)
+	Public Property SwitchPubStatusCommand As New RelayCommand(Of Definitions.PubStatus)(AddressOf SwitchPubStatus)
 
 	Private repo As Document_R
 
 	Private pubStatus_Items As New Dictionary(Of Definitions.PubStatus, List(Of Document_E))
 
 	Public Sub New()
-		SelectedCommand = New RelayCommand(AddressOf Selected)
-		CreateNewCommand = New RelayCommand(AddressOf CreateNew)
-		SwitchPubStatusCommand = New RelayCommand(Of Definitions.PubStatus)(AddressOf SwitchPubStatus)
-
 		Task.Run(
 			Async Function()
 
