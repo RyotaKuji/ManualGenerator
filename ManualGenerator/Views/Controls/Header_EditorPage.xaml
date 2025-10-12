@@ -20,92 +20,96 @@
 	                    BorderThickness="0"
 	                    WindowChrome.IsHitTestVisibleInChrome="True"/>
 
-	<syncfusion:SplitButtonAdv x:Name="splitButton"
-	                           Label="保存"
-	                           ToolTip="保存 (Ctrl+S)"
-	                           Command="{Binding SaveDraftCommand}"
-	                           FontFamily="{StaticResource DefaultFontFamily}"
-	                           FontSize="14"
-	                           Foreground="Black"
-	                           SmallIcon="/Images/Save.png"
-	                           IconWidth="30"
-	                           DropDirection="Left"
-	                           Padding="0,5"
-	                           BorderThickness="0"
-	                           WindowChrome.IsHitTestVisibleInChrome="True">
-		<syncfusion:DropDownMenuGroup>
-			<syncfusion:DropDownMenuGroup.Resources>
-				<Style TargetType="{x:Type syncfusion:DropDownMenuItem}">
-					<Setter Property="Template">
-						<Setter.Value>
-							<ControlTemplate TargetType="{x:Type syncfusion:DropDownMenuItem}">
-								<Grid Background="{Binding Background, RelativeSource={RelativeSource AncestorType=syncfusion:DropDownMenuItem}}">
-									<Grid.ColumnDefinitions>
-										<ColumnDefinition Width="40"/>
-										<ColumnDefinition Width="50"/>
-									</Grid.ColumnDefinitions>
-									<Grid.RowDefinitions>
-										<RowDefinition Height="30"/>
-									</Grid.RowDefinitions>
-									<Image Source="{Binding Icon, RelativeSource={RelativeSource AncestorType=syncfusion:DropDownMenuItem}}"
-									       Grid.Column="0"
-									       HorizontalAlignment="Center"
-									       VerticalAlignment="Center"
-									       Margin="10,5,2,5"
-									       RenderOptions.BitmapScalingMode="HighQuality"/>
-									<Label Content="{Binding Header, RelativeSource={RelativeSource AncestorType=syncfusion:DropDownMenuItem}}"
-									       Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=syncfusion:DropDownMenuItem}}"
-									       FontSize="13"
-									       FontFamily="{StaticResource DefaultFontFamily}"
-									       Grid.Column="1"/>
-								</Grid>
-								<ControlTemplate.Triggers>
-									<Trigger Property="IsMouseOver" Value="True">
-										<Setter Property="Opacity" Value="0.8"/>
-									</Trigger>
-								</ControlTemplate.Triggers>
-							</ControlTemplate>
-						</Setter.Value>
-					</Setter>
-				</Style>
-			</syncfusion:DropDownMenuGroup.Resources>
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
+		<syncfusion:SplitButtonAdv x:Name="splitButton"
+		                           Grid.Row="1"
+		                           Label="保存"
+		                           ToolTip="保存 (Ctrl+S)"
+		                           Command="{Binding SaveDraftCommand}"
+		                           FontFamily="{StaticResource DefaultFontFamily}"
+		                           FontSize="14"
+		                           Foreground="Black"
+		                           SmallIcon="/Images/Save.png"
+		                           IconWidth="30"
+		                           DropDirection="Left"
+		                           Padding="0,5"
+		                           BorderThickness="0"
+		                           WindowChrome.IsHitTestVisibleInChrome="True">
+			<syncfusion:DropDownMenuGroup>
+				<syncfusion:DropDownMenuGroup.Resources>
+					<Style TargetType="{x:Type syncfusion:DropDownMenuItem}">
+						<Setter Property="Template">
+							<Setter.Value>
+								<ControlTemplate TargetType="{x:Type syncfusion:DropDownMenuItem}">
+									<Grid Background="{Binding Background, RelativeSource={RelativeSource AncestorType=syncfusion:DropDownMenuItem}}">
+										<Grid.ColumnDefinitions>
+											<ColumnDefinition Width="40"/>
+											<ColumnDefinition Width="50"/>
+										</Grid.ColumnDefinitions>
+										<Grid.RowDefinitions>
+											<RowDefinition Height="30"/>
+										</Grid.RowDefinitions>
+										<Image Source="{Binding Icon, RelativeSource={RelativeSource AncestorType=syncfusion:DropDownMenuItem}}"
+										       Grid.Column="0"
+										       HorizontalAlignment="Center"
+										       VerticalAlignment="Center"
+										       Margin="10,5,2,5"
+										       RenderOptions.BitmapScalingMode="HighQuality"/>
+										<Label Content="{Binding Header, RelativeSource={RelativeSource AncestorType=syncfusion:DropDownMenuItem}}"
+										       Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=syncfusion:DropDownMenuItem}}"
+										       FontSize="13"
+										       FontFamily="{StaticResource DefaultFontFamily}"
+										       Grid.Column="1"/>
+									</Grid>
+									<ControlTemplate.Triggers>
+										<Trigger Property="IsMouseOver" Value="True">
+											<Setter Property="Opacity" Value="0.8"/>
+										</Trigger>
+									</ControlTemplate.Triggers>
+								</ControlTemplate>
+							</Setter.Value>
+						</Setter>
+					</Style>
+				</syncfusion:DropDownMenuGroup.Resources>
 
-			<syncfusion:DropDownMenuItem Header="公開"
-			                             Command="{Binding PublishDocCommand}"
-			                             Icon="/Images/Publish.png"
-			                             Foreground="#2f77fa"/>
-			<syncfusion:DropDownMenuItem Header="削除"
-			                             Icon="/Images/Delete.png"
-			                             Background="White"
-			                             Foreground="#ff4538"/>
-		</syncfusion:DropDownMenuGroup>
-	</syncfusion:SplitButtonAdv>
+				<syncfusion:DropDownMenuItem Header="公開"
+				                             Command="{Binding PublishDocCommand}"
+				                             Icon="/Images/Publish.png"
+				                             Foreground="#2f77fa"/>
+				<syncfusion:DropDownMenuItem Header="削除"
+				                             Icon="/Images/Delete.png"
+				                             Background="White"
+				                             Foreground="#ff4538"/>
+			</syncfusion:DropDownMenuGroup>
+		</syncfusion:SplitButtonAdv>
 
-	<Border x:Name="savedSign"
-	        Width="20"
-	        Height="20"
-	        Margin="10,0"
-	        CornerRadius="10"
-	        Background="RoyalBlue"
-	        Opacity="0">
-		<TextBlock Text="&#xE73E;"
-		           FontFamily="Segoe MDL2 Assets"
-		           Foreground="White"
-		           FontSize="14"
-		           FontWeight="Bold"
-		           HorizontalAlignment="Center"
-		           VerticalAlignment="Center"/>
-		<Border.Resources>
-			<Storyboard x:Key="savedAnimation"
-			            Storyboard.TargetName="savedSign">
-				<DoubleAnimation Storyboard.TargetProperty="Opacity"
-				                 To="1"
-				                 Duration="0:0:0"/>
-				<DoubleAnimation Storyboard.TargetProperty="Opacity"
-				                 To="0"
-				                 BeginTime="0:0:3"
-				                 Duration="0:0:0.3"/>
-			</Storyboard>
-		</Border.Resources>
-	</Border>
+		<Ellipse x:Name="savedSign"
+		         Grid.Row="1"
+		         Width="8"
+		         Height="8"
+		         Fill="ForestGreen"
+		         VerticalAlignment="Top"
+		         HorizontalAlignment="Left"
+		         Opacity="0"
+		         IsHitTestVisible="False"
+		         Margin="-1">
+			<Ellipse.Resources>
+				<Storyboard x:Key="savedAnimation"
+				            Storyboard.TargetName="savedSign">
+					<DoubleAnimation Storyboard.TargetProperty="Opacity"
+					                 To="1"
+					                 Duration="0:0:0"/>
+					<DoubleAnimation Storyboard.TargetProperty="Opacity"
+					                 To="0"
+					                 BeginTime="0:0:1"
+					                 Duration="0:0:0.3"/>
+				</Storyboard>
+			</Ellipse.Resources>
+		</Ellipse>
+	</Grid>
 </StackPanel>
