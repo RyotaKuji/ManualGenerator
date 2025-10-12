@@ -20,7 +20,7 @@
 	                    BorderThickness="0"
 	                    WindowChrome.IsHitTestVisibleInChrome="True"/>
 
-	<Grid>
+	<Grid Margin="5,0">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*"/>
 			<RowDefinition Height="Auto"/>
@@ -90,8 +90,8 @@
 
 		<Ellipse x:Name="savedSign"
 		         Grid.Row="1"
-		         Width="8"
-		         Height="8"
+		         Width="7"
+		         Height="7"
 		         Fill="ForestGreen"
 		         VerticalAlignment="Top"
 		         HorizontalAlignment="Left"

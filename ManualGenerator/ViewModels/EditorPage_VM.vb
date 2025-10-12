@@ -149,7 +149,9 @@ Public Class EditorPage_VM
 		For i As Integer = 0 To sectionEntities.Count() - 1
 			sectionEntities(i).OrderIndex = i
 		Next
+
 		entity.Sections = sectionEntities
+		entity.Author = UserSettings.GetInstance().DisplayUserName
 
 		Await repo.CreateOrUpdateAsync(entity, pubStatus)
 

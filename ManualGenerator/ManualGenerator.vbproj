@@ -183,6 +183,7 @@
     <Compile Include="ViewModels\MainWindow_VM.vb" />
     <Compile Include="Shareds\XmlManager.vb" />
     <Compile Include="ViewModels\Section_VM.vb" />
+    <Compile Include="ViewModels\UserSettingsDialog_VM.vb" />
     <Compile Include="Views\Controls\AddCommandBar.xaml.vb">
       <DependentUpon>AddCommandBar.xaml</DependentUpon>
     </Compile>
@@ -213,6 +214,9 @@
     </Compile>
     <Compile Include="Views\Controls\Section.xaml.vb">
       <DependentUpon>Section.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\UserSettingsDialog.xaml.vb">
+      <DependentUpon>UserSettingsDialog.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\Controls\AddCommandBar.xaml">
       <SubType>Designer</SubType>
@@ -265,6 +269,10 @@
     <Page Include="Views\Controls\Section.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Controls\UserSettingsDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>

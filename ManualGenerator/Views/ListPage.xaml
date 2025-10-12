@@ -23,7 +23,8 @@
 						       FontSize="16"
 						       Padding="10,5"
 						       FontFamily="{StaticResource DefaultFontFamily}"/>
-						<Label Content="{Binding BaseId}"
+						<Label Content="{Binding Author}"
+						       Foreground="LIghtGray"
 						       FontSize="14"
 						       Padding="10,5"
 						       FontFamily="{StaticResource DefaultFontFamily}"/>

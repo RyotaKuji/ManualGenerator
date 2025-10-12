@@ -18,6 +18,9 @@ Public Class Document_E
 	<NotNull>
 	Public Property Title As String = ""
 
+	<NotNull>
+	Public Property Author As String = UserSettings.GetInstance().DisplayUserName
+
 	<Ignore>
 	Public Property Sections As IEnumerable(Of Section_E) = {}
 
@@ -41,6 +44,7 @@ Public Class Document_E
 			.BaseId = BaseId,
 			.PubStatus = pubStatus,
 			.Title = Title,
+			.Author = Author,
 			.Sections = Sections.Select(Function(s) s.Clone(pubStatus)).ToList()
 		}
 		Return newEntity

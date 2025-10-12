@@ -18,11 +18,13 @@
 							        BorderThickness="{Binding BorderThickness, RelativeSource={RelativeSource AncestorType=Button}}"
 							        BorderBrush="{Binding BorderBrush, RelativeSource={RelativeSource AncestorType=Button}}"
 							        Background="{Binding Background, RelativeSource={RelativeSource AncestorType=Button}}"
-							        CornerRadius="{Binding CornerRadius, RelativeSource={RelativeSource AncestorType=Button}}">
+							        CornerRadius="{Binding CornerRadius, RelativeSource={RelativeSource AncestorType=Button}}"
+							        Padding="{Binding Padding, RelativeSource={RelativeSource AncestorType=Button}}">
 								<Label HorizontalAlignment="Center"
 								       VerticalAlignment="Center"
 								       FontFamily="{TemplateBinding FontFamily}"
-								       FontSize="{TemplateBinding FontSize}">
+								       FontSize="{TemplateBinding FontSize}"
+								       Foreground="{TemplateBinding Foreground}">
 									<ContentPresenter/>
 								</Label>
 							</Border>

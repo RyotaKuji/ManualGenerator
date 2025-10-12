@@ -24,10 +24,11 @@ Public Class ListPage_VM : Inherits ObservableObject
 	Public Property SelectedCommand As New RelayCommand(AddressOf Selected)
 	Public Property CreateNewCommand As New RelayCommand(AddressOf CreateNew)
 	Public Property SwitchPubStatusCommand As New RelayCommand(Of Definitions.PubStatus)(AddressOf SwitchPubStatus)
+	Public Property OpenUserSettingsCommand As New RelayCommand(AddressOf OpenUserSettings)
 
 	Private repo As Document_R
 
-	Private pubStatus_Items As New Dictionary(Of Definitions.PubStatus, List(Of Document_E))
+	Private ReadOnly pubStatus_Items As New Dictionary(Of Definitions.PubStatus, List(Of Document_E))
 
 	Public Sub New()
 		Task.Run(
@@ -91,5 +92,16 @@ Public Class ListPage_VM : Inherits ObservableObject
 		For Each doc In displayItems
 			Items.Add(doc)
 		Next
+	End Sub
+
+	Private Sub OpenUserSettings()
+
+		Dim dialog As New UserSettingsDialog() With {
+			.Owner = Window.GetWindow(Application.Current.MainWindow),
+			.WindowStartupLocation = WindowStartupLocation.CenterOwner
+		}
+
+		Dim dialogResult As Boolean? = dialog.ShowDialog()
+
 	End Sub
 End Class
