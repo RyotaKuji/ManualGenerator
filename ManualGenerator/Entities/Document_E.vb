@@ -16,10 +16,9 @@ Public Class Document_E
 	Public Property BaseId As String = Guid.NewGuid().ToString()
 
 	<NotNull>
-	Public Property Title As String = ""
-
-	<NotNull>
-	Public Property Author As String = UserSettings.GetInstance().DisplayUserName
+	Public Property Title As String
+	Public Property Author As String
+	Public Property Department As String
 
 	<Ignore>
 	Public Property Sections As IEnumerable(Of Section_E) = {}

@@ -118,22 +118,13 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="DBPath" xml:space="preserve">
-    <value>C:\WorkSpace\Prog\ManualGenerator\Db\app.db</value>
+    <value>\\MGDoc\DB\app.db</value>
   </data>
   <data name="DefaultFontFamily" xml:space="preserve">
     <value>Noto Sans JP</value>
   </data>
   <data name="ImageDir" xml:space="preserve">
-    <value>C:\WorkSpace\Prog\ManualGenerator\WebDoc\Images</value>
-  </data>
-  <data name="PHPExePath" xml:space="preserve">
-    <value>C:\WorkSpace\Prog\ManualGenerator\WebDoc\System\PHP\php.exe</value>
-  </data>
-  <data name="PHPScriptPath" xml:space="preserve">
-    <value>C:\WorkSpace\Prog\ManualGenerator\WebDoc\System\Converter.php</value>
-  </data>
-  <data name="PublicDocDir" xml:space="preserve">
-    <value>C:\WorkSpace\Prog\ManualGenerator\WebDoc\Docs\</value>
+    <value>\\MGDoc\Image</value>
   </data>
   <data name="SuffixDelimiter" xml:space="preserve">
     <value>_</value>

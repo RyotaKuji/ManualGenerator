@@ -52,7 +52,6 @@ Public Class EditorPage_VM
 
 	Private repo As Document_R
 	Private ReadOnly closingManager As EditorClosingManager = EditorClosingManager.GetInstance()
-	Private ReadOnly publicDocManager As New WebDocManager()
 	Private ReadOnly sectionsManager As CurrentSectionsManager = CurrentSectionsManager.GetInstance()
 
 	Public Sub New(Optional id As String = Nothing)
@@ -151,7 +150,10 @@ Public Class EditorPage_VM
 		Next
 
 		entity.Sections = sectionEntities
-		entity.Author = UserSettings.GetInstance().DisplayUserName
+
+		Dim userInfo As UserInfo = UserInfo.GetInstance()
+		entity.Author = userInfo.Name
+		entity.Department = userInfo.Description
 
 		Await repo.CreateOrUpdateAsync(entity, pubStatus)
 
@@ -172,7 +174,6 @@ Public Class EditorPage_VM
 	''' </summary>
 	Private Async Function PublishDocAsync() As Task
 		Await SaveAsync(Definitions.PubStatus.Published)
-		Await publicDocManager.PublishAsync(Document_E.GetIdWithPubStatus(entity.Id, Definitions.PubStatus.Published))
 	End Function
 
 	''' <summary>

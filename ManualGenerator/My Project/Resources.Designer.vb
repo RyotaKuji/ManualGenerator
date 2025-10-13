@@ -61,7 +61,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  C:\WorkSpace\Prog\ManualGenerator\Db\app.db に類似しているローカライズされた文字列を検索します。
+        '''  \\MGDoc\DB\app.db に類似しているローカライズされた文字列を検索します。
         '''</summary>
         Friend ReadOnly Property DBPath() As String
             Get
@@ -79,38 +79,11 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  C:\WorkSpace\Prog\ManualGenerator\WebDoc\Images に類似しているローカライズされた文字列を検索します。
+        '''  \\MGDoc\Image に類似しているローカライズされた文字列を検索します。
         '''</summary>
         Friend ReadOnly Property ImageDir() As String
             Get
                 Return ResourceManager.GetString("ImageDir", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  C:\WorkSpace\Prog\ManualGenerator\WebDoc\System\PHP\php.exe に類似しているローカライズされた文字列を検索します。
-        '''</summary>
-        Friend ReadOnly Property PHPExePath() As String
-            Get
-                Return ResourceManager.GetString("PHPExePath", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  C:\WorkSpace\Prog\ManualGenerator\WebDoc\System\Converter.php に類似しているローカライズされた文字列を検索します。
-        '''</summary>
-        Friend ReadOnly Property PHPScriptPath() As String
-            Get
-                Return ResourceManager.GetString("PHPScriptPath", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  C:\WorkSpace\Prog\ManualGenerator\WebDoc\Docs\ に類似しているローカライズされた文字列を検索します。
-        '''</summary>
-        Friend ReadOnly Property PublicDocDir() As String
-            Get
-                Return ResourceManager.GetString("PublicDocDir", resourceCulture)
             End Get
         End Property
         
