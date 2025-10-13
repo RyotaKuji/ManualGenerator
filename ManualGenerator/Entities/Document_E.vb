@@ -17,7 +17,9 @@ Public Class Document_E
 
 	<NotNull>
 	Public Property Title As String
+
 	Public Property Author As String
+
 	Public Property Department As String
 
 	<Ignore>
@@ -44,6 +46,7 @@ Public Class Document_E
 			.PubStatus = pubStatus,
 			.Title = Title,
 			.Author = Author,
+			.Department = Department,
 			.Sections = Sections.Select(Function(s) s.Clone(pubStatus)).ToList()
 		}
 		Return newEntity
