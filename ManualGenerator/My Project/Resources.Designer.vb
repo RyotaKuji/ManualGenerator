@@ -79,7 +79,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  \\MGDoc\Image に類似しているローカライズされた文字列を検索します。
+        '''  \\MGDoc\wwwroot\image に類似しているローカライズされた文字列を検索します。
         '''</summary>
         Friend ReadOnly Property ImageDir() As String
             Get

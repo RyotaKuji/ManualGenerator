@@ -124,7 +124,7 @@
     <value>Noto Sans JP</value>
   </data>
   <data name="ImageDir" xml:space="preserve">
-    <value>\\MGDoc\Image</value>
+    <value>\\MGDoc\wwwroot\image</value>
   </data>
   <data name="SuffixDelimiter" xml:space="preserve">
     <value>_</value>
