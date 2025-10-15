@@ -6,6 +6,16 @@ Imports CommunityToolkit.Mvvm.Input
 Public Class EditorPage_VM
 	Inherits ObservableObject
 
+	Private Shared _current As EditorPage_VM
+	Public Shared Property Current As EditorPage_VM
+		Get
+			Return _current
+		End Get
+		Private Set(value As EditorPage_VM)
+			_current = value
+		End Set
+	End Property
+
 	Public ReadOnly Property Id As String
 		Get
 			Return entity.Id
@@ -52,11 +62,10 @@ Public Class EditorPage_VM
 
 	Private repo As Document_R
 	Private ReadOnly closingManager As EditorClosingManager = EditorClosingManager.GetInstance()
-	Private ReadOnly sectionsManager As CurrentSectionsManager = CurrentSectionsManager.GetInstance()
 
 	Public Sub New(Optional id As String = Nothing)
 
-		sectionsManager.VMs = Sections
+		Current = Me
 
 		Task.Run(
 			Async Function()
@@ -291,6 +300,20 @@ Public Class EditorPage_VM
 				RemoveItem(item)
 			End Sub)
 
+		item.RequestScrollCommand = New RelayCommand(Of Uri)(
+			Sub(uri)
+				RequestScroll(uri)
+			End Sub)
+	End Sub
+
+	''' <summary>
+	''' 特定のセクションまでスクロールする
+	''' </summary>
+	''' <param name="uri">セクションURI</param>
+	Private Sub RequestScroll(uri As Uri)
+		Dim baseId As String = IdToSectionUriConverter.ConvertBack(uri)
+		Dim targetSection As Section_VM = Sections?.FirstOrDefault(Function(s) Section_E.GetBaseId(s.Entity.Id) = baseId)
+		targetSection?.ScrollToSelf()
 	End Sub
 
 	''' <summary>

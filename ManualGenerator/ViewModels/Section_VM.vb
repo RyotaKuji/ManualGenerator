@@ -141,11 +141,11 @@ Public Class Section_VM
 	End Property
 
 	Public Property RemoveCommand As RelayCommand
+	Public Property RequestScrollCommand As RelayCommand(Of Uri)
 	Public Event OnScrollToSelf()
 	Public Event OnRequestedHeadingInput()
 
 	Public ReadOnly Property SwitchPrintingScreenModeCommand As New RelayCommand(AddressOf SwitchPrintingScreenMode)
-	Public ReadOnly Property RequestScrollCommand As New RelayCommand(Of Uri)(AddressOf RequestScroll)
 
 	Private ReadOnly closingManager As EditorClosingManager = EditorClosingManager.GetInstance()
 	Private ReadOnly xmlManager As XmlManager = XmlManager.GetInstance()
@@ -215,11 +215,6 @@ Public Class Section_VM
 		End Try
 		ImagePath = destPath
 	End Function
-
-	Private Sub RequestScroll(uri As Uri)
-		Dim manager As CurrentSectionsManager = CurrentSectionsManager.GetInstance()
-		manager.RequestScroll(uri)
-	End Sub
 
 	Public Sub ScrollToSelf()
 		RaiseEvent OnScrollToSelf()

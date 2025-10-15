@@ -80,7 +80,6 @@ Public Class HyperlinkDialog_VM : Inherits ObservableObject
 	End Property
 
 	Public ReadOnly Property Sections As New ObservableCollection(Of Section_VM)
-	Private ReadOnly sectionsManager As CurrentSectionsManager = CurrentSectionsManager.GetInstance()
 
 	Private _mode As UriMode
 	Public Property Mode As UriMode
@@ -99,11 +98,9 @@ Public Class HyperlinkDialog_VM : Inherits ObservableObject
 
 	Public Sub New(defaultText As String)
 
-		If sectionsManager.VMs IsNot Nothing Then
-			For Each Section In sectionsManager.VMs
-				Sections.Add(Section)
-			Next
-		End If
+		For Each section In EditorPage_VM.Current.Sections
+			Sections.Add(section)
+		Next
 
 		If IsValidExternalUri(defaultText) Then
 			ExternalUri = defaultText
@@ -119,11 +116,9 @@ Public Class HyperlinkDialog_VM : Inherits ObservableObject
 
 	Public Sub New(defaultUri As String, defaultText As String)
 
-		If sectionsManager.VMs IsNot Nothing Then
-			For Each Section In sectionsManager.VMs
-				Sections.Add(Section)
-			Next
-		End If
+		For Each section In EditorPage_VM.Current.Sections
+			Sections.Add(section)
+		Next
 
 		If IsValidExternalUri(defaultUri) Then
 			ExternalUri = defaultUri
