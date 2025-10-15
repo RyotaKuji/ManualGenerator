@@ -127,6 +127,9 @@ Public Class EditorPage_VM
 	''' </summary>
 	Private Async Function SaveAsync(pubStatus As Definitions.PubStatus) As Task
 
+		' PrintScreen を中断することで、画像を保存
+		PrintScreen.GetInstance().Stop()
+
 		If String.IsNullOrWhiteSpace(Title) Then
 			RequestTitleInput()
 			StyledMessageBox.Show("タイトルを入力してください", "エラー", MessageBoxButton.OK)
