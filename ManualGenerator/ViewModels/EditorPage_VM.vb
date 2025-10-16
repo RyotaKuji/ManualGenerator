@@ -55,6 +55,7 @@ Public Class EditorPage_VM
 	Public ReadOnly Property BackCommand As AsyncRelayCommand = New AsyncRelayCommand(AddressOf Back)
 
 	Public ReadOnly Property AddSectionCommand As New RelayCommand(Of Section_VM)(AddressOf AddSection)
+	Public ReadOnly Property RequestScrollCommand As New RelayCommand(Of SelectionChangedEventArgs)(AddressOf RequestScroll)
 	Public Event OnRequestedTitleInput()
 	Public Event OnSaved()
 
@@ -304,6 +305,18 @@ Public Class EditorPage_VM
 			Sub(uri)
 				RequestScroll(uri)
 			End Sub)
+	End Sub
+
+	''' <summary>
+	''' 特定のセクションまでスクロールする（sumary から）
+	''' </summary>
+	''' <param name="e"></param>
+	Private Sub RequestScroll(e As SelectionChangedEventArgs)
+		If e.AddedItems IsNot Nothing AndAlso e.AddedItems.Count > 0 Then
+			Dim selectedItem = e.AddedItems(0)
+			Dim targetSection As Section_VM = TryCast(selectedItem, Section_VM)
+			targetSection?.ScrollToSelf()
+		End If
 	End Sub
 
 	''' <summary>

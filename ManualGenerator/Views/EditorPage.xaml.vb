@@ -18,6 +18,7 @@ Class EditorPage
 		InitializeComponent()
 
 		AddHandler Loaded, AddressOf Page_Loaded
+		AddHandler ScrollViewer.SizeChanged, AddressOf ScrollViewer_SizeChanged
 	End Sub
 
 	Private Sub Page_Loaded(sender As Object, e As RoutedEventArgs)
@@ -54,6 +55,23 @@ Class EditorPage
 		eventArg.RoutedEvent = UIElement.MouseWheelEvent
 		eventArg.Source = sender
 		ScrollViewer.RaiseEvent(eventArg)
+	End Sub
+
+	Private Sub ScrollViewer_SizeChanged(sender As Object, e As SizeChangedEventArgs)
+		Dim transform As GeneralTransform = mainContent.TransformToAncestor(Me)
+		Dim position As Point = transform.Transform(New Point(0, 0))
+		Dim summaryX As Double = position.X + mainContent.ActualWidth
+
+		If summaryX + summary.ActualWidth > Me.ActualWidth Then
+			summary.Visibility = Visibility.Hidden
+			Return
+		Else
+			summary.Visibility = Visibility.Visible
+		End If
+
+		Dim leftPosition As TranslateTransform = New TranslateTransform(summaryX, position.Y)
+
+		summary.RenderTransform = leftPosition
 	End Sub
 
 	Private Sub RequestTitleInput()
