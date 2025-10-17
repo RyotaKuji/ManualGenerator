@@ -58,20 +58,40 @@ Class EditorPage
 	End Sub
 
 	Private Sub ScrollViewer_SizeChanged(sender As Object, e As SizeChangedEventArgs)
+		' summary_vertical が余白に収まるかを計算
 		Dim transform As GeneralTransform = mainContent.TransformToAncestor(Me)
 		Dim position As Point = transform.Transform(New Point(0, 0))
 		Dim summaryX As Double = position.X + mainContent.ActualWidth
+		Dim scrollbarWidth As Double = CDbl(Me.Resources("ScrollBarSize"))
 
-		If summaryX + summary.ActualWidth > Me.ActualWidth Then
-			summary.Visibility = Visibility.Hidden
-			Return
+		If summaryX + summary_vertical.ActualWidth + scrollbarWidth > Me.ActualWidth Then
+			summary_vertical.Visibility = Visibility.Hidden
+			summary_horizontal.Visibility = Visibility.Visible
+
+			Dim marginLeft As Double = (Me.ActualWidth - titleBox.ActualWidth) / 2
+			Dim leftPosition As TranslateTransform = New TranslateTransform(marginLeft, 0)
+			summary_horizontal.RenderTransform = leftPosition
+
+			Dim mainContentMarginTop = summary_horizontal.ActualHeight + 20
+			mainContent.Margin = New Thickness(
+				mainContent.Margin.Left,
+				mainContentMarginTop,
+				mainContent.Margin.Right,
+				mainContent.Margin.Bottom)
 		Else
-			summary.Visibility = Visibility.Visible
+			Dim mainContentMarginTop = 33
+			mainContent.Margin = New Thickness(
+				mainContent.Margin.Left,
+				mainContentMarginTop,
+				mainContent.Margin.Right,
+				mainContent.Margin.Bottom)
+
+			Dim leftPosition As TranslateTransform = New TranslateTransform(summaryX, mainContentMarginTop)
+			summary_vertical.RenderTransform = leftPosition
+
+			summary_horizontal.Visibility = Visibility.Hidden
+			summary_vertical.Visibility = Visibility.Visible
 		End If
-
-		Dim leftPosition As TranslateTransform = New TranslateTransform(summaryX, position.Y)
-
-		summary.RenderTransform = leftPosition
 	End Sub
 
 	Private Sub RequestTitleInput()

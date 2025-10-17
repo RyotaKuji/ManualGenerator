@@ -9,6 +9,7 @@
         WindowStyle="None"
         ResizeMode="NoResize"
         Style="{StaticResource DefaultWindowStyle}">
+
 	<Grid Margin="12,5"
 	      MinWidth="300"
 	      MaxWidth="350">

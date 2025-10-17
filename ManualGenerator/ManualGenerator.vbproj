@@ -203,6 +203,12 @@
     <Compile Include="Views\Controls\StyledMessageBox.xaml.vb">
       <DependentUpon>StyledMessageBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Controls\Summary_Horizontal.xaml.vb">
+      <DependentUpon>Summary_Horizontal.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\Summary_Vertical.xaml.vb">
+      <DependentUpon>Summary_Vertical.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Controls\TextBoxHelper.vb" />
     <Compile Include="Views\Controls\Header_EditorPage.xaml.vb">
       <DependentUpon>Header_EditorPage.xaml</DependentUpon>
@@ -246,6 +252,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Controls\StyledMessageBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Controls\Summary_Horizontal.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Controls\Summary_Vertical.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

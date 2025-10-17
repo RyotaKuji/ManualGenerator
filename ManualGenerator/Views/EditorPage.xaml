@@ -32,14 +32,15 @@
 		<ScrollViewer x:Name="ScrollViewer"
 		              Style="{StaticResource CustomScrollViewerStyle}">
 			<Grid x:Name="mainContent"
-			      Margin="30,33,30,0"
+			      Margin="30,0"
 			      MaxWidth="1000">
 				<Grid.RowDefinitions>
 					<RowDefinition Height="Auto"/>
 					<RowDefinition Height="*"/>
 				</Grid.RowDefinitions>
 
-				<Border Grid.Column="0"
+				<Border x:Name="titleBox"
+				        Grid.Column="0"
 				        Margin="16,0">
 					<TextBox x:Name="Title"
 					         Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}"
@@ -118,30 +119,9 @@
 			</Grid>
 		</ScrollViewer>
 
-		<ListBox x:Name="summary"
-		         ItemsSource="{Binding Sections}"
-		         BorderThickness="0"
-		         Width="250"
-		         HorizontalAlignment="Left"
-		         VerticalAlignment="Top"
-		         Padding="0">
-			<ListBox.ItemTemplate>
-				<DataTemplate>
-					<Label Content="{Binding Heading}"
-					       Height="50"
-					       Margin="0"
-					       Padding="0"
-					       HorizontalAlignment="Stretch"
-					       Visibility="{Binding IsHeadline, Converter={StaticResource BoolToVis}}"/>
-				</DataTemplate>
-			</ListBox.ItemTemplate>
-			<i:Interaction.Triggers>
-				<i:EventTrigger EventName="SelectionChanged">
-					<i:InvokeCommandAction Command="{Binding RequestScrollCommand}"
-					                       PassEventArgsToCommand="True"/>
-				</i:EventTrigger>
-			</i:Interaction.Triggers>
-		</ListBox>
-
+		<local:Summary_Vertical x:Name="summary_vertical"
+		                        DataContext="{Binding}"/>
+		<local:Summary_Horizontal x:Name="summary_horizontal"
+		                          DataContext="{Binding}"/>
 	</Grid>
 </UserControl>
