@@ -8,7 +8,8 @@
              mc:Ignorable="d"
              VerticalAlignment="Top"
              HorizontalAlignment="Stretch"
-             Padding="0,25,0,0">
+             Padding="0,25,0,0"
+             Opacity="0">
 
 	<ListBox x:Name="listBox"
 	         ItemsSource="{Binding Sections}"

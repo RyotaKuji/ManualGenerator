@@ -19,6 +19,7 @@ Class EditorPage
 
 		AddHandler Loaded, AddressOf Page_Loaded
 		AddHandler ScrollViewer.SizeChanged, AddressOf ScrollViewer_SizeChanged
+		AddHandler ScrollViewer.ScrollChanged, AddressOf OnScrolled
 	End Sub
 
 	Private Sub Page_Loaded(sender As Object, e As RoutedEventArgs)
@@ -55,6 +56,12 @@ Class EditorPage
 		eventArg.RoutedEvent = UIElement.MouseWheelEvent
 		eventArg.Source = sender
 		ScrollViewer.RaiseEvent(eventArg)
+	End Sub
+
+	Private Sub OnScrolled(sender As Object, e As ScrollChangedEventArgs)
+		If e.VerticalChange <> 0 Then
+			summary_horizontal.Display()
+		End If
 	End Sub
 
 	Private Sub ScrollViewer_SizeChanged(sender As Object, e As SizeChangedEventArgs)

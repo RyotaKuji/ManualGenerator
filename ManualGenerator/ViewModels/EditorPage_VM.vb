@@ -296,15 +296,9 @@ Public Class EditorPage_VM
 	''' <param name="item"></param>
 	Private Sub SetCommands(item As Section_VM)
 
-		item.RemoveCommand = New RelayCommand(
-			Sub()
-				RemoveItem(item)
-			End Sub)
+		item.RemoveCommand = New RelayCommand(Sub() RemoveItem(item))
 
-		item.RequestScrollCommand = New RelayCommand(Of Uri)(
-			Sub(uri)
-				RequestScroll(uri)
-			End Sub)
+		item.RequestScrollCommand = New RelayCommand(Of Uri)(Sub(uri) RequestScroll(uri))
 	End Sub
 
 	''' <summary>

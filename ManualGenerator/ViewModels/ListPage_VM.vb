@@ -54,9 +54,7 @@ Public Class ListPage_VM : Inherits ObservableObject
 
 				' UI スレッドでプロパティ/コレクション更新
 				Await Application.Current.Dispatcher.InvokeAsync(
-					Sub()
-						SetItems(Definitions.PubStatus.Draft)
-					End Sub,
+					Sub() SetItems(Definitions.PubStatus.Draft),
 					DispatcherPriority.DataBind)
 			End Function
 		)
