@@ -27,22 +27,29 @@
 				<Setter Property="Template">
 					<Setter.Value>
 						<ControlTemplate TargetType="{x:Type ListBoxItem}">
-							<Grid>
-								<Border x:Name="border"
-								        Margin="3,0"
-								        CornerRadius="4"
-								        BorderThickness="1"
-								        BorderBrush="White">
-									<TextBlock Foreground="White"
-									           Padding="8,5">
-										<ContentPresenter Content="{Binding Heading}"/>
-									</TextBlock>
-								</Border>
+							<Grid x:Name="border"
+							      Width="150"
+							      Height="30">
+								<Grid.Clip>
+									<PathGeometry Figures="M3,0 H 125 C 130 0, 130 0, 135 5 L 142 12 C 145 15, 145 15, 142 18 L 135 25 C 130 30, 130,30, 125 30 H 3 Q 0 30, 0 28 L 0 3 Q 0 0, 3 0 Z"/>
+								</Grid.Clip>
+
+								<TextBlock HorizontalAlignment="Left"
+								           VerticalAlignment="Center"
+								           Foreground="White"
+								           Padding="8,5,20,5">
+									<ContentPresenter Content="{Binding Heading}"/>
+								</TextBlock>
+								<Path Data="M3,0 H 125 C 130 0, 130 0, 135 5 L 142 12 C 145 15, 145 15, 142 18 L 135 25 C 130 30, 130,30, 125 30 H 3 Q 0 30, 0 28 L 0 3 Q 0 0, 3 0 Z"
+								      Stroke="White"
+								      StrokeThickness="1"
+								      Fill="Transparent"
+								      IsHitTestVisible="False"/>
 							</Grid>
 							<ControlTemplate.Triggers>
 								<Trigger Property="IsMouseOver" Value="False">
 									<Setter TargetName="border" Property="Background" Value="RoyalBlue"/>
-									<Setter TargetName="border" Property="Opacity" Value="0.6"/>
+									<Setter TargetName="border" Property="Opacity" Value="0.3"/>
 								</Trigger>
 								<Trigger Property="IsMouseOver" Value="True">
 									<Setter TargetName="border" Property="Background" Value="#365ac9"/>
