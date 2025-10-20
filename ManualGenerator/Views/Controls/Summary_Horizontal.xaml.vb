@@ -30,22 +30,21 @@ Public Class Summary_Horizontal
 	End Sub
 
 	Public Sub Display()
-		If Opacity > 0 Then
-			Return
+
+		If Opacity = 0 Then
+
+			Dim fadeIn As New DoubleAnimation() With {
+				.From = 0,
+				.To = 1,
+				.Duration = New Duration(TimeSpan.FromSeconds(0.4)),
+				.EasingFunction = New CubicEase() With {.EasingMode = EasingMode.EaseInOut},
+				.FillBehavior = FillBehavior.Stop
+			}
+			AddHandler fadeIn.Completed, Sub() Opacity = 1
+
+			BeginAnimation(UIElement.OpacityProperty, fadeIn)
+
 		End If
-
-		Dim fadeIn As New DoubleAnimation() With {
-			.From = 0,
-			.To = 1,
-			.Duration = New Duration(TimeSpan.FromSeconds(0.4)),
-			.EasingFunction = New CubicEase() With {.EasingMode = EasingMode.EaseInOut},
-			.FillBehavior = FillBehavior.Stop
-		}
-		AddHandler fadeIn.Completed, Sub()
-										 Opacity = 1
-									 End Sub
-
-		BeginAnimation(UIElement.OpacityProperty, fadeIn)
 
 		HideWithDelay()
 	End Sub
@@ -81,14 +80,16 @@ Public Class Summary_Horizontal
 			Return
 		End If
 
-		Dim anim As New DoubleAnimation() With {
+		Dim fadeOut As New DoubleAnimation() With {
 			.From = 1,
 			.To = 0,
 			.Duration = New Duration(TimeSpan.FromSeconds(0.4)),
 			.EasingFunction = New CubicEase() With {.EasingMode = EasingMode.EaseInOut},
 			.FillBehavior = FillBehavior.HoldEnd
 		}
-		BeginAnimation(UIElement.OpacityProperty, anim)
+		AddHandler fadeOut.Completed, Sub() Opacity = 0
+
+		BeginAnimation(UIElement.OpacityProperty, fadeOut)
 	End Sub
 
 	''' <summary>

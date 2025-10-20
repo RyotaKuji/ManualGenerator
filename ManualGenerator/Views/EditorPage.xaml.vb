@@ -72,32 +72,20 @@ Class EditorPage
 		Dim scrollbarWidth As Double = CDbl(Me.Resources("ScrollBarSize"))
 
 		If summaryX + summary_vertical.ActualWidth + scrollbarWidth > Me.ActualWidth Then
+			' 横幅が広い場合
 			summary_vertical.Visibility = Visibility.Hidden
 			summary_horizontal.Visibility = Visibility.Visible
 
 			Dim marginLeft As Double = (Me.ActualWidth - titleBox.ActualWidth) / 2
-			Dim leftPosition As TranslateTransform = New TranslateTransform(marginLeft, 0)
+			Dim leftPosition As New TranslateTransform(marginLeft, 0)
 			summary_horizontal.RenderTransform = leftPosition
-
-			Dim mainContentMarginTop = summary_horizontal.ActualHeight + 20
-			mainContent.Margin = New Thickness(
-				mainContent.Margin.Left,
-				mainContentMarginTop,
-				mainContent.Margin.Right,
-				mainContent.Margin.Bottom)
 		Else
-			Dim mainContentMarginTop = 33
-			mainContent.Margin = New Thickness(
-				mainContent.Margin.Left,
-				mainContentMarginTop,
-				mainContent.Margin.Right,
-				mainContent.Margin.Bottom)
-
-			Dim leftPosition As TranslateTransform = New TranslateTransform(summaryX, mainContentMarginTop)
-			summary_vertical.RenderTransform = leftPosition
-
-			summary_horizontal.Visibility = Visibility.Hidden
+			' 横幅が狭い場合
 			summary_vertical.Visibility = Visibility.Visible
+			summary_horizontal.Visibility = Visibility.Hidden
+
+			Dim leftPosition As New TranslateTransform(summaryX, 0)
+			summary_vertical.RenderTransform = leftPosition
 		End If
 	End Sub
 

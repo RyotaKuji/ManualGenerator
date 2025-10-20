@@ -8,7 +8,6 @@
              mc:Ignorable="d"
              VerticalAlignment="Top"
              HorizontalAlignment="Stretch"
-             Padding="0,25,0,0"
              Opacity="0">
 
 	<ListBox x:Name="listBox"
@@ -28,32 +27,42 @@
 				<Setter Property="Template">
 					<Setter.Value>
 						<ControlTemplate TargetType="{x:Type ListBoxItem}">
-							<Grid x:Name="border"
-							      Width="150"
-							      Height="30">
-								<Grid.Clip>
-									<PathGeometry Figures="M3,0 H 125 C 130 0, 130 0, 135 5 L 142 12 C 145 15, 145 15, 142 18 L 135 25 C 130 30, 130,30, 125 30 H 3 Q 0 30, 0 28 L 0 3 Q 0 0, 3 0 Z"/>
-								</Grid.Clip>
-
-								<TextBlock HorizontalAlignment="Left"
+							<Grid Width="165"
+							      Height="50"
+							      Margin="-5,0">
+								<Path x:Name="path"
+								      Data="M3,0 H 125 C 130 0, 130 0, 135 5 L 142 12 C 145 15, 145 15, 142 18 L 135 25 C 130 30, 130,30, 125 30 H 3 Q 0 30, 0 28 L 0 3 Q 0 0, 3 0 Z"
+								      Stroke="LightGray"
+								      StrokeThickness="1"
+								      HorizontalAlignment="Center"
+								      VerticalAlignment="Center"
+								      IsHitTestVisible="False">
+									<Path.Effect>
+										<DropShadowEffect BlurRadius="10"
+										                  ShadowDepth="0"
+										                  Color="LightGray"/>
+									</Path.Effect>
+								</Path>
+								<!--  Shadow の分だけ Marginをとる  -->
+								<TextBlock Text="{Binding Heading}"
+								           HorizontalAlignment="Left"
 								           VerticalAlignment="Center"
 								           Foreground="White"
-								           Padding="8,5,20,5">
-									<ContentPresenter Content="{Binding Heading}"/>
+								           Margin="10"
+								           Padding="10,5,15,5"
+								           TextTrimming="CharacterEllipsis">
+									<TextBlock.Clip>
+										<PathGeometry Figures="M3,0 H 125 C 130 0, 130 0, 135 5 L 142 12 C 145 15, 145 15, 142 18 L 135 25 C 130 30, 130,30, 125 30 H 3 Q 0 30, 0 28 L 0 3 Q 0 0, 3 0 Z"/>
+									</TextBlock.Clip>
 								</TextBlock>
-								<Path Data="M3,0 H 125 C 130 0, 130 0, 135 5 L 142 12 C 145 15, 145 15, 142 18 L 135 25 C 130 30, 130,30, 125 30 H 3 Q 0 30, 0 28 L 0 3 Q 0 0, 3 0 Z"
-								      Stroke="White"
-								      StrokeThickness="1"
-								      Fill="Transparent"
-								      IsHitTestVisible="False"/>
 							</Grid>
+
 							<ControlTemplate.Triggers>
 								<Trigger Property="IsMouseOver" Value="False">
-									<Setter TargetName="border" Property="Background" Value="RoyalBlue"/>
-									<Setter TargetName="border" Property="Opacity" Value="0.3"/>
+									<Setter TargetName="path" Property="Fill" Value="RoyalBlue"/>
 								</Trigger>
 								<Trigger Property="IsMouseOver" Value="True">
-									<Setter TargetName="border" Property="Background" Value="#365ac9"/>
+									<Setter TargetName="path" Property="Fill" Value="#365ac9"/>
 								</Trigger>
 								<DataTrigger Binding="{Binding IsHeadline}"
 								             Value="False">

@@ -32,7 +32,7 @@
 		<ScrollViewer x:Name="ScrollViewer"
 		              Style="{StaticResource CustomScrollViewerStyle}">
 			<Grid x:Name="mainContent"
-			      Margin="30,0"
+			      Margin="30,33"
 			      MaxWidth="1000">
 				<Grid.RowDefinitions>
 					<RowDefinition Height="Auto"/>
@@ -120,7 +120,9 @@
 		</ScrollViewer>
 
 		<local:Summary_Vertical x:Name="summary_vertical"
-		                        DataContext="{Binding}"/>
+		                        DataContext="{Binding}"
+		                        Margin="10,30"/>
+		<!--  Shadow 分があるため、Margin 不要  -->
 		<local:Summary_Horizontal x:Name="summary_horizontal"
 		                          DataContext="{Binding}"/>
 	</Grid>
