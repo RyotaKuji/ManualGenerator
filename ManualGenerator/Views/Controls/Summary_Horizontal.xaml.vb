@@ -1,4 +1,5 @@
-﻿Imports System.Windows.Forms
+﻿Imports System.Threading
+Imports System.Windows.Forms
 Imports System.Windows.Media.Animation
 
 Public Class Summary_Horizontal
@@ -19,6 +20,8 @@ Public Class Summary_Horizontal
 			Return False
 		End Get
 	End Property
+
+	Private cts As CancellationTokenSource
 
 	Public Sub New()
 		InitializeComponent()
@@ -48,8 +51,25 @@ Public Class Summary_Horizontal
 	End Sub
 
 	Private Async Sub HideWithDelay()
-		Await Task.Delay(3000)
-		Hide()
+		If cts?.Token.IsCancellationRequested = False Then
+			cts?.Token.ThrowIfCancellationRequested()
+			cts.Cancel()
+			cts.Dispose()
+			cts = Nothing
+		End If
+
+		Dim newCts As New CancellationTokenSource()
+		cts = newCts
+
+		Dim task As Task = Task.Delay(3000, cts.Token)
+
+		If task.IsCanceled = False Then
+			Try
+				Await task
+				Hide()
+			Catch e As TaskCanceledException
+			End Try
+		End If
 	End Sub
 
 	Private Sub Hide()
