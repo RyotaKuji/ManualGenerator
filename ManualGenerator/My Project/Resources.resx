@@ -126,6 +126,9 @@
   <data name="ImageDir" xml:space="preserve">
     <value>\\MGDoc\wwwroot\image</value>
   </data>
+  <data name="LatestAppInfo" xml:space="preserve">
+    <value>\\MGDoc\app\latest\info.json</value>
+  </data>
   <data name="SuffixDelimiter" xml:space="preserve">
     <value>_</value>
   </data>
