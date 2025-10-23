@@ -24,7 +24,13 @@ Class Application
 			Dim root As Newtonsoft.Json.Linq.JObject = DirectCast(Newtonsoft.Json.JsonConvert.DeserializeObject(latestAppInfoJson), Newtonsoft.Json.Linq.JObject)
 			Dim latestVersion As New Version(root("version").ToString())
 			If latestVersion.CompareTo(Assembly.GetExecutingAssembly().GetName().Version) > 0 Then
-				Process.Start(".\Upgrader.exe")
+				Dim psi As New ProcessStartInfo("upgrade.bat") With
+				{
+					.Arguments = My.Resources.LatestAppDir,
+					.CreateNoWindow = True,
+					.UseShellExecute = False
+				}
+				Process.Start(psi)
 			End If
 		Catch ex As Exception
 		Finally

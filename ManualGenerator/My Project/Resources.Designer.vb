@@ -88,6 +88,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  \\MGDoc\app\latest に類似しているローカライズされた文字列を検索します。
+        '''</summary>
+        Friend ReadOnly Property LatestAppDir() As String
+            Get
+                Return ResourceManager.GetString("LatestAppDir", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  \\MGDoc\app\latest\info.json に類似しているローカライズされた文字列を検索します。
         '''</summary>
         Friend ReadOnly Property LatestAppInfo() As String
