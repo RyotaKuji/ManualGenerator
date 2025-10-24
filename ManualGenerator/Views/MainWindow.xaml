@@ -12,7 +12,9 @@
         x:Name="Root"
         IsTabStop="False"
         FontWeight="Normal"
-        Background="Transparent"
+        Background="White"
+        WindowStyle="None"
+        AllowsTransparency="False"
         Style="{StaticResource DefaultWindowStyle}">
 
 	<WindowChrome.WindowChrome>
@@ -22,9 +24,7 @@
 	</WindowChrome.WindowChrome>
 
 	<!--  ウィンドウ全体  -->
-	<Border BorderBrush="Gray"
-	        BorderThickness="1">
-
+	<Border>
 		<Grid>
 			<Grid.RowDefinitions>
 				<RowDefinition Height="55"/>
@@ -37,28 +37,92 @@
 			                VerticalAlignment="Stretch"
 			                Panel.ZIndex="200"/>
 
-			<!--  ヘッダー下部  -->
-			<Rectangle Height="16"
-			           Panel.ZIndex="120"
-			           HorizontalAlignment="Stretch"
-			           Fill="White"
-			           VerticalAlignment="Bottom"/>
+			<!--  ヘッダー背景  -->
 			<Rectangle Grid.Row="0"
-			           Grid.ColumnSpan="3"
-			           Height="5"
-			           VerticalAlignment="Bottom"
-			           Panel.ZIndex="100"
-			           Fill="White"
-			           Opacity="0.7">
+			           Panel.ZIndex="120"
+			           VerticalAlignment="Stretch"
+			           HorizontalAlignment="Stretch"
+			           Fill="White">
 				<Rectangle.Effect>
 					<DropShadowEffect Color="Black"
 					                  BlurRadius="15"
 					                  ShadowDepth="2"
 					                  Direction="270"
-					                  Opacity="0.5"/>
+					                  Opacity="0.2"/>
 				</Rectangle.Effect>
 			</Rectangle>
-
+			<StackPanel Orientation="Horizontal"
+			            HorizontalAlignment="Right"
+			            Panel.ZIndex="130"
+			            WindowChrome.IsHitTestVisibleInChrome="True">
+				<StackPanel.Resources>
+					<Style TargetType="{x:Type Button}">
+						<Setter Property="Template">
+							<Setter.Value>
+								<ControlTemplate TargetType="{x:Type Button}">
+									<Grid x:Name="grid"
+									      Width="55"
+									      VerticalAlignment="Stretch"
+									      Background="Transparent">
+										<TextBlock x:Name="textBox"
+										           HorizontalAlignment="Center"
+										           VerticalAlignment="Center"
+										           TextAlignment="Center"
+										           Width="50"
+										           FontFamily="Segoe MDL2 Assets"
+										           Foreground="DimGray"
+										           Background="Transparent">
+											<ContentPresenter HorizontalAlignment="Center"
+											                  VerticalAlignment="Center"/>
+										</TextBlock>
+									</Grid>
+									<ControlTemplate.Triggers>
+										<Trigger Property="IsMouseOver" Value="True">
+											<Setter TargetName="grid" Property="Background" Value="{Binding Background, RelativeSource={RelativeSource AncestorType=Button}}"/>
+											<Setter TargetName="textBox" Property="Foreground" Value="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/>
+											<Setter TargetName="textBox" Property="FontWeight" Value="{Binding FontWeight, RelativeSource={RelativeSource AncestorType=Button}}"/>
+										</Trigger>
+										<Trigger Property="IsPressed" Value="True">
+											<Setter TargetName="grid" Property="Background" Value="{Binding Background, RelativeSource={RelativeSource AncestorType=Button}}"/>
+											<Setter TargetName="grid" Property="Opacity" Value="0.8"/>
+											<Setter TargetName="textBox" Property="Foreground" Value="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/>
+											<Setter TargetName="textBox" Property="FontWeight" Value="{Binding FontWeight, RelativeSource={RelativeSource AncestorType=Button}}"/>
+										</Trigger>
+										<DataTrigger Binding="{Binding WindowState, ElementName=Root}"
+										             Value="Normal">
+											<Setter TargetName="textBox" Property="Text" Value="{Binding Content, RelativeSource={RelativeSource AncestorType=Button}}"/>
+										</DataTrigger>
+										<DataTrigger Binding="{Binding WindowState, ElementName=Root}"
+										             Value="Minimized">
+											<Setter TargetName="textBox" Property="Text" Value="{Binding Content, RelativeSource={RelativeSource AncestorType=Button}}"/>
+										</DataTrigger>
+										<DataTrigger Binding="{Binding WindowState, ElementName=Root}"
+										             Value="Maximized">
+											<Setter TargetName="textBox" Property="Text" Value="{Binding Tag, RelativeSource={RelativeSource AncestorType=Button}}"/>
+										</DataTrigger>
+									</ControlTemplate.Triggers>
+								</ControlTemplate>
+							</Setter.Value>
+						</Setter>
+					</Style>
+				</StackPanel.Resources>
+				<Button Content="&#xE921;"
+				        Tag="&#xE921;"
+				        Background="WhiteSmoke"
+				        FontWeight="Normal"
+				        Click="ClickedMinimize"/>
+				<Button Content="&#xE922;"
+				        Tag="&#xE923;"
+				        Background="WhiteSmoke"
+				        FontWeight="Normal"
+				        Click="ClickedMaximize"/>
+				<Button Content="&#xE8BB;"
+				        Tag="&#xE8BB;"
+				        Background="Red"
+				        Foreground="WhiteSmoke"
+				        FontWeight="Bold"
+				        Click="ClickedClose"/>
+			</StackPanel>
 			<!--  ページ  -->
 			<ContentControl Content="{Binding CurrentPage}"
 			                IsTabStop="False"
@@ -71,7 +135,7 @@
 				<Style.Triggers>
 					<DataTrigger Binding="{Binding WindowState, ElementName=Root}"
 					             Value="Maximized">
-						<Setter Property="Margin" Value="7"/>
+						<Setter Property="Margin" Value="5"/>
 					</DataTrigger>
 				</Style.Triggers>
 			</Style>

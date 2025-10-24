@@ -36,4 +36,20 @@
 		End If
 	End Sub
 
+	Private Sub ClickedClose(sender As Object, e As RoutedEventArgs)
+		Close()
+	End Sub
+
+	Private Sub ClickedMaximize(sender As Object, e As RoutedEventArgs)
+		Select Case WindowState
+			Case WindowState.Maximized
+				WindowState = WindowState.Normal
+			Case WindowState.Normal
+				WindowState = WindowState.Maximized
+		End Select
+	End Sub
+
+	Private Sub ClickedMinimize(sender As Object, e As RoutedEventArgs)
+		WindowState = WindowState.Minimized
+	End Sub
 End Class
