@@ -95,7 +95,8 @@
 								                     CommandParameter="{Binding}"/>
 
 								<local:Section DataContext="{Binding}"
-								               Margin="15,0"/>
+								               Margin="15,0"
+								               ScrollViewer="{Binding ElementName=scrollViewer}"/>
 
 								<local:AddCommandBar Visibility="{Binding IsLastItem, Converter={StaticResource BoolToVis}}"
 								                     Command="{Binding DataContext.AddSectionCommand, ElementName=Root}"/>

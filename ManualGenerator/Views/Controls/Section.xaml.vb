@@ -2,6 +2,20 @@
 Imports System.Windows.Markup
 
 Public Class Section
+	Public Property ScrollViewer As ScrollViewer
+		Get
+			Return CType(GetValue(ScrollViewerProperty), ScrollViewer)
+		End Get
+		Set(value As ScrollViewer)
+			SetValue(ScrollViewerProperty, value)
+		End Set
+	End Property
+	Public Shared ReadOnly ScrollViewerProperty As DependencyProperty =
+		DependencyProperty.Register(
+			"ScrollViewer",
+			GetType(ScrollViewer),
+			GetType(Section),
+			New PropertyMetadata(Nothing))
 
 	Private ReadOnly Property VM As Section_VM
 		Get
@@ -314,7 +328,7 @@ Public Class Section
 	End Sub
 
 	Private Sub ScrollToSelf()
-		BringIntoView()
+		ScrollViewerHelper.ScrollToItem(ScrollViewer, Me, 75)
 	End Sub
 
 	Private Sub RequestHeadingInputEvent()
