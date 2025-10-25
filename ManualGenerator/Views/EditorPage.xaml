@@ -29,7 +29,7 @@
 	</UserControl.InputBindings>
 
 	<Grid>
-		<ScrollViewer x:Name="ScrollViewer"
+		<ScrollViewer x:Name="scrollViewer"
 		              Style="{StaticResource CustomScrollViewerStyle}">
 			<Grid x:Name="mainContent"
 			      Margin="30,33"

@@ -27,11 +27,15 @@ Public Class Summary_Horizontal
 		InitializeComponent()
 		AddHandler LostFocus, Sub() Hide()
 		AddHandler MouseLeave, Sub() HideWithDelay()
+		Visibility = Visibility.Hidden
 	End Sub
 
 	Public Sub Display()
 
-		If Opacity = 0 Then
+		If Visibility <> Visibility.Visible OrElse
+			Opacity = 0 Then
+
+			Visibility = Visibility.Visible
 
 			Dim fadeIn As New DoubleAnimation() With {
 				.From = 0,
@@ -72,7 +76,8 @@ Public Class Summary_Horizontal
 	End Sub
 
 	Private Sub Hide()
-		If Opacity < 1 Then
+		If Visibility <> Visibility.Visible OrElse
+			Opacity < 1 Then
 			Return
 		End If
 
@@ -87,7 +92,10 @@ Public Class Summary_Horizontal
 			.EasingFunction = New CubicEase() With {.EasingMode = EasingMode.EaseInOut},
 			.FillBehavior = FillBehavior.HoldEnd
 		}
-		AddHandler fadeOut.Completed, Sub() Opacity = 0
+		AddHandler fadeOut.Completed, Sub()
+										  Opacity = 0
+										  Visibility = Visibility.Collapsed
+									  End Sub
 
 		BeginAnimation(UIElement.OpacityProperty, fadeOut)
 	End Sub

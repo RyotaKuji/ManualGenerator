@@ -70,6 +70,7 @@
 										           TextAlignment="Center"
 										           Width="50"
 										           FontFamily="Segoe MDL2 Assets"
+												   FontWeight="Normal"
 										           Foreground="DimGray"
 										           Background="Transparent">
 											<ContentPresenter HorizontalAlignment="Center"

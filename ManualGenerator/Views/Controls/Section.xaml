@@ -31,7 +31,7 @@
 				<Thickness x:Key="VerticalMargin">0,0,0,8</Thickness>
 			</StackPanel.Resources>
 
-			<!-- 見出し/手順 切り替え -->
+			<!--  見出し/手順 切り替え  -->
 			<ToggleButton IsChecked="{Binding IsHeadline}"
 			              HorizontalAlignment="Left"
 			              Margin="{StaticResource VerticalMargin}">
@@ -94,7 +94,7 @@
 				</ToggleButton.Style>
 			</ToggleButton>
 
-			<!-- 見出し -->
+			<!--  見出し  -->
 			<Border Grid.Column="0">
 				<TextBox x:Name="Heading"
 				         Text="{Binding Heading}"
@@ -118,7 +118,7 @@
 								</Setter.Value>
 							</Setter>
 							<Style.Triggers>
-								<!-- Process -->
+								<!--  Process  -->
 								<MultiDataTrigger>
 									<MultiDataTrigger.Conditions>
 										<Condition Binding="{Binding IsHeadline}" Value="False"/>
@@ -128,7 +128,7 @@
 									<Setter Property="Background" Value="White"/>
 									<Setter Property="Foreground" Value="Black"/>
 								</MultiDataTrigger>
-								<!-- Heading -->
+								<!--  Heading  -->
 								<MultiDataTrigger>
 									<MultiDataTrigger.Conditions>
 										<Condition Binding="{Binding IsHeadline}" Value="True"/>
@@ -139,7 +139,7 @@
 									<Setter Property="Foreground" Value="White"/>
 									<Setter Property="CaretBrush" Value="White"/>
 								</MultiDataTrigger>
-								<!-- Process / MouseOver -->
+								<!--  Process / MouseOver  -->
 								<MultiDataTrigger>
 									<MultiDataTrigger.Conditions>
 										<Condition Binding="{Binding IsHeadline}" Value="False"/>
@@ -149,7 +149,7 @@
 									<Setter Property="Background" Value="WhiteSmoke"/>
 									<Setter Property="Foreground" Value="Black"/>
 								</MultiDataTrigger>
-								<!-- Heading / MouseOver -->
+								<!--  Heading / MouseOver  -->
 								<MultiDataTrigger>
 									<MultiDataTrigger.Conditions>
 										<Condition Binding="{Binding IsHeadline}" Value="True"/>
@@ -183,21 +183,21 @@
 				</Border.Style>
 			</Border>
 
-			<!-- セパレータ -->
+			<!--  セパレータ  -->
 			<Separator Height="2"
 			           HorizontalAlignment="Stretch"
 			           VerticalAlignment="Center"
 			           Background="LightGray"
 			           Margin="{StaticResource VerticalMargin}"/>
 
-			<!-- 説明 RichTextBox -->
+			<!--  説明 RichTextBox  -->
 			<RichTextBox x:Name="DescriptionEditor"
 			             local:RichTextBoxHelper.BindableDocument="{Binding DescriptionXml}"
 			             MinHeight="40"
 			             BorderThickness="0"
 			             IsDocumentEnabled="True"
 			             FontFamily="{StaticResource DefaultFontFamily}">
-				<!-- 右クリックメニュー -->
+				<!--  右クリックメニュー  -->
 				<RichTextBox.ContextMenu>
 					<ContextMenu>
 						<ContextMenu.Style>
@@ -260,23 +260,23 @@
 								</Setter>
 							</Style>
 						</ContextMenu.Resources>
-						<!-- 太字 -->
+						<!--  太字  -->
 						<MenuItem x:Name="RTB_Bold"
 						          Command="EditingCommands.ToggleBold"
 						          Header="&#xE8DD;"/>
-						<!-- 下線 -->
+						<!--  下線  -->
 						<MenuItem x:Name="RTB_Underline"
 						          Command="EditingCommands.ToggleUnderline"
 						          Header="&#xE8DC;"/>
-						<!-- 斜体 -->
+						<!--  斜体  -->
 						<MenuItem x:Name="RTB_GrowFont"
 						          Command="EditingCommands.IncreaseFontSize"
 						          Header="&#xE8E8;"/>
-						<!-- フォントサイズ大 -->
+						<!--  フォントサイズ大  -->
 						<MenuItem x:Name="RTB_ShrinkFont"
 						          Command="EditingCommands.DecreaseFontSize"
 						          Header="&#xE8E7;"/>
-						<!-- フォントサイズ小 -->
+						<!--  フォントサイズ小  -->
 						<MenuItem x:Name="RTB_Link"
 						          Click="Command_Hyperlink"
 						          Header="&#xE71B;"/>
@@ -285,7 +285,7 @@
 			</RichTextBox>
 		</StackPanel>
 
-		<!-- 画像ボタン -->
+		<!--  画像ボタン  -->
 		<local:StyledButton FontSize="50"
 		                    Command="{Binding SwitchPrintingScreenModeCommand}"
 		                    Height="{Binding ElementName=LeftColumnPanel, Path=ActualHeight}"
@@ -310,7 +310,7 @@
 			</Grid>
 		</local:StyledButton>
 
-		<!-- PrintScreen 中のフィルター -->
+		<!--  PrintScreen 中のフィルター  -->
 		<Border Visibility="{Binding InPrintScreenMode, Converter={StaticResource BoolToVis}}"
 		        Grid.Column="1"
 		        Height="{Binding ElementName=LeftColumnPanel, Path=ActualHeight}"
@@ -346,7 +346,7 @@
 			</TextBlock>
 		</Border>
 
-		<!-- 削除ボタン -->
+		<!--  削除ボタン  -->
 		<Button x:Name="RemoveButton"
 		        Content="✕"
 		        Command="{Binding RemoveCommand}"

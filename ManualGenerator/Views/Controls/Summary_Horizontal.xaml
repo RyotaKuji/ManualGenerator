@@ -8,6 +8,7 @@
              mc:Ignorable="d"
              VerticalAlignment="Top"
              HorizontalAlignment="Stretch"
+             Visibility="Collapsed"
              Opacity="0">
 
 	<ListBox x:Name="listBox"
@@ -32,17 +33,15 @@
 							      Margin="-5,0">
 								<Path x:Name="path"
 								      Data="M3,0 H 125 C 130 0, 130 0, 135 5 L 142 12 C 145 15, 145 15, 142 18 L 135 25 C 130 30, 130,30, 125 30 H 3 Q 0 30, 0 28 L 0 3 Q 0 0, 3 0 Z"
-								      Stroke="LightGray"
-								      StrokeThickness="1"
 								      HorizontalAlignment="Center"
 								      VerticalAlignment="Center">
 									<Path.Effect>
 										<DropShadowEffect BlurRadius="10"
 										                  ShadowDepth="0"
-										                  Color="LightGray"/>
+										                  Color="Gray"/>
 									</Path.Effect>
 								</Path>
-								<!-- Shadow の分だけ Marginをとる -->
+								<!--  Shadow の分だけ Marginをとる  -->
 								<TextBlock Text="{Binding Heading}"
 								           HorizontalAlignment="Left"
 								           VerticalAlignment="Center"
