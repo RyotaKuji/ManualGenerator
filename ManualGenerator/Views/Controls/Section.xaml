@@ -290,7 +290,8 @@
 		                    Command="{Binding SwitchPrintingScreenModeCommand}"
 		                    Height="{Binding ElementName=LeftColumnPanel, Path=ActualHeight}"
 		                    Grid.Column="1"
-		                    CornerRadius="2">
+		                    CornerRadius="2"
+		                    FilterColor="Silver">
 			<Grid>
 				<TextBlock Text="&#xE722;"
 				           FontFamily="Segoe MDL2 Assets"
