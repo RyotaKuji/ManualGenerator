@@ -1,6 +1,7 @@
 ﻿Imports System.IO
 Imports CommunityToolkit.Mvvm.ComponentModel
 Imports CommunityToolkit.Mvvm.Input
+Imports Microsoft.Win32
 
 Public Class Section_VM
 	Inherits ObservableObject
@@ -146,6 +147,8 @@ Public Class Section_VM
 	Public Event OnRequestedHeadingInput()
 
 	Public ReadOnly Property SwitchPrintingScreenModeCommand As New RelayCommand(AddressOf SwitchPrintingScreenMode)
+	Public ReadOnly Property SelectImageFileCommand As New AsyncRelayCommand(AddressOf SelectImageFile)
+	Public ReadOnly Property ClearImageCommand As New RelayCommand(AddressOf ClearImage)
 
 	Private ReadOnly closingManager As EditorClosingManager = EditorClosingManager.GetInstance()
 	Private ReadOnly xmlManager As XmlManager = XmlManager.GetInstance()
@@ -161,6 +164,9 @@ Public Class Section_VM
 		xmlManager.Sections.Add(Me)
 	End Sub
 
+	''' <summary>
+	''' IsPrintScreenMode を切り替える
+	''' </summary>
 	Private Sub SwitchPrintingScreenMode()
 		If InPrintScreenMode Then
 			StopPrintingScreen()
@@ -171,26 +177,46 @@ Public Class Section_VM
 		End If
 	End Sub
 
+	''' <summary>
+	''' PrintScreen を開始する
+	''' </summary>
 	Private Sub StartPrintScreen()
 		printScreen.Start()
 
 		AddHandler printScreen.OnChangedImage,
-			AddressOf ChangedImage
+			AddressOf ChangeImage
 
 		AddHandler printScreen.OnStopped,
 			AddressOf StoppedPrintScreen
 	End Sub
 
+	''' <summary>
+	''' PrintScreen を終了する
+	''' </summary>
 	Private Sub StopPrintingScreen()
 		printScreen.Stop()
 	End Sub
 
-	Private Sub ChangedImage(path As String)
+	''' <summary>
+	''' 画像を変更する
+	''' </summary>
+	''' <param name="path">新しい画像のパス</param>
+	Private Sub ChangeImage(path As String)
 		ImagePath = path
 	End Sub
 
+	''' <summary>
+	''' 画像をクリアする
+	''' </summary>
+	Private Sub ClearImage()
+		ImagePath = Nothing
+	End Sub
+
+	''' <summary>
+	''' PrintScreen を中断し、画像を保存する
+	''' </summary>
 	Private Sub StoppedPrintScreen()
-		RemoveHandler printScreen.OnChangedImage, AddressOf ChangedImage
+		RemoveHandler printScreen.OnChangedImage, AddressOf ChangeImage
 		RemoveHandler printScreen.OnStopped, AddressOf StoppedPrintScreen
 		InPrintScreenMode = False
 
@@ -199,6 +225,23 @@ Public Class Section_VM
 				 End Function)
 	End Sub
 
+	''' <summary>
+	''' 画像を選択する
+	''' </summary>
+	Private Async Function SelectImageFile() As Task
+		Dim dialog As New OpenFileDialog With {
+			.Filter = "画像ファイル|*.png;*.jpg;*.jpeg"
+		}
+		Dim isSelected = dialog.ShowDialog()
+		If isSelected Then
+			ImagePath = dialog.FileName
+			Await SaveImageAsync()
+		End If
+	End Function
+
+	''' <summary>
+	''' 画像を保存する
+	''' </summary>
 	Private Async Function SaveImageAsync() As Task
 
 		Dim sourcePath As String = ImagePath
@@ -216,10 +259,16 @@ Public Class Section_VM
 		ImagePath = destPath
 	End Function
 
+	''' <summary>
+	''' スクロール位置を自身に合わせて移動させる
+	''' </summary>
 	Public Sub ScrollToSelf()
 		RaiseEvent OnScrollToSelf()
 	End Sub
 
+	''' <summary>
+	''' Heading への入力を促す表示をする
+	''' </summary>
 	Public Sub RequestHeadingInput()
 		HasHeadingError = True
 		RaiseEvent OnRequestedHeadingInput()

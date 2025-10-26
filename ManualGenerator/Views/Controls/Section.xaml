@@ -286,7 +286,8 @@
 		</StackPanel>
 
 		<!--  画像ボタン  -->
-		<local:StyledButton FontSize="50"
+		<local:StyledButton x:Name="printScreenButton"
+		                    FontSize="50"
 		                    Command="{Binding SwitchPrintingScreenModeCommand}"
 		                    Height="{Binding ElementName=LeftColumnPanel, Path=ActualHeight}"
 		                    Grid.Column="1"
@@ -346,6 +347,57 @@
 				</TextBlock.Triggers>
 			</TextBlock>
 		</Border>
+
+		<!--  画像操作ボタン  -->
+		<StackPanel Grid.Column="1"
+		            Height="30"
+		            Orientation="Horizontal"
+		            HorizontalAlignment="Right"
+		            VerticalAlignment="Bottom"
+		            Margin="5">
+			<!--  ファイル選択  -->
+			<local:StyledButton Command="{Binding SelectImageFileCommand}"
+			                    Content="&#xE8B7;"
+			                    FontFamily="Segoe MDL2 Assets"
+			                    Height="30"
+			                    Width="30"
+			                    FontSize="20"
+			                    Foreground="White"
+			                    Background="DarkGray"
+			                    FilterColor="Black"
+			                    BorderBrush="White"
+			                    BorderThickness="1"
+			                    BorderThickness_BoldRate="1"/>
+			<!--  削除  -->
+			<local:StyledButton Command="{Binding ClearImageCommand}"
+			                    Visibility="{Binding HasImage, Converter={StaticResource BoolToVis}}"
+			                    Content="&#xE711;"
+			                    FontFamily="Segoe MDL2 Assets"
+			                    Height="30"
+			                    Width="30"
+			                    FontSize="20"
+			                    Foreground="White"
+			                    Background="DarkGray"
+			                    FilterColor="Black"
+			                    BorderBrush="White"
+			                    BorderThickness="1"
+			                    BorderThickness_BoldRate="1"/>
+			<StackPanel.Style>
+				<!--  画像ボタンにカーソルが乗っているときのみ表示  -->
+				<Style TargetType="{x:Type StackPanel}">
+					<Setter Property="Visibility" Value="Collapsed"/>
+					<Style.Triggers>
+						<Trigger Property="IsMouseOver" Value="True">
+							<Setter Property="Visibility" Value="Visible"/>
+						</Trigger>
+						<DataTrigger Binding="{Binding IsMouseOver, ElementName=printScreenButton}"
+						             Value="True">
+							<Setter Property="Visibility" Value="Visible"/>
+						</DataTrigger>
+					</Style.Triggers>
+				</Style>
+			</StackPanel.Style>
+		</StackPanel>
 
 		<!--  削除ボタン  -->
 		<Button x:Name="RemoveButton"
