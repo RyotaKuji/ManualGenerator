@@ -18,7 +18,7 @@ Public Class Document_R
 			Return inst
 
 		Catch ex As Exception
-			Throw New AppException(ex)
+			Throw New DbException(ex)
 		End Try
 	End Function
 
@@ -36,7 +36,7 @@ Public Class Document_R
 
 			Return doc
 		Catch ex As Exception
-			Throw New AppException(ex)
+			Throw New DbException(ex)
 		End Try
 	End Function
 
@@ -61,7 +61,7 @@ Public Class Document_R
 			Return docs
 
 		Catch ex As Exception
-			Throw New AppException(ex)
+			Throw New DbException(ex)
 		End Try
 	End Function
 
@@ -133,7 +133,7 @@ Public Class Document_R
 
 					End If
 				Catch ex As Exception
-					Throw New AppException(ex)
+					Throw New DbException(ex)
 				End Try
 			End Sub
 		)
@@ -153,7 +153,7 @@ Public Class Document_R
 			Await db.DeleteAsync(Of Document_E)(id)
 
 		Catch ex As Exception
-			Throw New AppException(ex)
+			Throw New DbException(ex)
 		End Try
 	End Function
 End Class

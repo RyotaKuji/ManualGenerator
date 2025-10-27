@@ -3,7 +3,7 @@
 Public Class UserInfo
 
 	Public ReadOnly Property Name As String
-	Public Property Description As String
+	Public ReadOnly Property Description As String
 
 	Private Shared ReadOnly instance As New UserInfo()
 
@@ -17,9 +17,8 @@ Public Class UserInfo
 				Name = user.Name
 				Description = user.Description
 			End Using
-		Catch
-			Name = Environment.UserName
-			Description = ""
+		Catch ex As Exception
+			Throw New UserInfoException(ex)
 		End Try
 	End Sub
 

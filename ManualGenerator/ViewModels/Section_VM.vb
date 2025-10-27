@@ -213,7 +213,7 @@ Public Class Section_VM
 	End Sub
 
 	''' <summary>
-	''' PrintScreen を中断し、画像を保存する
+	''' PrintScreen を終了し、画像を保存する
 	''' </summary>
 	Private Sub StoppedPrintScreen()
 		RemoveHandler printScreen.OnChangedImage, AddressOf ChangeImage
@@ -245,18 +245,32 @@ Public Class Section_VM
 	Private Async Function SaveImageAsync() As Task
 
 		Dim sourcePath As String = ImagePath
-		Dim fileName As String = Path.GetFileName(sourcePath)
+		Dim extension As String = Path.GetExtension(sourcePath)
+		Dim fileName As String = Guid.NewGuid().ToString() & extension
 		Dim destPath As String = Path.Combine(My.Resources.ImageDir, fileName)
+
+		Dim fileInfo As New FileInfo(sourcePath)
+		If fileInfo.Exists() = False Then
+			ImagePath = Nothing
+			Throw New AppException(New FileNotFoundException("ファイルが存在しません。"))
+		End If
+		If fileInfo.Length > 3 * 1024 * 1024 Then
+			ImagePath = Nothing
+			Throw New UpdateException(New Exception("使用可能な画像ファイルは 3MB までです。"))
+		End If
+
 		Try
 			Using sourceStream As New FileStream(sourcePath, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, useAsync:=True),
 			  destStream As New FileStream(destPath, FileMode.Create, FileAccess.Write, FileShare.None, 4096, useAsync:=True)
 
 				Await sourceStream.CopyToAsync(destStream)
 			End Using
+			ImagePath = destPath
+
 		Catch ex As Exception
-			Return
+			ImagePath = Nothing
+			Throw New AppException(ex)
 		End Try
-		ImagePath = destPath
 	End Function
 
 	''' <summary>

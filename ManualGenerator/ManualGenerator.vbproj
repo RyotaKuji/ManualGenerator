@@ -183,9 +183,12 @@
     <Compile Include="Definitions.vb" />
     <Compile Include="Entities\Document_E.vb" />
     <Compile Include="Entities\Section_E.vb" />
+    <Compile Include="Exeptions\UpdatingException.vb" />
+    <Compile Include="Exeptions\UserInfoException.vb" />
+    <Compile Include="Exeptions\DbException.vb" />
     <Compile Include="Views\Helpers\RichTextBoxHelper.vb" />
     <Compile Include="Repositories\Document_R.vb" />
-    <Compile Include="Shareds\AppException.vb" />
+    <Compile Include="Exeptions\AppException.vb" />
     <Compile Include="Shareds\EditorClosingManager.vb" />
     <Compile Include="Shareds\XmlToHtmlConverter.vb" />
     <Compile Include="Shareds\IdToSectionUriConverter.vb" />
