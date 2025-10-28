@@ -142,7 +142,7 @@ Public Class EditorPage_VM
 
 		If String.IsNullOrWhiteSpace(Title) Then
 			RequestTitleInput()
-			StyledMessageBox.Show("タイトルを入力してください", "エラー", MessageBoxButton.OK)
+			StyledMessageBox.Show("タイトルを入力してください。", "必須項目")
 			Return
 		End If
 
@@ -150,7 +150,7 @@ Public Class EditorPage_VM
 			For Each section In Sections
 				If String.IsNullOrWhiteSpace(section.Heading) Then
 					section.RequestHeadingInput()
-					StyledMessageBox.Show("見出しを入力してください", "エラー", MessageBoxButton.OK)
+					StyledMessageBox.Show("見出しを入力してください。", "必須項目")
 					Return
 				End If
 			Next

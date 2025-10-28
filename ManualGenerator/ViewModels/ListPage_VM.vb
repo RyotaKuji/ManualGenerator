@@ -2,6 +2,7 @@
 Imports System.Windows.Threading
 Imports CommunityToolkit.Mvvm.ComponentModel
 Imports CommunityToolkit.Mvvm.Input
+Imports ManualGenerator.Definitions
 
 Public Class ListPage_VM : Inherits ObservableObject
 
@@ -37,18 +38,30 @@ Public Class ListPage_VM : Inherits ObservableObject
 
 				' Enumの全値でTaskを作成
 				Dim tasks = New List(Of Task)()
-				For Each status As Definitions.PubStatus In [Enum].GetValues(GetType(Definitions.PubStatus))
+
+				tasks.Add(
+					Task.Run(
+						Async Function()
+							Dim items = Await repo.ReadAllAsync(PubStatus.Published)
+							SyncLock pubStatus_Items
+								pubStatus_Items(PubStatus.Published) = items
+							End SyncLock
+						End Function
+					)
+				)
+
+				If UserInfo.GetInstance()?.Name IsNot Nothing Then
 					tasks.Add(
 						Task.Run(
 							Async Function()
-								Dim items = Await repo.ReadAllAsync(status)
+								Dim items = Await repo.ReadAllAsync(PubStatus.Draft, UserInfo.GetInstance().Name)
 								SyncLock pubStatus_Items
-									pubStatus_Items(status) = items
+									pubStatus_Items(PubStatus.Draft) = items
 								End SyncLock
 							End Function
 						)
 					)
-				Next
+				End If
 
 				Await Task.WhenAll(tasks)
 
