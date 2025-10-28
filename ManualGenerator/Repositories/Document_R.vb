@@ -65,8 +65,8 @@ Public Class Document_R
 		End Try
 	End Function
 
-	' READ by PubStatus, userName
-	Public Async Function ReadAllAsync(
+	' READ by PubStatus, UserName
+	Public Async Function ReadAllAsyncByUserName(
 		pubStatus As Definitions.PubStatus,
 		userName As String) As Task(Of List(Of Document_E))
 		Try
@@ -75,6 +75,33 @@ Public Class Document_R
 			Dim docs As List(Of Document_E) =
 			Await db.Table(Of Document_E)().
 					Where(Function(d) d.PubStatusValue = statusValue And d.Author = userName).
+					ToListAsync()
+
+			' 各 Document に対応する Section を読み込む（逐次）
+			For Each doc In docs
+				doc.Sections = Await db.Table(Of Section_E)().
+					Where(Function(s) s.DocumentId = doc.Id).
+					OrderBy(Function(s) s.OrderIndex).
+					ToListAsync()
+			Next
+
+			Return docs
+
+		Catch ex As Exception
+			Throw New DbException(ex)
+		End Try
+	End Function
+
+	' READ by PubStatus, Title
+	Public Async Function ReadAllAsyncByTitle(
+		pubStatus As Definitions.PubStatus,
+		title As String) As Task(Of List(Of Document_E))
+		Try
+			Dim statusValue As Integer = pubStatus
+
+			Dim docs As List(Of Document_E) =
+			Await db.Table(Of Document_E)().
+					Where(Function(d) d.PubStatusValue = statusValue And d.Title.Contains(title)).
 					ToListAsync()
 
 			' 各 Document に対応する Section を読み込む（逐次）

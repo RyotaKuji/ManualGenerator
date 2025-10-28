@@ -17,12 +17,23 @@ Public Class ListPage_VM : Inherits ObservableObject
 		End Get
 		Set(value As Definitions.PubStatus)
 			If SetProperty(_selectedPubStatus, value) Then
-				SetItems(value)
+				SetDisplayedItems(value)
 			End If
 		End Set
 	End Property
 
+	Private _keyword As String
+	Public Property Keyword As String
+		Get
+			Return _keyword
+		End Get
+		Set(value As String)
+			SetProperty(_keyword, value)
+		End Set
+	End Property
+
 	Public Property SelectedCommand As New RelayCommand(AddressOf Selected)
+	Public Property SearchCommand As New AsyncRelayCommand(AddressOf Search)
 	Public Property CreateNewCommand As New RelayCommand(AddressOf CreateNew)
 	Public Property SwitchPubStatusCommand As New RelayCommand(Of Definitions.PubStatus)(AddressOf SwitchPubStatus)
 
@@ -36,7 +47,6 @@ Public Class ListPage_VM : Inherits ObservableObject
 
 				Await Initialize()
 
-				' Enumの全値でTaskを作成
 				Dim tasks = New List(Of Task)()
 
 				tasks.Add(
@@ -54,7 +64,7 @@ Public Class ListPage_VM : Inherits ObservableObject
 					tasks.Add(
 						Task.Run(
 							Async Function()
-								Dim items = Await repo.ReadAllAsync(PubStatus.Draft, UserInfo.GetInstance().Name)
+								Dim items = Await repo.ReadAllAsyncByUserName(PubStatus.Draft, UserInfo.GetInstance().Name)
 								SyncLock pubStatus_Items
 									pubStatus_Items(PubStatus.Draft) = items
 								End SyncLock
@@ -67,7 +77,7 @@ Public Class ListPage_VM : Inherits ObservableObject
 
 				' UI スレッドでプロパティ/コレクション更新
 				Await Application.Current.Dispatcher.InvokeAsync(
-					Sub() SetItems(Definitions.PubStatus.Draft),
+					Sub() SetDisplayedItems(Definitions.PubStatus.Draft),
 					DispatcherPriority.DataBind)
 			End Function
 		)
@@ -90,11 +100,43 @@ Public Class ListPage_VM : Inherits ObservableObject
 		mainWindow.NavigateToEditorPage()
 	End Sub
 
+	Private Async Function Search() As Task
+		Dim tasks = New List(Of Task)()
+
+		tasks.Add(
+			Task.Run(
+				Async Function()
+					Dim items = Await repo.ReadAllAsyncByTitle(PubStatus.Published, Keyword)
+					SyncLock pubStatus_Items
+						pubStatus_Items(PubStatus.Published) = items
+					End SyncLock
+				End Function
+			)
+		)
+		tasks.Add(
+			Task.Run(
+				Async Function()
+					Dim items = Await repo.ReadAllAsyncByTitle(PubStatus.Draft, Keyword)
+					SyncLock pubStatus_Items
+						pubStatus_Items(PubStatus.Draft) = items
+					End SyncLock
+				End Function
+			)
+		)
+
+		Await Task.WhenAll(tasks)
+
+		' UI スレッドでプロパティ/コレクション更新
+		Await Application.Current.Dispatcher.InvokeAsync(
+					Sub() SetDisplayedItems(SelectedPubStatus),
+					DispatcherPriority.DataBind)
+	End Function
+
 	Private Sub SwitchPubStatus(newStatus As Definitions.PubStatus)
-		SetItems(newStatus)
+		SetDisplayedItems(newStatus)
 	End Sub
 
-	Private Sub SetItems(pubStatus As Definitions.PubStatus)
+	Private Sub SetDisplayedItems(pubStatus As Definitions.PubStatus)
 
 		Dim displayItems As List(Of Document_E) = pubStatus_Items(pubStatus)
 

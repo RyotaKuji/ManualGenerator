@@ -9,11 +9,25 @@
              Background="White">
 	<Grid>
 		<Grid.RowDefinitions>
+			<RowDefinition Height="50"/>
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
+		<Grid>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*"
+				                  MaxWidth="300"/>
+				<ColumnDefinition Width="60"/>
+			</Grid.ColumnDefinitions>
+			<TextBox Text="{Binding Keyword}"
+			         Grid.Column="0"/>
+			<local:StyledButton Content="検索"
+			                    Command="{Binding SearchCommand}"
+								Grid.Column="1"/>
+		</Grid>
 		<ListBox ItemsSource="{Binding Items}"
 		         SelectedItem="{Binding SelectedItem}"
-		         BorderThickness="0">
+		         BorderThickness="0"
+		         Grid.Row="1">
 			<ListBox.ItemTemplate>
 				<DataTemplate>
 					<StackPanel>
