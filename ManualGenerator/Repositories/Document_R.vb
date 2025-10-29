@@ -1,4 +1,5 @@
 ﻿Imports SQLite
+Imports ManualGenerator.Definitions
 
 Public Class Document_R
 	Private ReadOnly db As SQLiteAsyncConnection
@@ -29,7 +30,7 @@ Public Class Document_R
 
 			If doc IsNot Nothing Then
 				doc.Sections = Await db.Table(Of Section_E)().
-					Where(Function(sect) sect.DocumentId = id).
+					Where(Function(section) section.DocumentId = id).
 					OrderBy(Function(section) section.OrderIndex).
 					ToListAsync()
 			End If
@@ -40,23 +41,58 @@ Public Class Document_R
 		End Try
 	End Function
 
-	' READ by PubStatus
-	Public Async Function ReadAllAsync(pubStatus As Definitions.PubStatus) As Task(Of List(Of Document_E))
+	' READ by Query
+	Public Async Function ReadAllAsync(query As Document_Query) As Task(Of List(Of Document_E))
 		Try
-			Dim statusValue As Integer = pubStatus
+			If String.IsNullOrWhiteSpace(query.Keyword) = False Then
 
-			Dim docs As List(Of Document_E) =
-			Await db.Table(Of Document_E)().
-					Where(Function(d) d.PubStatusValue = statusValue).
-					ToListAsync()
+				' セクションの本文を検索
 
-			' 各 Document に対応する Section を読み込む（逐次）
-			For Each doc In docs
-				doc.Sections = Await db.Table(Of Section_E)().
-					Where(Function(s) s.DocumentId = doc.Id).
-					OrderBy(Function(s) s.OrderIndex).
-					ToListAsync()
-			Next
+				Dim sections As List(Of Section_E) = Await ReadAllSectionsByKeyword(query.Keyword)
+				Dim ids As HashSet(Of String) = sections.Select(Function(section) section.DocumentId).ToHashSet()
+
+				Dim docs As List(Of Document_E) = Await ReadAllByIds(ids)
+				Return docs
+			Else
+				' ドキュメント情報で検索
+
+				Dim exeQuery As AsyncTableQuery(Of Document_E) = db.Table(Of Document_E)
+
+				If query.PubStatus IsNot Nothing Then
+					Dim pubStatusValue As Integer = CType(query.PubStatus, PubStatus)
+					exeQuery = exeQuery.Where(Function(doc) doc.PubStatusValue = pubStatusValue)
+				End If
+				If String.IsNullOrWhiteSpace(query.Title) = False Then
+					exeQuery = exeQuery.Where(Function(doc) doc.Title.Contains(query.Title))
+				End If
+				If String.IsNullOrWhiteSpace(query.AuthorId) = False Then
+					exeQuery = exeQuery.Where(Function(doc) doc.AuthorId = query.AuthorId)
+				End If
+				If String.IsNullOrWhiteSpace(query.AuthorName) = False Then
+					exeQuery = exeQuery.Where(Function(doc) doc.AuthorName.Contains(query.AuthorName))
+				End If
+
+				Dim docs As List(Of Document_E) = Await exeQuery.ToListAsync()
+				Return docs
+			End If
+
+		Catch ex As Exception
+			Throw New DbException(ex)
+		End Try
+	End Function
+
+	' Read docs by Ids
+	Private Async Function ReadAllByIds(ids As HashSet(Of String)) As Task(Of List(Of Document_E))
+		Try
+			If ids Is Nothing OrElse ids.Count = 0 Then
+				Return New List(Of Document_E)
+			End If
+
+			Dim placeholders = String.Join(",", Enumerable.Range(0, ids.Count).Select(Function(i) "?"))
+			Dim query = $"SELECT * FROM Documents WHERE Id IN ({placeholders})"
+			Dim args = ids.ToArray()
+
+			Dim docs As List(Of Document_E) = Await db.QueryAsync(Of Document_E)(query, args)
 
 			Return docs
 
@@ -65,54 +101,14 @@ Public Class Document_R
 		End Try
 	End Function
 
-	' READ by PubStatus, UserName
-	Public Async Function ReadAllAsyncByUserName(
-		pubStatus As Definitions.PubStatus,
-		userName As String) As Task(Of List(Of Document_E))
+	' Read sections by Keyword
+	Private Async Function ReadAllSectionsByKeyword(keyword As String) As Task(Of List(Of Section_E))
 		Try
-			Dim statusValue As Integer = pubStatus
+			Dim sections As List(Of Section_E) = Await db.Table(Of Section_E).
+				Where(Function(section) section.DescriptionText.Contains(keyword)).
+				ToListAsync()
 
-			Dim docs As List(Of Document_E) =
-			Await db.Table(Of Document_E)().
-					Where(Function(d) d.PubStatusValue = statusValue And d.Author = userName).
-					ToListAsync()
-
-			' 各 Document に対応する Section を読み込む（逐次）
-			For Each doc In docs
-				doc.Sections = Await db.Table(Of Section_E)().
-					Where(Function(s) s.DocumentId = doc.Id).
-					OrderBy(Function(s) s.OrderIndex).
-					ToListAsync()
-			Next
-
-			Return docs
-
-		Catch ex As Exception
-			Throw New DbException(ex)
-		End Try
-	End Function
-
-	' READ by PubStatus, Title
-	Public Async Function ReadAllAsyncByTitle(
-		pubStatus As Definitions.PubStatus,
-		title As String) As Task(Of List(Of Document_E))
-		Try
-			Dim statusValue As Integer = pubStatus
-
-			Dim docs As List(Of Document_E) =
-			Await db.Table(Of Document_E)().
-					Where(Function(d) d.PubStatusValue = statusValue And d.Title.Contains(title)).
-					ToListAsync()
-
-			' 各 Document に対応する Section を読み込む（逐次）
-			For Each doc In docs
-				doc.Sections = Await db.Table(Of Section_E)().
-					Where(Function(s) s.DocumentId = doc.Id).
-					OrderBy(Function(s) s.OrderIndex).
-					ToListAsync()
-			Next
-
-			Return docs
+			Return sections
 
 		Catch ex As Exception
 			Throw New DbException(ex)
@@ -120,7 +116,7 @@ Public Class Document_R
 	End Function
 
 	' CREATE or UPDATE (セクションは差分更新)
-	Public Async Function CreateOrUpdateAsync(doc As Document_E, pubStatus As Definitions.PubStatus) As Task
+	Public Async Function CreateOrUpdateAsync(doc As Document_E, pubStatus As PubStatus) As Task
 
 		For i As Integer = 0 To If(doc.Sections?.Count(), 0) - 1
 			Dim sec = doc.Sections(i)
@@ -172,9 +168,9 @@ Public Class Document_R
 						End If
 					End If
 
-					If pubStatus = Definitions.PubStatus.Published Then
+					If pubStatus = PubStatus.Published Then
 
-						Dim deletedId = Document_E.GetIdWithPubStatus(doc.Id, Definitions.PubStatus.Draft)
+						Dim deletedId = Document_E.GetIdWithPubStatus(doc.Id, PubStatus.Draft)
 
 						Dim deleteSections = conn.Table(Of Section_E)().
 							Where(Function(s) s.DocumentId = deletedId).

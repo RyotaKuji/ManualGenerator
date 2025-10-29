@@ -1,6 +1,5 @@
 ﻿Imports System.IO
 Imports System.Reflection
-Imports Microsoft.VisualBasic.ApplicationServices
 
 Class Application
 
@@ -11,8 +10,10 @@ Class Application
 		Task.Run(Sub() UserInfo.GetInstance())
 	End Sub
 
+	' アプリ終了時にアップグレード
 	Protected Overrides Sub OnExit(e As ExitEventArgs)
 		Try
+			' 最新バージョン情報を読み込み
 			Dim latestAppInfoJson As String
 			Using reader As New StreamReader(My.Resources.LatestAppInfo)
 				latestAppInfoJson = reader.ReadToEnd()
@@ -21,9 +22,14 @@ Class Application
 			If String.IsNullOrWhiteSpace(latestAppInfoJson) Then
 				Throw New FileNotFoundException()
 			End If
+
+			' バージョンを取得
 			Dim root As Newtonsoft.Json.Linq.JObject = DirectCast(Newtonsoft.Json.JsonConvert.DeserializeObject(latestAppInfoJson), Newtonsoft.Json.Linq.JObject)
 			Dim latestVersion As New Version(root("version").ToString())
+
+			' 現在のバージョンよりも新しい場合
 			If latestVersion.CompareTo(Assembly.GetExecutingAssembly().GetName().Version) > 0 Then
+				' upgrade.bat を実行し、アプリケーションを更新
 				Dim psi As New ProcessStartInfo("upgrade.bat") With
 				{
 					.Arguments = My.Resources.LatestAppDir,
@@ -34,6 +40,7 @@ Class Application
 			End If
 		Catch ex As Exception
 		Finally
+			' アプリケーションを終了
 			MyBase.OnExit(e)
 		End Try
 	End Sub

@@ -186,6 +186,7 @@
     <Compile Include="Exeptions\UpdatingException.vb" />
     <Compile Include="Exeptions\UserInfoException.vb" />
     <Compile Include="Exeptions\DbException.vb" />
+    <Compile Include="Repositories\Document_Query.vb" />
     <Compile Include="Views\Helpers\RichTextBoxHelper.vb" />
     <Compile Include="Repositories\Document_R.vb" />
     <Compile Include="Exeptions\AppException.vb" />

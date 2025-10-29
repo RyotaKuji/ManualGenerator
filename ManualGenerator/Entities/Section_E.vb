@@ -1,4 +1,5 @@
 ﻿Imports SQLite
+Imports ManualGenerator.Definitions
 
 <Table("Sections")>
 Public Class Section_E
@@ -48,16 +49,16 @@ Public Class Section_E
 	Public Property PubStatusValue As Integer = 0
 
 	<Ignore>
-	Public Property PubStatus As Definitions.PubStatus
+	Public Property PubStatus As PubStatus
 		Get
-			Return CType(PubStatusValue, Definitions.PubStatus)
+			Return CType(PubStatusValue, PubStatus)
 		End Get
-		Set(value As Definitions.PubStatus)
+		Set(value As PubStatus)
 			PubStatusValue = value
 		End Set
 	End Property
 
-	Public Function Clone(pubStatus As Definitions.PubStatus) As Section_E
+	Public Function Clone(pubStatus As PubStatus) As Section_E
 
 		Dim newEntity As New Section_E With {
 			.BaseId = BaseId,
@@ -72,7 +73,7 @@ Public Class Section_E
 		Return newEntity
 	End Function
 
-	Public Shared Function GetIdWithPubStatus(id As String, pubStatus As Definitions.PubStatus) As String
+	Public Shared Function GetIdWithPubStatus(id As String, pubStatus As PubStatus) As String
 		Dim baseId As String = GetBaseId(id)
 		Dim suffix As String = My.Resources.SuffixDelimiter & pubStatus.ToString()
 		Return baseId & suffix

@@ -1,4 +1,5 @@
 ﻿Imports SQLite
+Imports ManualGenerator.Definitions
 
 <Table("Documents")>
 Public Class Document_E
@@ -18,7 +19,9 @@ Public Class Document_E
 	<NotNull>
 	Public Property Title As String
 
-	Public Property Author As String
+	Public Property AuthorId As String
+
+	Public Property AuthorName As String
 
 	Public Property Department As String
 
@@ -30,29 +33,30 @@ Public Class Document_E
 	Public Property PubStatusValue As Integer = 0
 
 	<Ignore>
-	Public Property PubStatus As Definitions.PubStatus
+	Public Property PubStatus As PubStatus
 		Get
-			Return CType(PubStatusValue, Definitions.PubStatus)
+			Return CType(PubStatusValue, PubStatus)
 		End Get
-		Set(value As Definitions.PubStatus)
+		Set(value As PubStatus)
 			PubStatusValue = value
 		End Set
 	End Property
 
-	Public Function Clone(pubStatus As Definitions.PubStatus) As Document_E
+	Public Function Clone(pubStatus As PubStatus) As Document_E
 
 		Dim newEntity As New Document_E With {
 			.BaseId = BaseId,
 			.PubStatus = pubStatus,
 			.Title = Title,
-			.Author = Author,
+			.AuthorId = AuthorId,
+			.AuthorName = AuthorName,
 			.Department = Department,
 			.Sections = Sections.Select(Function(s) s.Clone(pubStatus)).ToList()
 		}
 		Return newEntity
 	End Function
 
-	Public Shared Function GetIdWithPubStatus(id As String, pubStatus As Definitions.PubStatus) As String
+	Public Shared Function GetIdWithPubStatus(id As String, pubStatus As PubStatus) As String
 		Dim baseId As String = GetBaseId(id)
 		Dim suffix As String = GetSuffix(pubStatus)
 		Return baseId & suffix
@@ -67,7 +71,7 @@ Public Class Document_E
 		Return id.Substring(0, delimiterIndex)
 	End Function
 
-	Private Shared Function GetSuffix(pubStatus As Definitions.PubStatus) As String
+	Private Shared Function GetSuffix(pubStatus As PubStatus) As String
 		Return My.Resources.SuffixDelimiter & pubStatus.ToString()
 	End Function
 

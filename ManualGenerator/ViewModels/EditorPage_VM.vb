@@ -2,6 +2,7 @@
 Imports System.Windows.Threading
 Imports CommunityToolkit.Mvvm.ComponentModel
 Imports CommunityToolkit.Mvvm.Input
+Imports ManualGenerator.Definitions
 
 Public Class EditorPage_VM
 	Inherits ObservableObject
@@ -102,7 +103,7 @@ Public Class EditorPage_VM
 	''' 指定した Id のファイルを読み込み
 	''' </summary>
 	''' <param name="id">ドキュメント ID</param>
-	''' <returns>Entity（失敗した場合は Nothing）</returns>
+	''' <returns>Entity（存在しない場合は、新しいインスタンス）</returns>
 	Private Async Function GetEntityAsync(id As String) As Task(Of Document_E)
 
 		Dim entity As Document_E = Await repo.ReadAsync(id)
@@ -135,7 +136,7 @@ Public Class EditorPage_VM
 	''' <summary>
 	''' 保存
 	''' </summary>
-	Private Async Function SaveAsync(pubStatus As Definitions.PubStatus) As Task
+	Private Async Function SaveAsync(pubStatus As PubStatus) As Task
 
 		' PrintScreen を中断することで、画像を保存
 		PrintScreen.GetInstance().Stop()
@@ -146,7 +147,7 @@ Public Class EditorPage_VM
 			Return
 		End If
 
-		If pubStatus = Definitions.PubStatus.Published Then
+		If pubStatus = PubStatus.Published Then
 			For Each section In Sections
 				If String.IsNullOrWhiteSpace(section.Heading) Then
 					section.RequestHeadingInput()
@@ -162,11 +163,13 @@ Public Class EditorPage_VM
 			sectionEntities(i).OrderIndex = i
 		Next
 
-		entity.Sections = sectionEntities
-
 		Dim userInfo As UserInfo = UserInfo.GetInstance()
-		entity.Author = userInfo.Name
-		entity.Department = userInfo.Description
+		With entity
+			.Sections = sectionEntities
+			.AuthorId = userInfo.Id
+			.AuthorName = userInfo.Name
+			.Department = userInfo.Department
+		End With
 
 		Await repo.CreateOrUpdateAsync(entity, pubStatus)
 
@@ -179,14 +182,14 @@ Public Class EditorPage_VM
 	''' 下書き保存
 	''' </summary>
 	Private Async Function SaveDraftAsync() As Task
-		Await SaveAsync(Definitions.PubStatus.Draft)
+		Await SaveAsync(PubStatus.Draft)
 	End Function
 
 	''' <summary>
 	''' 公開
 	''' </summary>
 	Private Async Function PublishDocAsync() As Task
-		Await SaveAsync(Definitions.PubStatus.Published)
+		Await SaveAsync(PubStatus.Published)
 	End Function
 
 	''' <summary>

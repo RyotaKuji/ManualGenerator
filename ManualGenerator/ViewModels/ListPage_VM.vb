@@ -10,12 +10,12 @@ Public Class ListPage_VM : Inherits ObservableObject
 
 	Public Property SelectedItem As Document_E
 
-	Private _selectedPubStatus As Definitions.PubStatus = Definitions.PubStatus.Draft
-	Public Property SelectedPubStatus As Definitions.PubStatus
+	Private _selectedPubStatus As PubStatus = PubStatus.Draft
+	Public Property SelectedPubStatus As PubStatus
 		Get
 			Return _selectedPubStatus
 		End Get
-		Set(value As Definitions.PubStatus)
+		Set(value As PubStatus)
 			If SetProperty(_selectedPubStatus, value) Then
 				SetDisplayedItems(value)
 			End If
@@ -35,11 +35,11 @@ Public Class ListPage_VM : Inherits ObservableObject
 	Public Property SelectedCommand As New RelayCommand(AddressOf Selected)
 	Public Property SearchCommand As New AsyncRelayCommand(AddressOf Search)
 	Public Property CreateNewCommand As New RelayCommand(AddressOf CreateNew)
-	Public Property SwitchPubStatusCommand As New RelayCommand(Of Definitions.PubStatus)(AddressOf SwitchPubStatus)
+	Public Property SwitchPubStatusCommand As New RelayCommand(Of PubStatus)(AddressOf SwitchPubStatus)
 
 	Private repo As Document_R
 
-	Private ReadOnly pubStatus_Items As New Dictionary(Of Definitions.PubStatus, List(Of Document_E))
+	Private pubStatus_Items As New Dictionary(Of PubStatus, List(Of Document_E))
 
 	Public Sub New()
 		Task.Run(
@@ -47,38 +47,10 @@ Public Class ListPage_VM : Inherits ObservableObject
 
 				Await Initialize()
 
-				Dim tasks = New List(Of Task)()
+				Dim items As List(Of Document_E) = Await repo.ReadAllAsync(New Document_Query())
+				SetResults(items)
 
-				tasks.Add(
-					Task.Run(
-						Async Function()
-							Dim items = Await repo.ReadAllAsync(PubStatus.Published)
-							SyncLock pubStatus_Items
-								pubStatus_Items(PubStatus.Published) = items
-							End SyncLock
-						End Function
-					)
-				)
-
-				If UserInfo.GetInstance()?.Name IsNot Nothing Then
-					tasks.Add(
-						Task.Run(
-							Async Function()
-								Dim items = Await repo.ReadAllAsyncByUserName(PubStatus.Draft, UserInfo.GetInstance().Name)
-								SyncLock pubStatus_Items
-									pubStatus_Items(PubStatus.Draft) = items
-								End SyncLock
-							End Function
-						)
-					)
-				End If
-
-				Await Task.WhenAll(tasks)
-
-				' UI スレッドでプロパティ/コレクション更新
-				Await Application.Current.Dispatcher.InvokeAsync(
-					Sub() SetDisplayedItems(Definitions.PubStatus.Draft),
-					DispatcherPriority.DataBind)
+				Await SetDisplayedItemsAsync(PubStatus.Draft)
 			End Function
 		)
 	End Sub
@@ -101,46 +73,44 @@ Public Class ListPage_VM : Inherits ObservableObject
 	End Sub
 
 	Private Async Function Search() As Task
-		Dim tasks = New List(Of Task)()
 
-		tasks.Add(
-			Task.Run(
-				Async Function()
-					Dim items = Await repo.ReadAllAsyncByTitle(PubStatus.Published, Keyword)
-					SyncLock pubStatus_Items
-						pubStatus_Items(PubStatus.Published) = items
-					End SyncLock
-				End Function
-			)
-		)
-		tasks.Add(
-			Task.Run(
-				Async Function()
-					Dim items = Await repo.ReadAllAsyncByTitle(PubStatus.Draft, Keyword)
-					SyncLock pubStatus_Items
-						pubStatus_Items(PubStatus.Draft) = items
-					End SyncLock
-				End Function
-			)
-		)
+		Dim query As New Document_Query() With {
+			.Keyword = Keyword
+		}
+		Dim items As List(Of Document_E) = Await repo.ReadAllAsync(query)
+		SetResults(items)
 
-		Await Task.WhenAll(tasks)
-
-		' UI スレッドでプロパティ/コレクション更新
-		Await Application.Current.Dispatcher.InvokeAsync(
-					Sub() SetDisplayedItems(SelectedPubStatus),
-					DispatcherPriority.DataBind)
+		Await SetDisplayedItemsAsync(SelectedPubStatus)
 	End Function
 
-	Private Sub SwitchPubStatus(newStatus As Definitions.PubStatus)
+	Private Sub SwitchPubStatus(newStatus As PubStatus)
 		SetDisplayedItems(newStatus)
 	End Sub
 
-	Private Sub SetDisplayedItems(pubStatus As Definitions.PubStatus)
+	Private Sub SetResults(items As List(Of Document_E))
+		pubStatus_Items =
+			items.GroupBy(Function(i) i.PubStatus).
+			ToDictionary(Function(g) g.Key, Function(g) g.ToList())
+	End Sub
+
+	''' <summary>
+	''' ' UI スレッドでコレクションを更新する
+	''' </summary>
+	''' <param name="pubStatus">表示する PubStatus</param>
+	Private Async Function SetDisplayedItemsAsync(pubStatus As PubStatus) As Task
+		Await Application.Current.Dispatcher.InvokeAsync(
+			Sub() SetDisplayedItems(pubStatus),
+			DispatcherPriority.DataBind)
+	End Function
+
+	Private Sub SetDisplayedItems(pubStatus As PubStatus)
+		Items.Clear()
+
+		If pubStatus_Items.ContainsKey(pubStatus) = False Then
+			Return
+		End If
 
 		Dim displayItems As List(Of Document_E) = pubStatus_Items(pubStatus)
-
-		Items.Clear()
 		For Each doc In displayItems
 			Items.Add(doc)
 		Next
