@@ -1,4 +1,4 @@
-﻿Public Structure Document_Query
+﻿Public Structure DocumentQuery
 	Public Property PubStatus As Definitions.PubStatus?
 	Public Property Title As String
 	Public Property AuthorId As String

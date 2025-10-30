@@ -9,10 +9,11 @@ Public Class UserInfo
 	Public Shared Function GetInstance() As UserInfo
 		Return instance
 	End Function
+
 	Private Sub New()
 		Try
 			Using user As UserPrincipal = UserPrincipal.Current
-				Id = user.SamAccountName
+				Id = user.Guid.ToString()
 				Name = user.Name
 				Department = user.Description
 			End Using

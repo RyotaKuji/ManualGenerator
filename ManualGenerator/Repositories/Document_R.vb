@@ -42,7 +42,7 @@ Public Class Document_R
 	End Function
 
 	' READ by Query
-	Public Async Function ReadAllAsync(query As Document_Query) As Task(Of List(Of Document_E))
+	Public Async Function ReadAllAsync(query As DocumentQuery) As Task(Of List(Of Document_E))
 		Try
 			If String.IsNullOrWhiteSpace(query.Keyword) = False Then
 

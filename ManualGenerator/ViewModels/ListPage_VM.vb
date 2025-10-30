@@ -47,7 +47,10 @@ Public Class ListPage_VM : Inherits ObservableObject
 
 				Await Initialize()
 
-				Dim items As List(Of Document_E) = Await repo.ReadAllAsync(New Document_Query())
+				Dim query As New DocumentQuery() With {
+					.AuthorId = UserInfo.GetInstance().Id
+				}
+				Dim items As List(Of Document_E) = Await repo.ReadAllAsync(query)
 				SetResults(items)
 
 				Await SetDisplayedItemsAsync(PubStatus.Draft)
@@ -74,7 +77,7 @@ Public Class ListPage_VM : Inherits ObservableObject
 
 	Private Async Function Search() As Task
 
-		Dim query As New Document_Query() With {
+		Dim query As New DocumentQuery() With {
 			.Keyword = Keyword
 		}
 		Dim items As List(Of Document_E) = Await repo.ReadAllAsync(query)
