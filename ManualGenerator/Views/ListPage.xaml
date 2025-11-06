@@ -14,15 +14,21 @@
 		</Grid.RowDefinitions>
 		<Grid>
 			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="120"/>
 				<ColumnDefinition Width="*"
 				                  MaxWidth="300"/>
 				<ColumnDefinition Width="60"/>
 			</Grid.ColumnDefinitions>
+			<ComboBox ItemsSource="{Binding SearchMode_Jp}"
+			          SelectedValue="{Binding SelectedSearchMode, Mode=TwoWay}"
+			          DisplayMemberPath="Value"
+			          SelectedValuePath="Key"
+			          Grid.Column="0"/>
 			<TextBox Text="{Binding Keyword}"
-			         Grid.Column="0"/>
+			         Grid.Column="1"/>
 			<local:StyledButton Content="検索"
 			                    Command="{Binding SearchCommand}"
-			                    Grid.Column="1"/>
+			                    Grid.Column="2"/>
 		</Grid>
 		<ListBox ItemsSource="{Binding Items}"
 		         SelectedItem="{Binding SelectedItem}"

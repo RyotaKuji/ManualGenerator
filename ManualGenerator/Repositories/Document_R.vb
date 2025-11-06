@@ -1,5 +1,6 @@
-﻿Imports SQLite
-Imports ManualGenerator.Definitions
+﻿Imports ManualGenerator.Definitions
+Imports Microsoft.VisualBasic.Devices
+Imports SQLite
 
 Public Class Document_R
 	Private ReadOnly db As SQLiteAsyncConnection
@@ -48,8 +49,19 @@ Public Class Document_R
 
 				' セクションの本文を検索
 
-				Dim sections As List(Of Section_E) = Await ReadAllSectionsByKeyword(query.Keyword)
+				Dim sections As List(Of Section_E) = Await db.Table(Of Section_E).
+					Where(Function(section) section.DescriptionText.Contains(query.Keyword)).
+					ToListAsync()
+
 				Dim ids As HashSet(Of String) = sections.Select(Function(section) section.DocumentId).ToHashSet()
+
+				Dim docsByTitle As List(Of Document_E) = Await db.Table(Of Document_E).
+					Where(Function(doc) doc.Id = query.Keyword OrElse
+										doc.BaseId = query.Keyword OrElse
+										doc.Title.Contains(query.Keyword) OrElse
+										doc.AuthorId.Contains(query.Keyword) OrElse
+										doc.AuthorName.Contains(query.Keyword)
+						).ToListAsync()
 
 				Dim docs As List(Of Document_E) = Await ReadAllByIds(ids)
 				Return docs

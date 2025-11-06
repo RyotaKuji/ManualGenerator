@@ -32,10 +32,34 @@ Public Class ListPage_VM : Inherits ObservableObject
 		End Set
 	End Property
 
+	Private _selectedSearchMode As SearchMode = SearchMode.All
+	Public Property SelectedSearchMode As SearchMode
+		Get
+			Return _selectedSearchMode
+		End Get
+		Set(value As SearchMode)
+			SetProperty(_selectedSearchMode, value)
+		End Set
+	End Property
+
 	Public Property SelectedCommand As New RelayCommand(AddressOf Selected)
 	Public Property SearchCommand As New AsyncRelayCommand(AddressOf Search)
 	Public Property CreateNewCommand As New RelayCommand(AddressOf CreateNew)
 	Public Property SwitchPubStatusCommand As New RelayCommand(Of PubStatus)(AddressOf SwitchPubStatus)
+
+	Public ReadOnly Property SearchMode_Jp As New Dictionary(Of SearchMode, String) From {
+		{SearchMode.All, "キーワード"},
+		{SearchMode.Title, "タイトル"},
+		{SearchMode.AuthorName, "作成者"},
+		{SearchMode.DocumentId, "ドキュメントID"}
+	}
+
+	Public Enum SearchMode
+		All
+		Title
+		AuthorName
+		DocumentId
+	End Enum
 
 	Private repo As Document_R
 
@@ -77,9 +101,20 @@ Public Class ListPage_VM : Inherits ObservableObject
 
 	Private Async Function Search() As Task
 
-		Dim query As New DocumentQuery() With {
-			.Keyword = Keyword
-		}
+		Dim query As New DocumentQuery()
+		With query
+			Select Case SelectedSearchMode
+				Case SearchMode.All
+					.Keyword = Keyword
+				Case SearchMode.Title
+					.Title = Keyword
+				Case SearchMode.AuthorName
+					.AuthorName = Keyword
+				Case SearchMode.DocumentId
+					.DocumentId = Keyword
+			End Select
+		End With
+
 		Dim items As List(Of Document_E) = Await repo.ReadAllAsync(query)
 		SetResults(items)
 
