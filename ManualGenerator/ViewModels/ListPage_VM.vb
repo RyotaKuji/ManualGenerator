@@ -50,14 +50,12 @@ Public Class ListPage_VM : Inherits ObservableObject
 	Public ReadOnly Property SearchMode_Jp As New Dictionary(Of SearchMode, String) From {
 		{SearchMode.All, "キーワード"},
 		{SearchMode.Title, "タイトル"},
-		{SearchMode.AuthorName, "作成者"},
 		{SearchMode.DocumentId, "ドキュメントID"}
 	}
 
 	Public Enum SearchMode
 		All
 		Title
-		AuthorName
 		DocumentId
 	End Enum
 
@@ -80,16 +78,13 @@ Public Class ListPage_VM : Inherits ObservableObject
 
 				Await Initialize()
 
+				Dim query = New DocumentQuery() With {.AuthorId = UserInfo.GetInstance().Id}
 				Dim queries = New Dictionary(Of PubStatus, DocumentQuery) From {
 					{
-						PubStatus.Published, New DocumentQuery()
+						PubStatus.Published, query
 					},
 					{
-						PubStatus.Draft,
-						New DocumentQuery() With
-						{
-							.AuthorId = UserInfo.GetInstance().Id
-						}
+						PubStatus.Draft, query
 					}
 				}
 				pubStatus_Items = Await repo.ReadAllAsync(queries)
@@ -122,22 +117,8 @@ Public Class ListPage_VM : Inherits ObservableObject
 
 	Private Async Function Search() As Task
 
-		Dim query_published As New DocumentQuery()
-		With query_published
-			Select Case SelectedSearchMode
-				Case SearchMode.All
-					.Keyword = Keyword
-				Case SearchMode.Title
-					.Title = Keyword
-				Case SearchMode.AuthorName
-					.AuthorName = Keyword
-				Case SearchMode.DocumentId
-					.DocumentId = Keyword
-			End Select
-		End With
-
-		Dim query_draft As New DocumentQuery()
-		With query_draft
+		Dim query As New DocumentQuery()
+		With query
 			Select Case SelectedSearchMode
 				Case SearchMode.All
 					.Keyword = Keyword
@@ -145,23 +126,15 @@ Public Class ListPage_VM : Inherits ObservableObject
 				Case SearchMode.Title
 					.Title = Keyword
 					.AuthorId = UserInfo.GetInstance().Id
-				Case SearchMode.AuthorName
-					.AuthorName = Keyword
-					.AuthorId = UserInfo.GetInstance().Id
 				Case SearchMode.DocumentId
 					.DocumentId = Keyword
 			End Select
 		End With
 
-		Dim queries = New Dictionary(Of PubStatus, DocumentQuery) From {
-			{
-				PubStatus.Published,
-				query_published
-			},
-			{
-				PubStatus.Draft,
-				query_draft
-			}
+		Dim queries = New Dictionary(Of PubStatus, DocumentQuery) From
+		{
+			{PubStatus.Published, query},
+			{PubStatus.Draft, query}
 		}
 
 		pubStatus_Items = Await repo.ReadAllAsync(queries)
