@@ -43,84 +43,89 @@ Public Class Document_R
 	End Function
 
 	' READ by Query
-	Public Async Function ReadAllAsync(query As DocumentQuery) As Task(Of List(Of Document_E))
+	Public Async Function ReadAllAsync(queries As Dictionary(Of PubStatus, DocumentQuery)) As Task(Of Dictionary(Of PubStatus, IEnumerable(Of Document_E)))
 		Try
-			If String.IsNullOrWhiteSpace(query.Keyword) = False Then
+			Dim result As New Dictionary(Of PubStatus, IEnumerable(Of Document_E))()
 
-				' セクションの本文を検索
+			For Each pubStatus_query As KeyValuePair(Of PubStatus, DocumentQuery) In queries
+				Dim pubStatus As PubStatus = pubStatus_query.Key
+				Dim query As DocumentQuery = pubStatus_query.Value
 
-				Dim sections As List(Of Section_E) = Await db.Table(Of Section_E).
-					Where(Function(section) section.DescriptionText.Contains(query.Keyword)).
-					ToListAsync()
+				Dim pubStatusValue As Integer = pubStatus
 
-				Dim ids As HashSet(Of String) = sections.Select(Function(section) section.DocumentId).ToHashSet()
+				Dim docs As New List(Of Document_E)
 
-				Dim docsByTitle As List(Of Document_E) = Await db.Table(Of Document_E).
-					Where(Function(doc) doc.Id = query.Keyword OrElse
-										doc.BaseId = query.Keyword OrElse
-										doc.Title.Contains(query.Keyword) OrElse
-										doc.AuthorId.Contains(query.Keyword) OrElse
-										doc.AuthorName.Contains(query.Keyword)
-						).ToListAsync()
+				If String.IsNullOrWhiteSpace(query.Keyword) = False Then
 
-				Dim docs As List(Of Document_E) = Await ReadAllByIds(ids)
-				Return docs
-			Else
-				' ドキュメント情報で検索
+					Dim keyword As String = query.Keyword
 
-				Dim exeQuery As AsyncTableQuery(Of Document_E) = db.Table(Of Document_E)
+					' ドキュメント情報で検索
+					Dim docsByDocInfo As List(Of Document_E) =
+						Await db.Table(Of Document_E).
+								Where(Function(doc) doc.PubStatusValue = pubStatusValue).
+								Where(Function(doc) doc.Id = keyword OrElse
+													doc.BaseId = keyword OrElse
+													doc.Title.Contains(keyword) OrElse
+													doc.AuthorName.Contains(keyword)).ToListAsync()
 
-				If query.PubStatus IsNot Nothing Then
-					Dim pubStatusValue As Integer = CType(query.PubStatus, PubStatus)
+					' セクション本文で検索
+					Dim sections As List(Of Section_E) = Await db.Table(Of Section_E).
+						Where(Function(section) section.Heading.Contains(keyword) OrElse
+												section.DescriptionText.Contains(keyword)).ToListAsync()
+					Dim idsBySection As HashSet(Of String) = sections.Select(Function(section) section.DocumentId).ToHashSet()
+					Dim docsBySection As List(Of Document_E) = Await ReadAllByIds(pubStatus, idsBySection)
+
+					docs.AddRange(docsByDocInfo)
+					docs.AddRange(docsBySection)
+
+					' ID について一意にする
+					docs = docs.GroupBy(Function(x) x.Id).Select(Function(g) g.First()).ToList()
+				Else
+					' ドキュメント情報で検索
+
+					Dim exeQuery As AsyncTableQuery(Of Document_E) = db.Table(Of Document_E)
+
 					exeQuery = exeQuery.Where(Function(doc) doc.PubStatusValue = pubStatusValue)
-				End If
-				If String.IsNullOrWhiteSpace(query.Title) = False Then
-					exeQuery = exeQuery.Where(Function(doc) doc.Title.Contains(query.Title))
-				End If
-				If String.IsNullOrWhiteSpace(query.AuthorId) = False Then
-					exeQuery = exeQuery.Where(Function(doc) doc.AuthorId = query.AuthorId)
-				End If
-				If String.IsNullOrWhiteSpace(query.AuthorName) = False Then
-					exeQuery = exeQuery.Where(Function(doc) doc.AuthorName.Contains(query.AuthorName))
+
+					If String.IsNullOrWhiteSpace(query.Title) = False Then
+						exeQuery = exeQuery.Where(Function(doc) doc.Title.Contains(query.Title))
+					End If
+					If String.IsNullOrWhiteSpace(query.AuthorId) = False Then
+						exeQuery = exeQuery.Where(Function(doc) doc.AuthorId = query.AuthorId)
+					End If
+					If String.IsNullOrWhiteSpace(query.AuthorName) = False Then
+						exeQuery = exeQuery.Where(Function(doc) doc.AuthorName.Contains(query.AuthorName))
+					End If
+					If String.IsNullOrWhiteSpace(query.DocumentId) = False Then
+						exeQuery = exeQuery.Where(Function(doc) doc.BaseId = query.DocumentId OrElse doc.Id = query.DocumentId)
+					End If
+
+					docs = Await exeQuery.ToListAsync()
+
 				End If
 
-				Dim docs As List(Of Document_E) = Await exeQuery.ToListAsync()
-				Return docs
-			End If
+				result(pubStatus) = docs
+			Next
 
+			Return result
 		Catch ex As Exception
 			Throw New DbException(ex)
 		End Try
 	End Function
 
 	' Read docs by Ids
-	Private Async Function ReadAllByIds(ids As HashSet(Of String)) As Task(Of List(Of Document_E))
+	Private Async Function ReadAllByIds(pubStatus As PubStatus, ids As HashSet(Of String)) As Task(Of List(Of Document_E))
 		Try
 			If ids Is Nothing OrElse ids.Count = 0 Then
 				Return New List(Of Document_E)
 			End If
-
-			Dim placeholders = String.Join(",", Enumerable.Range(0, ids.Count).Select(Function(i) "?"))
-			Dim query = $"SELECT * FROM Documents WHERE Id IN ({placeholders})"
+			Dim placeholder_ids = String.Join(",", Enumerable.Range(0, ids.Count).Select(Function(i) "?"))
+			Dim query = $"SELECT * FROM Documents WHERE PubStatusValue = {CInt(pubStatus)} AND Id IN ({placeholder_ids})"
 			Dim args = ids.ToArray()
 
 			Dim docs As List(Of Document_E) = Await db.QueryAsync(Of Document_E)(query, args)
 
 			Return docs
-
-		Catch ex As Exception
-			Throw New DbException(ex)
-		End Try
-	End Function
-
-	' Read sections by Keyword
-	Private Async Function ReadAllSectionsByKeyword(keyword As String) As Task(Of List(Of Section_E))
-		Try
-			Dim sections As List(Of Section_E) = Await db.Table(Of Section_E).
-				Where(Function(section) section.DescriptionText.Contains(keyword)).
-				ToListAsync()
-
-			Return sections
 
 		Catch ex As Exception
 			Throw New DbException(ex)

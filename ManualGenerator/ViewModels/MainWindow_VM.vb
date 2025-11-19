@@ -24,7 +24,7 @@ Public Class MainWindow_VM : Inherits ObservableObject
 
 	' ListPage へ移動
 	Public Sub NavigateToListPage()
-		Dim vm = New ListPage_VM()
+		Dim vm = ListPage_VM.GetInstance()
 		CurrentHeader = New Header_ListPage() With {
 			.DataContext = vm
 		}

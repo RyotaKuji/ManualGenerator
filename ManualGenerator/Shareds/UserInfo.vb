@@ -13,9 +13,9 @@ Public Class UserInfo
 	Private Sub New()
 		Try
 			Using user As UserPrincipal = UserPrincipal.Current
-				Id = user.Guid.ToString()
-				Name = user.Name
-				Department = user.Description
+				Id = user.Guid.ToString() '+ "AA"
+				Name = user.Name '+ "AA"
+				Department = user.Description '+ "AA"
 			End Using
 		Catch ex As Exception
 			Throw New UserInfoException(ex)

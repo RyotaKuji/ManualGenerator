@@ -6,7 +6,7 @@ Imports ManualGenerator.Definitions
 
 Public Class ListPage_VM : Inherits ObservableObject
 
-	Public Property Items As New ObservableCollection(Of Document_E)
+	Public ReadOnly Property Items As New ObservableCollection(Of Document_E)
 
 	Public Property SelectedItem As Document_E
 
@@ -63,19 +63,36 @@ Public Class ListPage_VM : Inherits ObservableObject
 
 	Private repo As Document_R
 
-	Private pubStatus_Items As New Dictionary(Of PubStatus, List(Of Document_E))
+	Private pubStatus_Items As New Dictionary(Of PubStatus, IEnumerable(Of Document_E))
 
-	Public Sub New()
+	Private Shared instance As ListPage_VM
+
+	Public Shared Function GetInstance() As ListPage_VM
+		If instance Is Nothing Then
+			instance = New ListPage_VM()
+		End If
+		Return instance
+	End Function
+
+	Private Sub New()
 		Task.Run(
 			Async Function()
 
 				Await Initialize()
 
-				Dim query As New DocumentQuery() With {
-					.AuthorId = UserInfo.GetInstance().Id
+				Dim queries = New Dictionary(Of PubStatus, DocumentQuery) From {
+					{
+						PubStatus.Published, New DocumentQuery()
+					},
+					{
+						PubStatus.Draft,
+						New DocumentQuery() With
+						{
+							.AuthorId = UserInfo.GetInstance().Id
+						}
+					}
 				}
-				Dim items As List(Of Document_E) = Await repo.ReadAllAsync(query)
-				SetResults(items)
+				pubStatus_Items = Await repo.ReadAllAsync(queries)
 
 				Await SetDisplayedItemsAsync(PubStatus.Draft)
 			End Function
@@ -89,6 +106,10 @@ Public Class ListPage_VM : Inherits ObservableObject
 	End Function
 
 	Private Sub Selected()
+		If SelectedItem Is Nothing Then
+			Return
+		End If
+
 		Dim id As String = SelectedItem.Id
 		Dim mainWindow As MainWindow = CType(Application.Current.MainWindow, MainWindow)
 		mainWindow.NavigateToEditorPage(id)
@@ -101,8 +122,8 @@ Public Class ListPage_VM : Inherits ObservableObject
 
 	Private Async Function Search() As Task
 
-		Dim query As New DocumentQuery()
-		With query
+		Dim query_published As New DocumentQuery()
+		With query_published
 			Select Case SelectedSearchMode
 				Case SearchMode.All
 					.Keyword = Keyword
@@ -115,20 +136,41 @@ Public Class ListPage_VM : Inherits ObservableObject
 			End Select
 		End With
 
-		Dim items As List(Of Document_E) = Await repo.ReadAllAsync(query)
-		SetResults(items)
+		Dim query_draft As New DocumentQuery()
+		With query_draft
+			Select Case SelectedSearchMode
+				Case SearchMode.All
+					.Keyword = Keyword
+					.AuthorId = UserInfo.GetInstance().Id
+				Case SearchMode.Title
+					.Title = Keyword
+					.AuthorId = UserInfo.GetInstance().Id
+				Case SearchMode.AuthorName
+					.AuthorName = Keyword
+					.AuthorId = UserInfo.GetInstance().Id
+				Case SearchMode.DocumentId
+					.DocumentId = Keyword
+			End Select
+		End With
+
+		Dim queries = New Dictionary(Of PubStatus, DocumentQuery) From {
+			{
+				PubStatus.Published,
+				query_published
+			},
+			{
+				PubStatus.Draft,
+				query_draft
+			}
+		}
+
+		pubStatus_Items = Await repo.ReadAllAsync(queries)
 
 		Await SetDisplayedItemsAsync(SelectedPubStatus)
 	End Function
 
 	Private Sub SwitchPubStatus(newStatus As PubStatus)
 		SetDisplayedItems(newStatus)
-	End Sub
-
-	Private Sub SetResults(items As List(Of Document_E))
-		pubStatus_Items =
-			items.GroupBy(Function(i) i.PubStatus).
-			ToDictionary(Function(g) g.Key, Function(g) g.ToList())
 	End Sub
 
 	''' <summary>
@@ -148,7 +190,7 @@ Public Class ListPage_VM : Inherits ObservableObject
 			Return
 		End If
 
-		Dim displayItems As List(Of Document_E) = pubStatus_Items(pubStatus)
+		Dim displayItems As IEnumerable(Of Document_E) = pubStatus_Items(pubStatus)
 		For Each doc In displayItems
 			Items.Add(doc)
 		Next
